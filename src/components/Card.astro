@@ -1,0 +1,27 @@
+---
+interface Props {
+	title: string;
+	body: string;
+	imageUrl?: string;
+}
+
+const { title, body, imageUrl } = Astro.props;
+---
+
+<div
+	class="overflow-hidden bg-white rounded-lg border shadow-sm w-[380px] border-slate-200 text-slate-950"
+>
+	<div class="relative">
+		<img class="w-full h-auto" src={imageUrl} />
+	</div>
+	<div class="p-7">
+		<h2 class="mb-2 text-lg font-bold tracking-tight leading-none">{title}</h2>
+		<p class="mb-5 text-neutral-500">
+			{body}
+		</p>
+		<button
+			class="inline-flex justify-center items-center py-2 px-4 w-full h-10 text-sm font-medium text-white rounded-md transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50 disabled:pointer-events-none bg-neutral-950 hover:bg-neutral-950/90 focus-visible:ring-ring"
+			>Read more</button
+		>
+	</div>
+</div>

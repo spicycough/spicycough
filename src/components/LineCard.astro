@@ -1,0 +1,26 @@
+---
+interface Props {
+	title: string;
+	body: string;
+	imageUrl: string;
+}
+
+const { title, body, imageUrl } = Astro.props;
+---
+
+<div class="rounded-md md:flex bg-twilight-900">
+	<div class="border-r-warmth-500 border-r-[0.5rem] md:shrink-0">
+		<img src={imageUrl} />
+	</div>
+	<div class="p-8">
+		<div class="text-sm font-semibold tracking-wide uppercase">
+			{title}
+		</div>
+		<a href="#" class="block mt-1 text-lg font-medium leading-tight hover:underline"
+			>Incredible accommodation for your team</a
+		>
+		<p class="mt-2 text-slate-500">
+			{body}
+		</p>
+	</div>
+</div>

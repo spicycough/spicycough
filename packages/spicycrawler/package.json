@@ -1,0 +1,25 @@
+{
+  "name": "spicycrawler",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "A spicy crawler.",
+  "dependencies": {
+    "cheerio": "1.0.0-rc.12",
+    "crawlee": "^3.0.0"
+  },
+  "devDependencies": {
+    "@apify/tsconfig": "^0.1.0",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.3",
+    "@types/node": "^20.10.3"
+  },
+  "scripts": {
+    "start": "pnpm run start:dev",
+    "start:prod": "node dist/main.js",
+    "start:dev": "tsx src/main.ts",
+    "build": "tsc",
+    "test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"
+  },
+  "author": "Tim Redd",
+  "license": "ISC"
+}

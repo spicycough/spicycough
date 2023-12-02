@@ -1,0 +1,15 @@
+---
+import Head from "@/components/Head.astro";
+import { ViewTransitions } from "astro:transitions";
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+	<head>
+		<Head title="Spicycough" description="Up-to-date resources for SARS-CoV-2 management" />
+		<ViewTransitions fallback="swap" />
+	</head>
+	<body class="min-h-screen font-sans antialiased bg-twilight-800">
+		<slot />
+	</body>
+</html>

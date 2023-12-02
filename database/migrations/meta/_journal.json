@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1701840922986,
+      "tag": "0000_lyrical_nekra",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1701995016733,
+      "tag": "0001_nostalgic_fabian_cortez",
+      "breakpoints": true
+    }
+  ]
+}
