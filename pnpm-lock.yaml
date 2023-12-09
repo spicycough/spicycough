@@ -105,6 +105,9 @@ importers:
       eslint-plugin-prettier:
         specifier: ^5.0.1
         version: registry.npmjs.org/eslint-plugin-prettier@5.0.1(eslint@8.55.0)(prettier@3.1.0)
+      husky:
+        specifier: ^8.0.0
+        version: registry.npmjs.org/husky@8.0.3
       prettier:
         specifier: ^3.1.0
         version: registry.npmjs.org/prettier@3.1.0
@@ -6068,6 +6071,14 @@ packages:
     version: 5.0.0
     engines: {node: '>=16.17.0'}
     dev: false
+
+  registry.npmjs.org/husky@8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/husky/-/husky-8.0.3.tgz}
+    name: husky
+    version: 8.0.3
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
 
   registry.npmjs.org/iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.24.tgz}
