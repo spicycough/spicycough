@@ -17,7 +17,15 @@
     "db:seed": "drizzle/seed",
     "db:studio": "drizzle-kit studio --config=drizzle.config.ts --verbose",
     "test:types": "tsc --noEmit",
-    "upgrade": "pnpm dlx @astrojs/upgrade"
+    "upgrade": "pnpm dlx @astrojs/upgrade",
+    "etest": "playwright test",
+    "etest:report": "playwright show-report",
+    "etest:ui": "playwright test --ui",
+    "etest:codegen": "playwright codegen",
+    "etest:debug": "playwright test --debug",
+    "etest:chromium": "playwright test --project=chromium",
+    "etest:firefox": "playwright test --project=firefox",
+    "etest:webkit": "playwright test --project=webkit"
   },
   "dependencies": {
     "@astrojs/alpinejs": "^0.3.1",
@@ -45,6 +53,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20231121.0",
     "@ngneat/falso": "^7.1.1",
+    "@playwright/test": "^1.40.1",
     "@types/node": "^20.10.3",
     "@typescript-eslint/parser": "^6.13.2",
     "astro-eslint-parser": "^0.16.0",

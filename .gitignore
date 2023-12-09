@@ -31,3 +31,7 @@ database/*.db-wal
 
 # editors
 .vscode
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
