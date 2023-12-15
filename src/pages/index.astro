@@ -1,62 +1,15 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import SearchInput from "@/components/SearchInput.astro";
-import Card from "@/components/Card.astro";
-import LineCard from "@/components/LineCard.astro";
-import { useDatabase } from "@/db/useDatabase";
-// import { contentItems } from "database/migrations/schema";
-import { createFakeContentItem } from "@/db/factories";
-
-type TransitionAnimation = {
-	name: "fadeIn" | "fadeOut" | "slideIn" | "slideOut";
-	delay?: number | string;
-	duration?: number | string;
-	easing?: string;
-	fillMode?: string;
-	direction?: string;
-};
-
-type TransitionAnimationPair = {
-	old: TransitionAnimation | TransitionAnimation[];
-	new: TransitionAnimation | TransitionAnimation[];
-};
-
-type TransitionDirectionalAnimations = {
-	forwards: TransitionAnimationPair;
-	backwards: TransitionAnimationPair;
-};
-
-const anim: TransitionAnimationPair = {
-	old: {
-		name: "slideIn",
-		duration: "3.0s",
-		easing: "linear",
-		fillMode: "forwards",
-	},
-	new: {
-		name: "slideOut",
-		duration: "3.0s",
-		easing: "linear",
-		fillMode: "backwards",
-	},
-};
-
-const slideAnim: TransitionDirectionalAnimations = {
-	forwards: anim,
-	backwards: anim,
-};
-
-// const db = useDatabase();
-// const items = await db.select().from(contentItems);
 ---
 
 <Layout title="Welcome to Astro." description="Test">
-	<main class="flex flex-col justify-evenly items-center mx-auto w-10/12 h-screen">
-		<div class="flex flex-col items-center w-full">
-			<h1 class="pb-10 font-bold text-[4rem]">Spicycough</h1>
+	<main class="mx-auto flex h-screen w-1/2 flex-col content-stretch items-center justify-evenly">
+		<div class="flex w-full flex-col items-center">
+			<h1 class="pb-10 text-[4rem] font-bold">Spicycough</h1>
 			<SearchInput
 				placeholder="Search for something..."
-				class="w-full h-fit"
+				class="h-fit w-full"
 				transition:animate="slide"
 			/>
 		</div>
