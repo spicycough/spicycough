@@ -1,16 +1,21 @@
 module.exports = {
+	root: true,
 	extends: [
 		"eslint:recommended",
 		"plugin:astro/recommended",
 		"plugin:astro/jsx-a11y-strict",
 		"plugin:prettier/recommended",
 		"plugin:@typescript-eslint/recommended",
-		-"plugin:drizzle/recommended",
+		"plugin:drizzle/recommended",
 	],
 	ignorePatterns: ["node_modules", "dist"],
 	parser: "@typescript-eslint/parser",
+	parserOptions: {
+		ecmaVersion: 2022,
+		sourceType: "module",
+		project: "./tsconfig.json",
+	},
 	plugins: ["@typescript-eslint", "prettier", "drizzle", "astro"],
-	project: "./tsconfig.json",
 	rules: {
 		"@typescript-eslint/no-var-requires": "warn",
 		"@typescript-eslint/no-unused-vars": [

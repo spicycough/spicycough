@@ -8,12 +8,6 @@
     "types": [
       "astro/client"
     ],
-    "include": [
-      "./src/**/*"
-    ],
-    "exclude": [
-      "node_modules"
-    ],
     "plugins": [
       {
         "name": "@astrojs/ts-plugin"
@@ -25,5 +19,11 @@
         "./src/*"
       ]
     },
-  }
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
 }
