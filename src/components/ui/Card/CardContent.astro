@@ -1,0 +1,11 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+export interface CardContentProps extends HTMLAttributes<"p"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<div class:list={["p-6 pt-0", className]} {...props}>
+	<slot />
+</div>

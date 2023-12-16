@@ -1,0 +1,11 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+export interface CardDescriptionProps extends HTMLAttributes<"p"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<p class:list={["text-sm text-muted-foreground", className]} {...props}>
+	<slot />
+</p>

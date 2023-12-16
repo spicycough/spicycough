@@ -1,0 +1,11 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+export interface CardTitleProps extends HTMLAttributes<"p"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<div class:list={["text-2xl font-semibold leading-none tracking-tight", className]} {...props}>
+	<slot />
+</div>
