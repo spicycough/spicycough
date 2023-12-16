@@ -1,14 +1,16 @@
 {
-  "name": "spicycrawler",
+  "name": "@seki",
   "version": "0.0.2",
   "type": "module",
-  "description": "A spicy cheerio.",
+  "description": "A simple web scraper.",
+  "exports": {
+    ".": "./src/main.ts"
+  },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
     "got-scraping": "^4.0.3"
   },
   "devDependencies": {
-    "@apify/tsconfig": "^0.1.0",
     "@types/node": "^20.10.4",
     "tsx": "^4.6.2",
     "typescript": "^5.3.3"
