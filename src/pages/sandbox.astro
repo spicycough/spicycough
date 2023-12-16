@@ -1,32 +1,10 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import Card from "@/components/ui/Card/Card.astro";
-import CardHeader from "@/components/ui/Card/CardHeader.astro";
-import CardTitle from "@/components/ui/Card/CardTitle.astro";
-import CardDescription from "@/components/ui/Card/CardDescription.astro";
-import CardContent from "@/components/ui/Card/CardContent.astro";
-import CardFooter from "@/components/ui/Card/CardFooter.astro";
-import Button from "@/components/ui/Button/Button.astro";
-import Input from "@/components/ui/Input/Input.astro";
+import Label from "@/components/ui/Label/Label.astro";
 ---
 
 <Layout class="h-vh justify-center justify-items-stretch">
-	<Card class="h-1/2 w-2/3">
-		<CardHeader>
-			<CardTitle>Card Title</CardTitle>
-			<CardDescription>Card Description</CardDescription>
-		</CardHeader>
-		<CardContent>
-			<p>Card Content</p>
-		</CardContent>
-		<CardFooter>
-			<p>Card Footer</p>
-		</CardFooter>
-	</Card>
 	<div class="grid w-full max-w-sm items-center gap-1.5">
-		<Button variant="destructive" size="sm">Submit</Button>
-	</div>
-	<div class="grid w-full max-w-sm items-center gap-1.5">
-		<Input disabled type="email" id="email" placeholder="Email" />
+		<Label />
 	</div>
 </Layout>
