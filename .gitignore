@@ -29,6 +29,9 @@ database/*.db
 database/*.db-shm
 database/*.db-wal
 
+# fonts
+public/fonts/
+
 # editors
 .vscode
 /test-results/
