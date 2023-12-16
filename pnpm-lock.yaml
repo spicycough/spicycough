@@ -44,6 +44,9 @@ importers:
       astro-robots-txt:
         specifier: ^1.0.0
         version: registry.npmjs.org/astro-robots-txt@1.0.0
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: registry.npmjs.org/class-variance-authority@0.7.0
       drizzle-orm:
         specifier: ^0.29.1
         version: registry.npmjs.org/drizzle-orm@0.29.1(@cloudflare/workers-types@4.20231121.0)(@libsql/client@0.4.0-pre.5)
@@ -138,6 +141,9 @@ importers:
       vitest:
         specifier: ^1.0.4
         version: registry.npmjs.org/vitest@1.0.4(@types/node@20.10.4)
+      wrangler:
+        specifier: ^3.20.0
+        version: registry.npmjs.org/wrangler@3.20.0
 
   packages/spicycrawler:
     dependencies:
@@ -3364,6 +3370,14 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
+  registry.npmjs.org/class-variance-authority@0.7.0:
+    resolution: {integrity: sha512-jFI8IQw4hczaL4ALINxqLEXQbWcNjoSkloa4IaufXCJr6QawJyw7tuRysRsrE8w2p/4gGaxKIt/hX3qz/IbD1A==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/class-variance-authority/-/class-variance-authority-0.7.0.tgz}
+    name: class-variance-authority
+    version: 0.7.0
+    dependencies:
+      clsx: registry.npmjs.org/clsx@2.0.0
+    dev: false
+
   registry.npmjs.org/cli-boxes@3.0.0:
     resolution: {integrity: sha512-/lzGpEWL/8PfI0BmBOPRwp0c/wFNX1RdUML3jK/RcSBA9T8mZDdQpqYBKtCFTOfQbwPqWEOpjqW+Fnayc0969g==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/cli-boxes/-/cli-boxes-3.0.0.tgz}
     name: cli-boxes
@@ -3952,7 +3966,7 @@ packages:
       json-diff: registry.npmjs.org/json-diff@0.9.0
       minimatch: registry.npmjs.org/minimatch@7.4.6
       semver: registry.npmjs.org/semver@7.5.4
-      wrangler: registry.npmjs.org/wrangler@3.19.0
+      wrangler: registry.npmjs.org/wrangler@3.20.0
       zod: registry.npmjs.org/zod@3.22.4
     transitivePeerDependencies:
       - bufferutil
@@ -6903,10 +6917,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  registry.npmjs.org/miniflare@3.20231030.3:
-    resolution: {integrity: sha512-lquHSh0XiO8uoWDujOLHtDS9mkUTJTc5C5amiQ6A++5y0f+DWiMqbDBvvwjlYf4Dvqk6ChFya9dztk7fg2ZVxA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/miniflare/-/miniflare-3.20231030.3.tgz}
+  registry.npmjs.org/miniflare@3.20231030.4:
+    resolution: {integrity: sha512-7MBz0ArLuDop1WJGZC6tFgN6c5MRyDOIlxbm3yp0TRBpvDS/KsTuWCQcCjsxN4QQ5zvL3JTkuIZbQzRRw/j6ow==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/miniflare/-/miniflare-3.20231030.4.tgz}
     name: miniflare
-    version: 3.20231030.3
+    version: 3.20231030.4
     engines: {node: '>=16.13'}
     hasBin: true
     dependencies:
@@ -10052,10 +10066,10 @@ packages:
       '@cloudflare/workerd-windows-64': registry.npmjs.org/@cloudflare/workerd-windows-64@1.20231030.0
     dev: true
 
-  registry.npmjs.org/wrangler@3.19.0:
-    resolution: {integrity: sha512-pY7xWqkQn6DJ+1vz9YHz2pCftEmK+JCTj9sqnucp0NZnlUiILDmBWegsjjCLZycgfiA62J213N7NvjLPr2LB8w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/wrangler/-/wrangler-3.19.0.tgz}
+  registry.npmjs.org/wrangler@3.20.0:
+    resolution: {integrity: sha512-7mg25zJByhBmrfG+CbImSid7JNd5lxGovLA167ndtE8Yrqd3TUukrGWL8o0RCQIm0FUcgl2nCzWArJDShlZVKA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/wrangler/-/wrangler-3.20.0.tgz}
     name: wrangler
-    version: 3.19.0
+    version: 3.20.0
     engines: {node: '>=16.17.0'}
     hasBin: true
     dependencies:
@@ -10065,7 +10079,7 @@ packages:
       blake3-wasm: registry.npmjs.org/blake3-wasm@2.1.5
       chokidar: registry.npmjs.org/chokidar@3.5.3
       esbuild: registry.npmjs.org/esbuild@0.17.19
-      miniflare: registry.npmjs.org/miniflare@3.20231030.3
+      miniflare: registry.npmjs.org/miniflare@3.20231030.4
       nanoid: registry.npmjs.org/nanoid@3.3.7
       path-to-regexp: registry.npmjs.org/path-to-regexp@6.2.1
       resolve.exports: registry.npmjs.org/resolve.exports@2.0.2

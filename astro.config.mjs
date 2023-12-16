@@ -6,12 +6,12 @@ import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://spicycough.com",
-  integrations: [tailwind(), alpinejs()],
-  prefetch: true,
-  experimental: {
-    contentCollectionCache: true
-  },
-  output: "server",
-  adapter: cloudflare()
+	site: "https://spicycough.com",
+	integrations: [tailwind(), alpinejs()],
+	prefetch: true,
+	experimental: {
+		contentCollectionCache: true,
+	},
+	output: "server",
+	adapter: cloudflare(),
 });
