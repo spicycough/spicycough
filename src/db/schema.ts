@@ -3,7 +3,7 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const ContentItemType = ["article", "report", "study", "thread"] as const;
 
-export type ContentItemId = number & { __brand: number };
+export type ContentItemId = number;
 
 export const contentItems = sqliteTable("content_items", {
 	id: integer("id").$type<ContentItemId>().primaryKey({ autoIncrement: true }),
