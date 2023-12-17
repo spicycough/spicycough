@@ -1,0 +1,58 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import { ChevronRight } from "@astropub/icons";
+import Card from "@/components/ui/Card/Card.astro";
+import Input from "@/components/ui/Input/Input.astro";
+import CardHeader from "@/components/ui/Card/CardHeader.astro";
+import CardTitle from "@/components/ui/Card/CardTitle.astro";
+import CardContent from "@/components/ui/Card/CardContent.astro";
+import CardFooter from "@/components/ui/Card/CardFooter.astro";
+import { type ContentItem } from "@/db/schema";
+import CardDescription from "@/components/ui/Card/CardDescription.astro";
+import Button from "@/components/ui/Button/Button.astro";
+import Separator from "@/components/ui/Separator/Separator.astro";
+import { default as ApproveButton } from "@/pages/scrape/_ApproveButton.astro";
+import { default as DenyButton } from "@/pages/scrape/_DenyButton.astro";
+
+export interface Props extends HTMLAttributes<"div"> {
+	contentItem: ContentItem;
+}
+
+const { class: className, contentItem, ...props } = Astro.props;
+
+const { title, author, abstract, publishedAt } = contentItem;
+---
+
+<Card class:list={[className, "relative"]} {...props}>
+	<CardHeader class="">
+		<CardTitle class="">{title}</CardTitle>
+		<CardDescription class="">{author}</CardDescription>
+		<div class="text-sm text-gray-500">{publishedAt}</div>
+	</CardHeader>
+	<Separator decorative={true} />
+	<CardContent class="pt-4">{abstract}</CardContent>
+	<div class="absolute bottom-0 w-full space-y-6">
+		<Separator decorative={true} />
+		<CardFooter>
+			<form method="POST" class="flex w-full items-center justify-between">
+				<div class="flex grow gap-4">
+					<Input
+						type="text"
+						name="url"
+						class="w-2/5 text-base placeholder:opacity-60"
+						placeholder="Enter an article..."
+						@keyup.enter="alert('Submitted!')"
+					/>
+					<Button type="submit" variant="secondary" class="rounded-lg">
+						<ChevronRight class="" />
+					</Button>
+				</div>
+				<div class="m-0 flex space-x-4">
+					<DenyButton />
+					<ApproveButton />
+				</div>
+			</form>
+		</CardFooter>
+	</div>
+</Card>
