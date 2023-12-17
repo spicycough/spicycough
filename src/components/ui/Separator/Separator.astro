@@ -1,0 +1,54 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+const DEFAULT_ORIENTATION = "horizontal";
+const ORIENTATIONS = ["horizontal", "vertical"] as const;
+
+type Orientation = (typeof ORIENTATIONS)[number];
+
+export interface Props extends HTMLAttributes<"div"> {
+	/**
+	 * Either `vertical` or `horizontal`. Defaults to `horizontal`.
+	 */
+	orientation?: Orientation;
+	/**
+	 * Whether or not the component is purely decorative. When true, accessibility-related attributes
+	 * are updated so that that the rendered element is removed from the accessibility tree.
+	 */
+	decorative?: boolean;
+	/**
+	 * Whether or not the component should be rendered as a child of another component.
+	 */
+	asChild?: boolean;
+}
+
+const {
+	class: className,
+	asChild,
+	orientation: orientationProp = DEFAULT_ORIENTATION,
+	decorative = true,
+	...props
+} = Astro.props;
+
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+const isValidOrientation = (orientation: any): orientation is Orientation =>
+	ORIENTATIONS.includes(orientation);
+
+const orientation = isValidOrientation(orientationProp) ? orientationProp : DEFAULT_ORIENTATION;
+const ariaOrientation = orientation === "vertical" ? orientation : undefined;
+const semanticProps = decorative
+	? { role: "none" }
+	: { "aria-orientation": ariaOrientation, role: "separator" };
+---
+
+<div
+	class:list={[
+		"shrink-0 bg-border",
+		orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
+		className,
+	]}
+	data-orientation={orientation}
+	{...semanticProps}
+	{...props}
+>
+</div>
