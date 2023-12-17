@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "astro/types";
 import { cva, type VariantProps } from "class-variance-authority";
 
-const button = cva("button", {
+export const buttonVariants = cva("button", {
 	variants: {
 		variant: {
 			default: "bg-primary text-primary-foreground hover:bg-primary/90",
@@ -21,15 +21,22 @@ const button = cva("button", {
 	},
 });
 
-export interface Props extends HTMLAttributes<"button">, VariantProps<typeof button> {
+export interface Props extends HTMLAttributes<"button">, VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
 }
 
-const { class: className, asChild, variant = "default", size = "default", ...props } = Astro.props;
+const {
+	class: className,
+	asChild,
+	type,
+	variant = "default",
+	size = "default",
+	...props
+} = Astro.props;
 
 const Comp = asChild ? "slot" : "button";
 ---
 
-<Comp class:list={[button({ variant, size, ...props }), className]}>
+<Comp type={type} class:list={buttonVariants({ variant, size, className })} {...props}>
 	<slot />
 </Comp>

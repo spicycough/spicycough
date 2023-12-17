@@ -1,11 +1,13 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-export interface CardTitleProps extends HTMLAttributes<"p"> {}
+export interface Props extends HTMLAttributes<"h3"> {
+	asChild?: boolean;
+}
 
-const { class: className, ...props } = Astro.props;
+const { class: className, asChild, ...props } = Astro.props;
 ---
 
-<div class:list={["text-2xl font-semibold leading-none tracking-tight", className]} {...props}>
+<h3 class:list={["text-2xl font-semibold leading-none tracking-tight", className]} {...props}>
 	<slot />
-</div>
+</h3>

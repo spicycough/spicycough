@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-export interface CardContentProps extends HTMLAttributes<"p"> {}
+export interface Props extends HTMLAttributes<"p"> {}
 
 const { class: className, ...props } = Astro.props;
 ---

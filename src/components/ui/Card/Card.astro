@@ -1,7 +1,12 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-export interface CardProps extends HTMLAttributes<"div"> {}
+import type { AlpineComponent } from "alpinejs";
+
+export interface Props extends AlpineComponent<HTMLAttributes<"div">> {
+	/* eslint-disable  @typescript-eslint/no-explicit-any */
+	children: any;
+}
 
 const { class: className, ...props } = Astro.props;
 ---
