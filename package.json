@@ -2,6 +2,9 @@
   "name": "spicycough",
   "type": "module",
   "version": "0.0.1",
+  "workspaces": [
+    "packages/**/*"
+  ],
   "scripts": {
     "astro": "astro",
     "check": "astro check",
@@ -44,6 +47,7 @@
     ]
   },
   "dependencies": {
+    "@seki": "workspace:*",
     "@astrojs/alpinejs": "^0.3.1",
     "@astrojs/check": "^0.3.2",
     "@astrojs/cloudflare": "^8.0.0",

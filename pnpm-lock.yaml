@@ -29,6 +29,9 @@ importers:
       '@libsql/client':
         specifier: 0.4.0-pre.5
         version: registry.npmjs.org/@libsql/client@0.4.0-pre.5
+      '@seki':
+        specifier: workspace:*
+        version: link:packages/seki
       '@types/alpinejs':
         specifier: ^3.13.5
         version: registry.npmjs.org/@types/alpinejs@3.13.5
@@ -145,7 +148,7 @@ importers:
         specifier: ^3.20.0
         version: registry.npmjs.org/wrangler@3.20.0
 
-  packages/spicycrawler:
+  packages/seki:
     dependencies:
       cheerio:
         specifier: ^1.0.0-rc.12
@@ -154,9 +157,6 @@ importers:
         specifier: ^4.0.3
         version: registry.npmjs.org/got-scraping@4.0.3
     devDependencies:
-      '@apify/tsconfig':
-        specifier: ^0.1.0
-        version: registry.npmjs.org/@apify/tsconfig@0.1.0
       '@types/node':
         specifier: ^20.10.4
         version: registry.npmjs.org/@types/node@20.10.4
@@ -191,12 +191,6 @@ packages:
       '@jridgewell/gen-mapping': registry.npmjs.org/@jridgewell/gen-mapping@0.3.3
       '@jridgewell/trace-mapping': registry.npmjs.org/@jridgewell/trace-mapping@0.3.20
     dev: false
-
-  registry.npmjs.org/@apify/tsconfig@0.1.0:
-    resolution: {integrity: sha512-ba9Y6AMocRucO3AVTb6GM2V+oy1wByNlCDzamK+IC+aqU3pCgJwSN87uNu6iEgu+uetsqYvVbXJYakwiQO1LGA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@apify/tsconfig/-/tsconfig-0.1.0.tgz}
-    name: '@apify/tsconfig'
-    version: 0.1.0
-    dev: true
 
   registry.npmjs.org/@astrojs/alpinejs@0.3.1(@types/alpinejs@3.13.5)(alpinejs@3.13.3):
     resolution: {integrity: sha512-GKaptRkdJvcqoTOCeAbeiemnpsayJkUmShSjR2qlkvpCIv7B5HzqqfkblLnOwgMGKOggpwZJAZfSAmALqWgNcw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@astrojs/alpinejs/-/alpinejs-0.3.1.tgz}
