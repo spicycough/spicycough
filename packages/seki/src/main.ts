@@ -10,7 +10,7 @@ const hostnames = {
 
 export type ScrapeOptions = ExtendedOptionsOfTextResponseBody;
 
-export const scrape = async (url: string, options: ScrapeOptions) => {
+export const scrape = async (url: string, options?: ScrapeOptions) => {
 	console.info(`Processing ${url}`);
 	const parsedUrl = new URL(url);
 
