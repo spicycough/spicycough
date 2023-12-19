@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "astro/types";
 
 import { useScraper } from "@/hooks/useScraper";
-import { ChevronRight } from "@astropub/icons";
+import { ChevronRight, Loop } from "@astropub/icons";
 import Card from "@/components/ui/Card/Card.astro";
 import Input from "@/components/ui/Input/Input.astro";
 import CardHeader from "@/components/ui/Card/CardHeader.astro";
@@ -20,6 +20,8 @@ export interface Props extends HTMLAttributes<"div"> {
 	contentItem?: ContentItem;
 }
 
+// const url = "https://www.nature.com/articles/s41584-023-00964-y";
+
 const emptyContentItem: ContentItem = {
 	id: 1,
 	type: "article" as const,
@@ -36,43 +38,53 @@ const emptyContentItem: ContentItem = {
 
 const { class: className, contentItem = emptyContentItem, ...props } = Astro.props;
 
-// const url = "https://www.nature.com/articles/s41584-023-00964-y";
 let { title, author, publishedAt, abstract } = contentItem;
 
+const errors = { url: "" };
 if (Astro.request.method === "POST") {
 	const scraper = useScraper();
 	const data = await Astro.request.formData();
-	const url = data.get("url");
 	try {
-		if (!url) throw new Error("No URL");
-		const resp = await scraper(url.toString());
-		if ("error" in resp) throw new Error(resp.error);
-		title = resp.parsedBody.title;
+		const url = data.get("url")?.toString();
+		if (typeof url !== "string" || url.length < 1 || url === undefined) {
+			errors.url += "A URL is required";
+		}
+		const hasErrors = Object.values(errors).some((msg) => msg);
+		if (!hasErrors) {
+			const resp = await scraper(url);
+			if ("error" in resp) throw new Error(resp.error);
+			title = resp.parsedBody.title;
+			author = resp.parsedBody.authors.join(", ");
+			publishedAt = resp.parsedBody.publicationDate;
+			abstract = resp.parsedBody.abstract;
+		}
 	} catch (error) {
-		console.log(error);
+		if (error instanceof Error) {
+			console.error(error);
+		}
 	}
 }
 ---
 
 <Card class:list={[className, "flex h-full flex-col"]} {...props}>
-	<CardHeader class="">
-		<CardTitle class="">{title}</CardTitle>
+	<CardHeader>
+		<CardTitle>{title}</CardTitle>
 		<CardDescription class="">{author}</CardDescription>
 		<div class="text-sm text-gray-500">{publishedAt}</div>
 	</CardHeader>
-	<Separator class="" />
+	<Separator />
 	<CardContent class="grid h-full grid-cols-[1fr,min-content,1fr] p-0">
-		<div class="p-4">
-			<h2>Abstract</h2>
+		<div class="p-0">
+			<h2 class="font-bold">Abstract</h2>
 			<p>{abstract}</p>
 		</div>
 		<Separator orientation="vertical" class="h-full self-stretch" />
-		<div class="p-4">
-			<h2>AI Summary</h2>
+		<div class="p-0">
+			<h2 class="font-bold">AI Summary</h2>
 			<p>More text</p>
 		</div>
 	</CardContent>
-	<Separator class="gap-x-2" />
+	<Separator />
 	<CardFooter class="pt-6">
 		<form method="POST" class="flex w-full items-center justify-between">
 			<div class="flex w-2/5 gap-4">
@@ -83,7 +95,7 @@ if (Astro.request.method === "POST") {
 					placeholder="Enter an article..."
 				/>
 				<Button type="submit" variant="secondary" class="rounded-lg">
-					<ChevronRight class="" />
+					<ChevronRight />
 				</Button>
 			</div>
 			<div class="flex gap-x-4">
