@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
+import { useScraper } from "@/hooks/useScraper";
 import { ChevronRight } from "@astropub/icons";
 import Card from "@/components/ui/Card/Card.astro";
 import Input from "@/components/ui/Input/Input.astro";
@@ -16,43 +17,79 @@ import { default as ApproveButton } from "@/pages/scrape/_ApproveButton.astro";
 import { default as DenyButton } from "@/pages/scrape/_DenyButton.astro";
 
 export interface Props extends HTMLAttributes<"div"> {
-	contentItem: ContentItem;
+	contentItem?: ContentItem;
 }
 
-const { class: className, contentItem, ...props } = Astro.props;
+const emptyContentItem: ContentItem = {
+	id: 1,
+	type: "article" as const,
+	title: "Title",
+	author: "Author",
+	abstract: "Abstract",
+	fullText: "Full text",
+	publishedAt: "Published at",
+	sourceUrl: "https://example.com",
+	slug: "",
+	createdAt: null,
+	updatedAt: null,
+};
 
-const { title, author, abstract, publishedAt } = contentItem;
+const { class: className, contentItem = emptyContentItem, ...props } = Astro.props;
+
+// const url = "https://www.nature.com/articles/s41584-023-00964-y";
+let { title, author, publishedAt, abstract } = contentItem;
+
+if (Astro.request.method === "POST") {
+	const scraper = useScraper();
+	const data = await Astro.request.formData();
+	const url = data.get("url");
+	try {
+		if (!url) throw new Error("No URL");
+		const resp = await scraper(url.toString());
+		if ("error" in resp) throw new Error(resp.error);
+		title = resp.parsedBody.title;
+	} catch (error) {
+		console.log(error);
+	}
+}
 ---
 
-<Card class:list={[className, "relative"]} {...props}>
+<Card class:list={[className, "flex h-full flex-col"]} {...props}>
 	<CardHeader class="">
 		<CardTitle class="">{title}</CardTitle>
 		<CardDescription class="">{author}</CardDescription>
 		<div class="text-sm text-gray-500">{publishedAt}</div>
 	</CardHeader>
-	<Separator decorative={true} />
-	<CardContent class="pt-4">{abstract}</CardContent>
-	<div class="absolute bottom-0 w-full space-y-6">
-		<Separator decorative={true} />
-		<CardFooter>
-			<form method="POST" class="flex w-full items-center justify-between">
-				<div class="flex grow gap-4">
-					<Input
-						type="text"
-						name="url"
-						class="w-2/5 text-base placeholder:opacity-60"
-						placeholder="Enter an article..."
-						@keyup.enter="alert('Submitted!')"
-					/>
-					<Button type="submit" variant="secondary" class="rounded-lg">
-						<ChevronRight class="" />
-					</Button>
-				</div>
-				<div class="m-0 flex space-x-4">
-					<DenyButton />
-					<ApproveButton />
-				</div>
-			</form>
-		</CardFooter>
-	</div>
+	<Separator class="" />
+	<CardContent class="grid h-full grid-cols-[1fr,min-content,1fr] p-0">
+		<div class="p-4">
+			<h2>Abstract</h2>
+			<p>{abstract}</p>
+		</div>
+		<Separator orientation="vertical" class="h-full self-stretch" />
+		<div class="p-4">
+			<h2>AI Summary</h2>
+			<p>More text</p>
+		</div>
+	</CardContent>
+	<Separator class="gap-x-2" />
+	<CardFooter class="pt-6">
+		<form method="POST" class="flex w-full items-center justify-between">
+			<div class="flex w-2/5 gap-4">
+				<Input
+					type="text"
+					name="url"
+					class="text-base placeholder:opacity-60"
+					placeholder="Enter an article..."
+				/>
+				<Button type="submit" variant="secondary" class="rounded-lg">
+					<ChevronRight class="" />
+				</Button>
+			</div>
+			<div class="flex gap-x-4">
+				<DenyButton />
+				<ApproveButton />
+			</div>
+		</form>
+	</CardFooter>
 </Card>
