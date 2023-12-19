@@ -1,0 +1,11 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+export interface Props extends HTMLAttributes<"caption"> {}
+
+const { class: className, ...props } = Astro.props;
+---
+
+<caption class:list={["mt-4 text-sm text-muted-foreground", className]} {...props}>
+	<slot />
+</caption>
