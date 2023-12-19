@@ -6,9 +6,10 @@ export const useScraper = () => {
 		if (!isValidUrl) return { error: "Invalid url" };
 
 		try {
-			return await scrape(url, options);
-		} catch (error: unknown) {
-			return { error: (error as Error).message || "An error occurred during scraping." };
+			return (await scrape(url, options)) || { error: "An error occurred during scraping." };
+		} catch (error) {
+			if (error instanceof Error) return { error: error.message };
+			else return { error: "An error occurred during scraping." };
 		}
 	};
 };
