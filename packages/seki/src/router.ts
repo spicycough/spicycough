@@ -5,7 +5,19 @@ export type RouteContext = {
 	response: Response<string>;
 };
 
-const nature = async ({ response }: RouteContext) => {
+export type ParsedBody = {
+	title: string;
+	authors: string[];
+	publicationDate: string;
+	abstract: string;
+	fullText: string[];
+};
+
+export type ParsedResponse = Pick<Response<string>, "request" | "body" | "url"> & {
+	parsedBody: ParsedBody;
+};
+
+const nature = async ({ response }: RouteContext): Promise<ParsedResponse> => {
 	const { body } = response;
 	const $ = cheerio.load(body);
 
@@ -22,12 +34,14 @@ const nature = async ({ response }: RouteContext) => {
 		.get();
 
 	return {
-		sourceUrl: response.requestUrl.href,
-		title,
-		authors,
-		publicationDate,
-		abstract,
-		fullText,
+		...response,
+		parsedBody: {
+			title,
+			authors,
+			publicationDate,
+			abstract,
+			fullText,
+		},
 	};
 };
 

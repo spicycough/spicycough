@@ -1,6 +1,6 @@
 import { gotScraping, type ExtendedOptionsOfTextResponseBody } from "got-scraping";
 import { P, match } from "ts-pattern";
-import { router } from "./router";
+import { router, type ParsedBody, type ParsedResponse } from "./router";
 
 const includes = P.string.includes;
 
@@ -18,8 +18,9 @@ export const scrape = async (url: string, options?: ScrapeOptions) => {
 
 	const parsingFn = match(parsedUrl.hostname)
 		.with(includes(hostnames.NATURE), () => router.nature)
-		.otherwise(() => async () => {
+		.otherwise(() => (): ParsedResponse => {
 			console.error(`No parsing function for ${parsedUrl.hostname}`);
+			return { ...response, parsedBody: {} as ParsedBody };
 		});
 
 	return parsingFn({ response });
