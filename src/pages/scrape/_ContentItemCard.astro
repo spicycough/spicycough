@@ -1,32 +1,30 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { useScraper } from "@/hooks/useScraper";
-import { ChevronRight, Loop } from "@astropub/icons";
+import { handleFormData, scrapeUrl } from "./utils";
+import { ChevronRight } from "@astropub/icons";
 import Card from "@/components/ui/Card/Card.astro";
 import Input from "@/components/ui/Input/Input.astro";
 import CardHeader from "@/components/ui/Card/CardHeader.astro";
 import CardTitle from "@/components/ui/Card/CardTitle.astro";
 import CardContent from "@/components/ui/Card/CardContent.astro";
 import CardFooter from "@/components/ui/Card/CardFooter.astro";
-import { type ContentItem } from "@/db/schema";
+import { type NewContentItem } from "@/db/schema";
 import CardDescription from "@/components/ui/Card/CardDescription.astro";
 import Button from "@/components/ui/Button/Button.astro";
 import Separator from "@/components/ui/Separator/Separator.astro";
 import { default as ApproveButton } from "@/pages/scrape/_ApproveButton.astro";
 import { default as DenyButton } from "@/pages/scrape/_DenyButton.astro";
 
-export interface Props extends HTMLAttributes<"div"> {
-	contentItem?: ContentItem;
-}
+export interface Props extends HTMLAttributes<"div"> {}
 
 // const url = "https://www.nature.com/articles/s41584-023-00964-y";
 
-const emptyContentItem: ContentItem = {
+const emptyContentItem: NewContentItem = {
 	id: 1,
 	type: "article" as const,
 	title: "Title",
-	author: "Author",
+	authors: "Author",
 	abstract: "Abstract",
 	fullText: "Full text",
 	publishedAt: "Published at",
@@ -36,40 +34,26 @@ const emptyContentItem: ContentItem = {
 	updatedAt: null,
 };
 
-const { class: className, contentItem = emptyContentItem, ...props } = Astro.props;
+const { class: className, ...props } = Astro.props;
 
-let { title, author, publishedAt, abstract } = contentItem;
-
-const errors = { url: "" };
+let contentItem: NewContentItem = emptyContentItem;
 if (Astro.request.method === "POST") {
-	const scraper = useScraper();
 	const data = await Astro.request.formData();
 	try {
-		const url = data.get("url")?.toString();
-		if (typeof url !== "string" || url.length < 1 || url === undefined) {
-			errors.url += "A URL is required";
-		}
-		const hasErrors = Object.values(errors).some((msg) => msg);
-		if (!hasErrors) {
-			const resp = await scraper(url);
-			if ("error" in resp) throw new Error(resp.error);
-			title = resp.parsedBody.title;
-			author = resp.parsedBody.authors.join(", ");
-			publishedAt = resp.parsedBody.publicationDate;
-			abstract = resp.parsedBody.abstract;
-		}
+		const { url } = await handleFormData(data);
+		contentItem = (await scrapeUrl(url)) ?? emptyContentItem;
 	} catch (error) {
-		if (error instanceof Error) {
-			console.error(error);
-		}
+		console.error(error);
 	}
 }
+
+let { title, authors, publishedAt, abstract } = contentItem;
 ---
 
 <Card class:list={[className, "flex h-full flex-col"]} {...props}>
 	<CardHeader>
 		<CardTitle>{title}</CardTitle>
-		<CardDescription class="">{author}</CardDescription>
+		<CardDescription class="">{authors?.split("\n").join(", ")}</CardDescription>
 		<div class="text-sm text-gray-500">{publishedAt}</div>
 	</CardHeader>
 	<Separator />

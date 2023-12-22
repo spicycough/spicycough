@@ -1,17 +1,12 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { default as ContentItemCard } from "@/pages/scrape/_ContentItemCard.astro";
-
-// import { useDatabase } from "@/db/useDatabase";
-// const db = useDatabase();
-// const results = await db.select().from(contentItems).limit(1);
-// const contentItem = results[0] ?? emptyContentItem;
 ---
 
 <Layout title="Welcome to Astro." description="Test">
 	<main class="container h-screen">
 		<section class="flex h-full w-full flex-col gap-12 py-10">
-			<ContentItemCard client:load />
+			<ContentItemCard />
 		</section>
 	</main>
 </Layout>
