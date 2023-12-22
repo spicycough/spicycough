@@ -1,0 +1,1 @@
+ALTER TABLE `content_items` RENAME COLUMN `content_type` TO `content_kind`;
