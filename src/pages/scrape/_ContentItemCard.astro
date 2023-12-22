@@ -15,6 +15,7 @@ import Button from "@/components/ui/Button/Button.astro";
 import Separator from "@/components/ui/Separator/Separator.astro";
 import { default as ApproveButton } from "@/pages/scrape/_ApproveButton.astro";
 import { default as DenyButton } from "@/pages/scrape/_DenyButton.astro";
+import { createClient, makeRequest } from "@/lib/gpt";
 
 export interface Props extends HTMLAttributes<"div"> {}
 
@@ -37,35 +38,51 @@ const emptyContentItem: NewContentItem = {
 const { class: className, ...props } = Astro.props;
 
 let contentItem: NewContentItem = emptyContentItem;
+let aiSummary;
 if (Astro.request.method === "POST") {
 	const data = await Astro.request.formData();
 	try {
 		const { url } = await handleFormData(data);
 		contentItem = (await scrapeUrl(url)) ?? emptyContentItem;
+
+		const client = createClient({});
+		aiSummary = makeRequest(client, [
+			{ role: "user", content: "Summarize the following text\n" + contentItem?.fullText ?? "" },
+		]);
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-let { title, authors, publishedAt, abstract } = contentItem;
+let { title, authors, publishedAt, fullText } = contentItem;
 ---
 
-<Card class:list={[className, "flex h-full flex-col"]} {...props}>
+<Card
+	class:list={[
+		className,
+		"flex h-full flex-col bg-gradient-to-b from-twilight-800 to-twilight-900",
+	]}
+	{...props}
+>
 	<CardHeader>
 		<CardTitle>{title}</CardTitle>
-		<CardDescription class="">{authors?.split("\n").join(", ")}</CardDescription>
+		<CardDescription class="italic">{authors?.split("\n").join(", ")}</CardDescription>
 		<div class="text-sm text-gray-500">{publishedAt}</div>
 	</CardHeader>
 	<Separator />
-	<CardContent class="grid h-full grid-cols-[1fr,min-content,1fr] p-0">
-		<div class="p-0">
-			<h2 class="font-bold">Abstract</h2>
-			<p>{abstract}</p>
+	<CardContent class="grid h-full grid-cols-[1fr,min-content,1fr] gap-3 pt-6">
+		<div class="overflow-y-scroll rounded-lg p-1 pl-3">
+			<h2 class="font-bold text-white opacity-100">Abstract</h2>
+			<p>
+				{fullText}
+			</p>
 		</div>
 		<Separator orientation="vertical" class="h-full self-stretch" />
-		<div class="p-0">
-			<h2 class="font-bold">AI Summary</h2>
-			<p>More text</p>
+		<div class="overflow-y-scroll rounded-lg p-1 pl-3">
+			<h2 class="font-bold text-white">AI Summary</h2>
+			<p>
+				{aiSummary}
+			</p>
 		</div>
 	</CardContent>
 	<Separator />
