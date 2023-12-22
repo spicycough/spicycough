@@ -1,15 +1,25 @@
 import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const ContentItemType = ["article", "report", "study", "thread"] as const;
+export const ContentItemKind = {
+	ARTICLE: "article",
+	REPORT: "report",
+	STUDY: "study",
+	THREAD: "thread",
+};
+
+export type ContentItemKind = (typeof ContentItemKind)[keyof typeof ContentItemKind];
 
 export type ContentItemId = number;
 
 export const contentItems = sqliteTable("content_items", {
 	id: integer("id").$type<ContentItemId>().primaryKey({ autoIncrement: true }),
-	type: text("content_type", { mode: "text", enum: ContentItemType }).notNull(),
+	type: text("content_kind", {
+		mode: "text",
+		enum: Object.values(ContentItemKind) as [string, ...string[]],
+	}).notNull(),
 	title: text("title").notNull(),
-	author: text("author"),
+	authors: text("author"),
 	sourceUrl: text("source_url").notNull(),
 	abstract: text("abstract"),
 	fullText: text("full_text"),
