@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 import { cva, type VariantProps } from "class-variance-authority";
+import type { Magics, XAttributes, InferInterceptors } from "alpinejs";
 
 export const buttonVariants = cva("button", {
 	variants: {
@@ -21,7 +22,11 @@ export const buttonVariants = cva("button", {
 	},
 });
 
-export interface Props extends HTMLAttributes<"button">, VariantProps<typeof buttonVariants> {
+type AlpineComponent<T> = T & ThisType<InferInterceptors<T> & Magics<T>>;
+
+interface Props
+	extends AlpineComponent<HTMLAttributes<"button">>,
+		VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
 }
 

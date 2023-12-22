@@ -4,18 +4,19 @@ import type { HTMLAttributes } from "astro/types";
 export interface Props extends HTMLAttributes<"div"> {
 	checked?: boolean;
 	defaultChecked?: boolean;
+	disabled?: boolean;
 	required?: boolean;
 	onCheckedChange?(checked: boolean): void;
 }
 
-const { class: className, checked, defaultChecked, ...props } = Astro.props;
+const { class: className, checked, defaultChecked, disabled = false, ...props } = Astro.props;
 ---
 
-<div x-data="{ checked: false }" class="flex items-center justify-center">
+<div x-data="{ checked: false }" class="flex items-center justify-center" {...props}>
 	<input id="thisId" type="checkbox" name="switch" class="hidden" :checked="checked" />
 
 	<button
-		disabled={props.disabled}
+		disabled={disabled}
 		x-ref="switchButton"
 		type="button"
 		class:list={[
