@@ -1,0 +1,104 @@
+---
+const Positions = {
+	TOP: "top",
+	BOTTOM: "bottom",
+	LEFT: "left",
+	RIGHT: "right",
+} as const;
+
+type Position = (typeof Positions)[keyof typeof Positions];
+
+interface Props {
+	position?: Position;
+	hasArrow?: boolean;
+}
+
+const { position = Positions.TOP, hasArrow = false } = Astro.props;
+---
+
+<!-- Then, include a tooltip anwhere in your code -->
+<div class="flex justify-center items-center w-screen h-screen">
+	<div x-data x-tooltip.top="hello">hover me</div>
+</div>
+
+<script>
+	import Alpine from "alpinejs";
+
+	class Toast extends HTMLElement {
+		constructor() {
+			super();
+
+			const id = `tooltip-${Date.now().toString(36) + Math.random().toString(36).substr(2, 5)}`;
+			this.dataset.tooltip = id;
+
+			const position = this.dataset.position;
+			let elementPosition = getComputedStyle(this).position;
+
+			const text = this.dataset.text;
+			const hasArrow = this.dataset.hasArrow;
+
+			const mouseEnter = (event) => {
+				this.slot = <Tooltip id={id} text={text} hasArrow={hasArrow} position={position} />;
+			};
+
+			const mouseLeave = (event) => {
+				document.getElementById(event.target.dataset.tooltip).remove();
+			};
+
+			this.addEventListener("mouseenter", mouseEnter);
+			this.addEventListener("mouseleave", mouseLeave);
+
+			cleanup(() => {
+				this.removeEventListener("mouseenter", mouseEnter);
+				this.removeEventListener("mouseleave", mouseLeave);
+			});
+		}
+	}
+
+	customElements.define("sc-toast", Toast);
+</script>
+
+<script>
+	import Alpine from "alpinejs";
+
+	document.addEventListener("alpine:init", () => {
+		Alpine.directive("tooltip", (el, { modifiers, expression }, { cleanup }) => {
+			let tooltipText = expression;
+			let tooltipArrow = modifiers.includes("noarrow") ? false : true;
+			let tooltipPosition = "top";
+			let tooltipId =
+				"tooltip-" + Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+			let positions = ["top", "bottom", "left", "right"];
+			let elementPosition = getComputedStyle(el).position;
+
+			for (let position of positions) {
+				if (modifiers.includes(position)) {
+					tooltipPosition = position;
+					break;
+				}
+			}
+
+			if (!["relative", "absolute", "fixed"].includes(elementPosition)) {
+				el.style.position = "relative";
+			}
+
+			el.dataset.tooltip = tooltipId;
+
+			let mouseEnter = function (event) {
+				el.innerHTML += tooltipHTML;
+			};
+
+			let mouseLeave = function (event) {
+				document.getElementById(event.target.dataset.tooltip).remove();
+			};
+
+			el.addEventListener("mouseenter", mouseEnter);
+			el.addEventListener("mouseleave", mouseLeave);
+
+			cleanup(() => {
+				el.removeEventListener("mouseenter", mouseEnter);
+				el.removeEventListener("mouseleave", mouseLeave);
+			});
+		});
+	});
+</script>

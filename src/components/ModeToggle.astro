@@ -2,7 +2,7 @@
 import { Sun as SunIcon } from "@astropub/icons";
 ---
 
-<div x-data="{ switchOn: false }" class="flex justify-center items-center space-x-2">
+<div x-data="{ switchOn: false }" class="flex items-center justify-center space-x-2">
 	<input id="thisId" type="checkbox" name="switch" class="hidden" :checked="switchOn" />
 
 	<button
@@ -10,19 +10,19 @@ import { Sun as SunIcon } from "@astropub/icons";
 		type="button"
 		@click="switchOn = ! switchOn"
 		:class="switchOn ? 'bg-blue-600' : 'bg-neutral-200'"
-		class="inline-flex relative py-0.5 ml-4 w-10 h-6 rounded-full focus:outline-none"
+		class="relative ml-4 inline-flex h-6 w-10 rounded-full py-0.5 focus:outline-none"
 		x-cloak
 	>
 		<span
 			:class="switchOn ? 'translate-x-[18px]' : 'translate-x-0.5'"
-			class="w-5 h-5 bg-white rounded-full shadow-md duration-200 ease-in-out"></span>
+			class="h-5 w-5 rounded-full bg-white shadow-md duration-200 ease-in-out"></span>
 	</button>
 
 	<label
 		@click="$refs.switchButton.click(); $refs.switchButton.focus()"
 		:id="$id('switch')"
 		:class="{ 'text-blue-600': switchOn, 'text-gray-400': ! switchOn }"
-		class="text-sm select-none"
+		class="select-none text-sm"
 		x-cloak
 	>
 		<SunIcon />
