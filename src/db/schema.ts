@@ -14,12 +14,12 @@ export type ContentItemId = number;
 
 export const contentItems = sqliteTable("content_items", {
 	id: integer("id").$type<ContentItemId>().primaryKey({ autoIncrement: true }),
-	type: text("content_kind", {
+	kind: text("content_kind", {
 		mode: "text",
 		enum: Object.values(ContentItemKind) as [string, ...string[]],
 	}).notNull(),
 	title: text("title").notNull(),
-	authors: text("author"),
+	authors: text("authors"),
 	sourceUrl: text("source_url").notNull(),
 	abstract: text("abstract"),
 	fullText: text("full_text"),
@@ -29,6 +29,8 @@ export const contentItems = sqliteTable("content_items", {
 	updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
-export type ContentItem = InferSelectModel<typeof contentItems>;
+export type ContentItemTable = typeof contentItems;
 
-export type NewContentItem = InferInsertModel<typeof contentItems>;
+export type ContentItem = InferSelectModel<ContentItemTable>;
+
+export type NewContentItem = InferInsertModel<ContentItemTable>;

@@ -11,28 +11,48 @@ export const handleFormData = async (data: FormData) => {
 	return { url };
 };
 
-export const scrapeUrl = async (url: string | URL): Promise<ContentItem | undefined> => {
-	const db = useDatabase();
+export const fetchContentItem = async (url: string | URL) => {
+	const { db } = useDatabase();
 
 	const _url: URL = url instanceof URL ? url : new URL(url);
+	// Check if exists
+	const existing = await db.query.contentItems
+		.findFirst({
+			where: (row, { eq }) => {
+				return eq(row.sourceUrl, _url.href);
+			},
+		})
+		.execute();
 
-	const { data } = await useScrape({
-		url: _url,
-	});
+	if (existing) return existing;
 
-	const newContentItem: NewContentItem = {
+	// const newContentItem = await scrapeUrl(_url);
+
+	// const r = (
+	// 	await db
+	// 		.insert(contentItems)
+	// 		.values(newContentItem)
+	// 		.onConflictDoNothing({ target: contentItems.id })
+	// 		.returning()
+	// 		.execute()
+	// )?.[0]!;
+};
+
+export const scrapeUrl = async (url: string | URL): Promise<NewContentItem> => {
+	const _url: URL = url instanceof URL ? url : new URL(url);
+
+	const { data } = await useScrape({ url: _url });
+
+	return {
 		sourceUrl: _url.href,
-		type: ContentItemKind.ARTICLE,
-		slug: slugify(data.title),
+		kind: ContentItemKind.ARTICLE,
 		title: data.title,
-		authors: data.authors.join("\n"),
 		publishedAt: data.publicationDate,
 		abstract: data.abstract,
+		slug: slugify(data.title),
+		authors: data.authors.join("\n"),
 		fullText: data.fullText.join("\n"),
 	};
-
-	const [contentItem] = await db.insert(contentItems).values(newContentItem).returning().execute();
-	return contentItem;
 };
 
 const isValidUrl = (url: string) => {
@@ -43,5 +63,3 @@ const isValidUrl = (url: string) => {
 		return false;
 	}
 };
-
-export const hasErrors = (errors: { error: string }) => Object.values(errors).some((msg) => msg);

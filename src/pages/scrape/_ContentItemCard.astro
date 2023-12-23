@@ -1,33 +1,28 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { handleFormData, scrapeUrl } from "./utils";
+import { fetchContentItem, handleFormData } from "./utils";
 import { ChevronRight } from "@astropub/icons";
-import Card from "@/components/ui/Card/Card.astro";
 import Input from "@/components/ui/Input/Input.astro";
-import CardHeader from "@/components/ui/Card/CardHeader.astro";
-import CardTitle from "@/components/ui/Card/CardTitle.astro";
-import CardContent from "@/components/ui/Card/CardContent.astro";
-import CardFooter from "@/components/ui/Card/CardFooter.astro";
-import { type NewContentItem } from "@/db/schema";
-import CardDescription from "@/components/ui/Card/CardDescription.astro";
+import { type ContentItem } from "@/db/schema";
 import Button from "@/components/ui/Button/Button.astro";
 import Separator from "@/components/ui/Separator/Separator.astro";
 import { default as ApproveButton } from "@/pages/scrape/_ApproveButton.astro";
 import { default as DenyButton } from "@/pages/scrape/_DenyButton.astro";
-import { createClient, makeRequest } from "@/lib/gpt";
+import { Card } from "@/components/ui/Card/index.astro";
+import SummaryText from "@/pages/scrape/_SummaryText.astro";
 
 export interface Props extends HTMLAttributes<"div"> {}
 
 // const url = "https://www.nature.com/articles/s41584-023-00964-y";
 
-const emptyContentItem: NewContentItem = {
+const emptyContentItem: ContentItem = {
 	id: 1,
-	type: "article" as const,
+	kind: "article" as const,
 	title: "Title",
 	authors: "Author",
-	abstract: "Abstract",
-	fullText: "Full text",
+	abstract: "",
+	fullText: "",
 	publishedAt: "Published at",
 	sourceUrl: "https://example.com",
 	slug: "",
@@ -37,58 +32,48 @@ const emptyContentItem: NewContentItem = {
 
 const { class: className, ...props } = Astro.props;
 
-let contentItem: NewContentItem = emptyContentItem;
-let aiSummary;
+let contentItem: ContentItem = emptyContentItem;
 if (Astro.request.method === "POST") {
 	const data = await Astro.request.formData();
 	try {
 		const { url } = await handleFormData(data);
-		contentItem = (await scrapeUrl(url)) ?? emptyContentItem;
-
-		const client = createClient({});
-		aiSummary = makeRequest(client, [
-			{ role: "user", content: "Summarize the following text\n" + contentItem?.fullText ?? "" },
-		]);
+		contentItem = await fetchContentItem(url);
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-let { title, authors, publishedAt, fullText } = contentItem;
+let { title, authors, publishedAt, fullText = "" } = contentItem;
 ---
 
-<Card
+<Card.Root
 	class:list={[
 		className,
 		"flex h-full flex-col bg-gradient-to-b from-twilight-800 to-twilight-900",
 	]}
 	{...props}
 >
-	<CardHeader>
-		<CardTitle>{title}</CardTitle>
-		<CardDescription class="italic">{authors?.split("\n").join(", ")}</CardDescription>
+	<Card.Header>
+		<Card.Title>{title}</Card.Title>
+		<Card.Description class="italic">{authors?.split("\n").join(", ")}</Card.Description>
 		<div class="text-sm text-gray-500">{publishedAt}</div>
-	</CardHeader>
+	</Card.Header>
 	<Separator />
-	<CardContent class="grid h-full grid-cols-[1fr,min-content,1fr] gap-3 pt-6">
-		<div class="overflow-y-scroll rounded-lg p-1 pl-3">
+	<Card.Content class="grid h-full grid-cols-[1fr,min-content,1fr] gap-3 pt-6">
+		<div class="overflow-y-scroll p-1 pl-3 rounded-lg">
 			<h2 class="font-bold text-white opacity-100">Abstract</h2>
-			<p>
-				{fullText}
-			</p>
+			<p>{fullText}</p>
 		</div>
-		<Separator orientation="vertical" class="h-full self-stretch" />
-		<div class="overflow-y-scroll rounded-lg p-1 pl-3">
-			<h2 class="font-bold text-white">AI Summary</h2>
-			<p>
-				{aiSummary}
-			</p>
+		<Separator orientation="vertical" class="self-stretch h-full" />
+		<div class="overflow-y-scroll p-1 pl-3 rounded-lg">
+			<h2 class="font-bold text-white">Summary</h2>
+			<SummaryText fullText={fullText!} />
 		</div>
-	</CardContent>
+	</Card.Content>
 	<Separator />
-	<CardFooter class="pt-6">
-		<form method="POST" class="flex w-full items-center justify-between">
-			<div class="flex w-2/5 gap-4">
+	<Card.Footer class="pt-6">
+		<form method="POST" class="flex justify-between items-center w-full">
+			<div class="flex gap-4 w-2/5">
 				<Input
 					type="text"
 					name="url"
@@ -104,5 +89,5 @@ let { title, authors, publishedAt, fullText } = contentItem;
 				<ApproveButton />
 			</div>
 		</form>
-	</CardFooter>
-</Card>
+	</Card.Footer>
+</Card.Root>
