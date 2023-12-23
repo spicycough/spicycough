@@ -185,6 +185,7 @@ export default {
 			},
 			fontFamily: {
 				sans: ["Inter", ...fontFamily.sans],
+				display: ["Humane", ...fontFamily.sans],
 			},
 			keyframes: {
 				"accordion-down": {
