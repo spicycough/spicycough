@@ -1,5 +1,5 @@
-import { sqliteTable, AnySQLiteColumn, integer, text } from "drizzle-orm/sqlite-core"
-  import { sql } from "drizzle-orm"
+import { sqliteTable, AnySQLiteColumn, integer, text } from "drizzle-orm/sqlite-core";
+import { sql } from "drizzle-orm";
 
 export const contentItems = sqliteTable("content_items", {
 	id: integer("id").primaryKey({ autoIncrement: true }).notNull(),
