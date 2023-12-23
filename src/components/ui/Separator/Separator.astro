@@ -12,11 +12,6 @@ export interface Props extends HTMLAttributes<"div"> {
 	 */
 	orientation?: Orientation;
 	/**
-	 * Whether or not the component is purely decorative. When true, accessibility-related attributes
-	 * are updated so that that the rendered element is removed from the accessibility tree.
-	 */
-	decorative?: boolean;
-	/**
 	 * Whether or not the component should be rendered as a child of another component.
 	 */
 	asChild?: boolean;
@@ -26,7 +21,6 @@ const {
 	class: className,
 	asChild,
 	orientation: orientationProp = DEFAULT_ORIENTATION,
-	decorative = true,
 	...props
 } = Astro.props;
 
@@ -35,20 +29,15 @@ const isValidOrientation = (orientation: any): orientation is Orientation =>
 	ORIENTATIONS.includes(orientation);
 
 const orientation = isValidOrientation(orientationProp) ? orientationProp : DEFAULT_ORIENTATION;
-const ariaOrientation = orientation === "vertical" ? orientation : undefined;
-const semanticProps = decorative
-	? { role: "none" }
-	: { "aria-orientation": ariaOrientation, role: "separator" };
 ---
 
 <div
 	class:list={[
-		"shrink-0 bg-border",
+		"bg-border shrink-0",
 		orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
 		className,
 	]}
 	data-orientation={orientation}
-	{...semanticProps}
 	{...props}
 >
 </div>

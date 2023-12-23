@@ -7,11 +7,11 @@ import {
 	rand,
 	randNumber,
 } from "@ngneat/falso";
-import { ContentItemType, type ContentItem, type ContentItemId } from "./schema";
+import { ContentItemKind, type ContentItem, type ContentItemId } from "./schema";
 
 export const createFakeContentItem = (): ContentItem => {
 	const id = randNumber() as ContentItemId;
-	const type = rand(ContentItemType);
+	const type = rand(Object.values(ContentItemKind));
 	const title = randTextRange({ min: 3, max: 15 });
 	const author = randFullName();
 	const slug = title.toLowerCase().replace(/\s/g, "-");

@@ -1,7 +1,7 @@
 import { ContentItemKind, contentItems, type ContentItem, type NewContentItem } from "@/db/schema";
-import { useScrape } from "@seki";
+import { useScrape } from "@/lib/seki";
 import { useDatabase } from "@/db/useDatabase";
-import { slugify } from "@/lib/utils";
+import { slugify } from "@/lib/misc";
 
 export const handleFormData = async (data: FormData) => {
 	const url = data.get("url")?.toString();

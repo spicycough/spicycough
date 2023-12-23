@@ -1,9 +1,7 @@
 {
   "extends": "astro/tsconfigs/strictest",
   "compilerOptions": {
-    // Enable stricter transpilation for better output.
     "isolatedModules": true,
-    // Check import types
     "verbatimModuleSyntax": true,
     "types": [
       "astro/client"
@@ -11,19 +9,24 @@
     "plugins": [
       {
         "name": "@astrojs/ts-plugin"
-      },
+      }
     ],
-    "baseUrl": ".",
+    "baseUrl": "/Users/tim/Dropbox/projects/astro/spicycough-react",
     "paths": {
       "@/*": [
         "./src/*"
-      ],
+      ]
     },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   },
   "include": [
+    "./astro.config.ts",
     "./src/**/*",
+    "./tests/**/*"
   ],
   "exclude": [
-    "node_modules"
-  ],
+    "node_modules",
+    "dist"
+  ]
 }

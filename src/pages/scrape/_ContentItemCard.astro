@@ -30,14 +30,14 @@ const emptyContentItem: ContentItem = {
 	updatedAt: null,
 };
 
-const { class: className, ...props } = Astro.props;
+const { class: className } = Astro.props;
 
 let contentItem: ContentItem = emptyContentItem;
 if (Astro.request.method === "POST") {
 	const data = await Astro.request.formData();
 	try {
 		const { url } = await handleFormData(data);
-		contentItem = await fetchContentItem(url);
+		contentItem = (await fetchContentItem(url)) ?? emptyContentItem;
 	} catch (error) {
 		console.error(error);
 	}
@@ -48,10 +48,9 @@ let { title, authors, publishedAt, fullText = "" } = contentItem;
 
 <Card.Root
 	class:list={[
+		"from-twilight-800 to-twilight-900 flex h-full flex-col bg-gradient-to-b",
 		className,
-		"flex h-full flex-col bg-gradient-to-b from-twilight-800 to-twilight-900",
 	]}
-	{...props}
 >
 	<Card.Header>
 		<Card.Title>{title}</Card.Title>
@@ -60,20 +59,20 @@ let { title, authors, publishedAt, fullText = "" } = contentItem;
 	</Card.Header>
 	<Separator />
 	<Card.Content class="grid h-full grid-cols-[1fr,min-content,1fr] gap-3 pt-6">
-		<div class="overflow-y-scroll p-1 pl-3 rounded-lg">
+		<div class="overflow-y-scroll rounded-lg p-1 pl-3">
 			<h2 class="font-bold text-white opacity-100">Abstract</h2>
 			<p>{fullText}</p>
 		</div>
-		<Separator orientation="vertical" class="self-stretch h-full" />
-		<div class="overflow-y-scroll p-1 pl-3 rounded-lg">
+		<Separator orientation="vertical" class="h-full self-stretch" />
+		<div class="overflow-y-scroll rounded-lg p-1 pl-3">
 			<h2 class="font-bold text-white">Summary</h2>
 			<SummaryText fullText={fullText!} />
 		</div>
 	</Card.Content>
 	<Separator />
 	<Card.Footer class="pt-6">
-		<form method="POST" class="flex justify-between items-center w-full">
-			<div class="flex gap-4 w-2/5">
+		<form method="POST" class="flex w-full items-center justify-between">
+			<div class="flex w-2/5 gap-4">
 				<Input
 					type="text"
 					name="url"
