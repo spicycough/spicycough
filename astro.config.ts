@@ -8,7 +8,13 @@ import react from "@astrojs/react";
 // https://astro.build/config
 export default defineConfig({
 	site: "https://spicycough.com",
-	integrations: [tailwind(), alpinejs(), react()],
+	integrations: [
+		alpinejs(),
+		react(),
+		tailwind({
+			applyBaseStyles: false,
+		}),
+	],
 	prefetch: true,
 	experimental: {
 		contentCollectionCache: true,

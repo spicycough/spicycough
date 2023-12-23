@@ -1,7 +1,7 @@
-import { ContentItemKind, contentItems, type ContentItem, type NewContentItem } from "@/db/schema";
+import { ContentItemKind, contentItems, type NewContentItem } from "@/db/schema";
 import { useScrape } from "@/lib/seki";
 import { useDatabase } from "@/db/useDatabase";
-import { slugify } from "@/lib/misc";
+import { slugify } from "@/lib/utils";
 
 export const handleFormData = async (data: FormData) => {
 	const url = data.get("url")?.toString();
@@ -15,7 +15,7 @@ export const fetchContentItem = async (url: string | URL) => {
 	const { db } = useDatabase();
 
 	const _url: URL = url instanceof URL ? url : new URL(url);
-	// Check if exists
+
 	const existing = await db.query.contentItems
 		.findFirst({
 			where: (row, { eq }) => {
@@ -26,16 +26,16 @@ export const fetchContentItem = async (url: string | URL) => {
 
 	if (existing) return existing;
 
-	// const newContentItem = await scrapeUrl(_url);
+	const newContentItem = await scrapeUrl(_url);
 
-	// const r = (
-	// 	await db
-	// 		.insert(contentItems)
-	// 		.values(newContentItem)
-	// 		.onConflictDoNothing({ target: contentItems.id })
-	// 		.returning()
-	// 		.execute()
-	// )?.[0]!;
+	const resp = await db
+		.insert(contentItems)
+		.values(newContentItem)
+		.onConflictDoNothing({ target: contentItems.id })
+		.returning()
+		.execute();
+
+	return resp[0];
 };
 
 export const scrapeUrl = async (url: string | URL): Promise<NewContentItem> => {

@@ -1,12 +1,39 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { default as ContentItemCard } from "@/pages/scrape/_ContentItemCard.astro";
+import { ContentItemCard } from "@/pages/scrape/_ContentItemCard";
+import { fetchContentItem, handleFormData } from "./utils";
+import type { ContentItem } from "@/db/schema";
+
+const emptyContentItem: ContentItem = {
+	id: 1,
+	kind: "article" as const,
+	title: "Title",
+	authors: "Author",
+	abstract: "",
+	fullText: "",
+	publishedAt: "Published at",
+	sourceUrl: "https://example.com",
+	slug: "",
+	createdAt: null,
+	updatedAt: null,
+};
+
+let contentItem: ContentItem = emptyContentItem;
+if (Astro.request.method === "POST") {
+	try {
+		const data = await Astro.request.formData();
+		const { url } = await handleFormData(data);
+		contentItem = (await fetchContentItem(url)) ?? emptyContentItem;
+	} catch (error) {
+		console.error(error);
+	}
+}
 ---
 
 <Layout title="Welcome to Astro." description="Test">
 	<main class="container h-screen">
 		<section class="flex h-full w-full flex-col gap-12 py-10">
-			<ContentItemCard />
+			<ContentItemCard client:load contentItem={contentItem} />
 		</section>
 	</main>
 </Layout>
