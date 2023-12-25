@@ -29,6 +29,13 @@
       "when": 1703280407289,
       "tag": "0003_curvy_ricochet",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1703437061363,
+      "tag": "0004_solid_vampiro",
+      "breakpoints": true
     }
   ]
 }
