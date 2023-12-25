@@ -25,6 +25,7 @@
     "db:run": "turso dev --db-file database/local.db",
     "db:seed": "drizzle/seed",
     "db:studio": "drizzle-kit studio --config=drizzle.config.ts --verbose",
+    "db:shell": "turso db shell http://127..0.1:8080",
     "etest": "playwright test",
     "etest:report": "playwright show-report",
     "etest:ui": "playwright test --ui",
