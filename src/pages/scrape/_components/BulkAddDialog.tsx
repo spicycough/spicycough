@@ -8,40 +8,48 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import type { NewContentItemQueue } from "@/db/schema/contentItems";
+import { useDatabase } from "@/db/useDatabase";
+import { useCallback, type PropsWithChildren, type FormEvent } from "react";
+import { toast } from "sonner";
 
-export const BulkAddDialog = () => {
+export const BulkAddDialog = ({ children }: PropsWithChildren) => {
+	const { db, schema } = useDatabase();
+
+	const submit = useCallback((event: FormEvent<HTMLDivElement>) => {
+		event.preventDefault();
+
+		const textarea = event.currentTarget.querySelector("textarea");
+		const urls = textarea?.value.split("\n").filter(Boolean) ?? [];
+
+		const records: NewContentItemQueue[] = urls.map((url: string) => ({ sourceUrl: url }));
+		db.insert(schema.contentItemQueue)
+			.values(records)
+			.execute()
+			.then((items) => {
+				toast.success(`Added ${items.rowsAffected} items to queue.`);
+			})
+			.catch((error) => {
+				toast.error(error.message);
+			});
+
+		return null;
+	}, []);
+
 	return (
 		<Dialog>
-			<DialogTrigger asChild>
-				<Button variant="outline">Bulk add</Button>
-			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
+			<DialogTrigger asChild>{children}</DialogTrigger>
+			<DialogContent className="sm:max-w-[425px] md:h-[360px] md:max-w-[680px]" onSubmit={submit}>
 				<DialogHeader>
-					<DialogTitle>Edit profile</DialogTitle>
-					<DialogDescription>
-						Make changes to your profile here. Click save when you're done.
-					</DialogDescription>
+					<DialogTitle>Add urls</DialogTitle>
+					<DialogDescription>Copy/paste urls, one per line.</DialogDescription>
 				</DialogHeader>
-				<div className="grid gap-4 py-4">
-					<div className="grid grid-cols-4 items-center gap-4">
-						<Label htmlFor="name" className="text-right">
-							Name
-						</Label>
-
-						<Textarea placeholder="Enter urls, one per line" />
-					</div>
-					<div className="grid grid-cols-4 items-center gap-4">
-						<Label htmlFor="username" className="text-right">
-							Username
-						</Label>
-						<Input id="username" value="@peduarte" className="col-span-3" />
-					</div>
-				</div>
-				<DialogFooter>
-					<Button type="submit">Save changes</Button>
+				<Textarea name="urls" id="urls" placeholder="Enter urls, one per line" />
+				<DialogFooter className="">
+					<Button type="submit" className="dark:bg-green-800 dark:text-white">
+						Add to queue
+					</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
