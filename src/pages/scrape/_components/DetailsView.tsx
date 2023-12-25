@@ -4,7 +4,7 @@ import { MagicWandIcon, TextAlignBottomIcon } from "@radix-ui/react-icons";
 import type { ComponentPropsWithoutRef } from "react";
 import { useQueue } from "../_hooks/useQueue";
 
-export const View = ({ className }: ComponentPropsWithoutRef<"div">) => {
+export const DetailsView = ({ className }: ComponentPropsWithoutRef<"div">) => {
 	const { rowSelection } = useQueue();
 
 	const headerStyle = "font-bold text-white";

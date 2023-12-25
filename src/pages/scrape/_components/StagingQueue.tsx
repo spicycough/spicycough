@@ -61,7 +61,7 @@ const Rows = ({ table }: { table: Table }) =>
 		</TableRow>
 	));
 
-export const Queue = ({ className }: ComponentPropsWithoutRef<"div">) => {
+export const StagingQueue = ({ className }: ComponentPropsWithoutRef<"div">) => {
 	const columns: Columns = [
 		{
 			accessorKey: "selection",
@@ -99,7 +99,7 @@ export const Queue = ({ className }: ComponentPropsWithoutRef<"div">) => {
 		data,
 		columns,
 		state: { rowSelection },
-		enableRowSelection: true, //enable row selection for all rows
+		enableRowSelection: true, // enable row selection for all rows
 		onRowSelectionChange: setRowSelection,
 		getCoreRowModel: getCoreRowModel(),
 		debugTable: true,
