@@ -1,36 +1,24 @@
+import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Table,
 	TableBody,
 	TableCell,
-	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
 import type { ContentItemStaging } from "@/db/schema/contentItems";
+import { cn } from "@/lib/utils";
 import {
-	type ColumnDef,
 	flexRender,
 	getCoreRowModel,
 	useReactTable,
+	type ColumnDef,
 	type Table as TableType,
 } from "@tanstack/react-table";
-import {
-	useEffect,
-	type ComponentPropsWithoutRef,
-	type PropsWithChildren,
-	useCallback,
-	useMemo,
-} from "react";
-import { cn } from "@/lib/utils";
-import { useQueue } from "../_hooks/useQueue";
+import { useCallback, useMemo, type ComponentPropsWithoutRef, type PropsWithChildren } from "react";
 import { P, match } from "ts-pattern";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { PlusIcon } from "@radix-ui/react-icons";
-import { Separator } from "@/components/ui/separator";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useDatabase } from "@/db/useDatabase";
+import { useQueue } from "../_hooks/useQueue";
 
 export interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -110,9 +98,7 @@ export const Queue = ({ className }: ComponentPropsWithoutRef<"div">) => {
 	const table = useReactTable<ContentItemStaging>({
 		data,
 		columns,
-		state: {
-			rowSelection,
-		},
+		state: { rowSelection },
 		enableRowSelection: true, //enable row selection for all rows
 		onRowSelectionChange: setRowSelection,
 		getCoreRowModel: getCoreRowModel(),
@@ -135,10 +121,10 @@ export const Queue = ({ className }: ComponentPropsWithoutRef<"div">) => {
 
 	return (
 		<Table className={cn("", className)}>
-			<TableHeader className="h-full border-none">
+			<TableHeader>
 				<Heading table={table} />
 			</TableHeader>
-			<TableBody className="h-full border-none">
+			<TableBody>
 				<Body />
 			</TableBody>
 		</Table>
