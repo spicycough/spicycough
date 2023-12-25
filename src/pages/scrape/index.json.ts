@@ -1,14 +1,45 @@
-import { ContentItemKind, contentItems, type NewContentItem } from "@/db/schema";
+import type { APIRoute } from "astro";
+
+import { ContentItemKind, contentItems, type NewContentItem } from "@/db/schema/contentItems";
 import { useScrape } from "@/lib/seki";
 import { useDatabase } from "@/db/useDatabase";
 import { slugify } from "@/lib/utils";
 
 export const handleFormData = async (data: FormData) => {
-	const url = data.get("url")?.toString();
-	if (!url) throw new Error("No URL provided");
-	else if (!isValidUrl(url)) throw new Error("Invalid URL provided");
+	const urls = data.get("urls")?.toString().split("\n") ?? [];
 
-	return { url };
+	urls.forEach(async (url) => {
+		if (!url) throw new Error("No URL provided");
+		else if (!isValidUrl(url)) throw new Error("Invalid URL provided");
+	});
+
+	return { urls };
+};
+
+export const POST: APIRoute = async ({ request }) => {
+	const isForm = request.headers.get("Content-Type") === "application/x-www-form-urlencoded";
+	if (!isForm) return new Response(null, { status: 404 });
+
+	const { db, schema } = useDatabase();
+
+	try {
+		const data = await request.formData();
+		const { urls } = await handleFormData(data);
+
+		const records = await db
+			.insert(schema.contentItemQueue)
+			.values(
+				urls.map((url) => ({
+					sourceUrl: url,
+				})),
+			)
+			.execute();
+
+		return new Response(null, { status: 200 });
+	} catch (error) {
+		console.error(error);
+		return new Response(null, { status: 400 });
+	}
 };
 
 export const fetchContentItem = async (url: string | URL) => {
