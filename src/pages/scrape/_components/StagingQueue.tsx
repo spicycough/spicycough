@@ -3,6 +3,7 @@ import {
 	Table,
 	TableBody,
 	TableCell,
+	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
@@ -16,7 +17,13 @@ import {
 	type ColumnDef,
 	type Table as TableType,
 } from "@tanstack/react-table";
-import { useCallback, useMemo, type ComponentPropsWithoutRef, type PropsWithChildren } from "react";
+import {
+	useCallback,
+	useMemo,
+	type ComponentPropsWithoutRef,
+	type PropsWithChildren,
+	type HTMLAttributes,
+} from "react";
 import { P, match } from "ts-pattern";
 import { useQueue } from "../_hooks/useQueue";
 
@@ -44,7 +51,7 @@ const Heading = ({ table }: { table: Table }) =>
 
 const EmptyRow = ({ numCols, children }: PropsWithChildren<{ numCols: number }>) => (
 	<TableRow>
-		<TableCell colSpan={numCols} className="h-24 text-center">
+		<TableCell colSpan={numCols} className="h-72 text-center">
 			{children}
 		</TableCell>
 	</TableRow>
@@ -61,7 +68,10 @@ const Rows = ({ table }: { table: Table }) =>
 		</TableRow>
 	));
 
-export const StagingQueue = ({ className }: ComponentPropsWithoutRef<"div">) => {
+export const StagingQueue = ({
+	className,
+	children,
+}: PropsWithChildren & HTMLAttributes<HTMLDivElement>) => {
 	const columns: Columns = [
 		{
 			accessorKey: "selection",
@@ -124,9 +134,16 @@ export const StagingQueue = ({ className }: ComponentPropsWithoutRef<"div">) => 
 			<TableHeader>
 				<Heading table={table} />
 			</TableHeader>
-			<TableBody>
+			<TableBody className="">
 				<Body />
 			</TableBody>
+			<TableFooter className="bg-transparent dark:bg-transparent">
+				<TableRow className="">
+					<TableCell colSpan={columns.length} className="">
+						{children}
+					</TableCell>
+				</TableRow>
+			</TableFooter>
 		</Table>
 	);
 };
