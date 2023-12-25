@@ -2,7 +2,7 @@ import { createClient as createLocalClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import { createClient } from "@libsql/client/web";
 import { match } from "ts-pattern";
-import { contentItems } from "./schema";
+import { contentItems, contentItemQueue, contentItemStaging } from "./schema/contentItems";
 
 type DatabaseParams = {
 	url: string;
@@ -19,5 +19,9 @@ export const useDatabase = (params?: DatabaseParams) => {
 		authToken: params?.authToken ?? (import.meta.env.PUBLIC_TURSO_DB_AUTH_TOKEN as string),
 	});
 
-	return { db: drizzle(client, { schema: { contentItems } }) };
+	const schema = { contentItems, contentItemQueue, contentItemStaging };
+
+	const db = drizzle(client, { schema });
+
+	return { db, schema };
 };
