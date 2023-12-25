@@ -1,15 +1,16 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import SearchInput from "@/components/SearchInput.astro";
+import { Input } from "@/components/ui/input";
+import RootLayout from "@/layouts/RootLayout.astro";
 ---
 
-<Layout title="Welcome to Astro." description="Test">
+<RootLayout title="Welcome to Astro." description="Test">
 	<main class="mx-auto flex h-screen w-1/2 flex-col content-stretch items-center justify-evenly">
 		<div class="flex w-full flex-col items-center">
 			<h1 class="pb-10 text-[4rem] font-bold">Spicycough</h1>
-			<SearchInput
+			<Input
+				client:idle
 				placeholder="Search for something..."
-				class="h-fit w-full"
+				className="h-fit w-full"
 				transition:animate="slide"
 			/>
 		</div>
@@ -46,4 +47,4 @@ import SearchInput from "@/components/SearchInput.astro";
 			console.log("page load");
 		});
 	</script>
-</Layout>
+</RootLayout>
