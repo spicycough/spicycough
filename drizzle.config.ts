@@ -9,7 +9,7 @@ const { PUBLIC_TURSO_DB_URL, PUBLIC_TURSO_DB_AUTH_TOKEN } = loadEnv(
 );
 
 const devConfig: Config = {
-	schema: "./src/db/schema.ts",
+	schema: "./src/db/schema/",
 	out: "./database/migrations",
 	driver: "turso",
 	dbCredentials: {
