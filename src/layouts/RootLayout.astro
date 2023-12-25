@@ -1,5 +1,6 @@
 ---
 import Head from "@/components/Head.astro";
+import { Toaster } from "@/components/ui/sonner";
 import { ViewTransitions } from "astro:transitions";
 ---
 
@@ -10,6 +11,7 @@ import { ViewTransitions } from "astro:transitions";
 		<ViewTransitions fallback="swap" />
 	</head>
 	<body class="min-h-screen bg-midnight-900 font-sans antialiased">
+		<Toaster client:load />
 		<slot />
 	</body>
 </html>
