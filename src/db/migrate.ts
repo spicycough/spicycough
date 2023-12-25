@@ -13,6 +13,6 @@ export const migrate = (db: Database) => {
 const url = import.meta.env.PUBLIC_TURSO_DB_URL ?? process.env.PUBLIC_TURSO_DB_URL;
 const authToken =
 	import.meta.env.PUBLIC_TURSO_DB_AUTH_TOKEN ?? process.env.PUBLIC_TURSO_DB_AUTH_TOKEN;
-const db = useDatabase({ url, authToken });
+const { db } = useDatabase({ url, authToken });
 
 migrate(db);
