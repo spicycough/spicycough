@@ -119,6 +119,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
+  react-resizable-panels:
+    specifier: ^1.0.5
+    version: registry.npmjs.org/react-resizable-panels@1.0.5(react-dom@18.2.0)(react@18.2.0)
   sonner:
     specifier: ^1.2.4
     version: registry.npmjs.org/sonner@1.2.4(react-dom@18.2.0)(react@18.2.0)
@@ -9093,6 +9096,19 @@ packages:
       tslib: registry.npmjs.org/tslib@2.6.2
       use-callback-ref: registry.npmjs.org/use-callback-ref@1.3.0(@types/react@18.2.45)(react@18.2.0)
       use-sidecar: registry.npmjs.org/use-sidecar@1.1.2(@types/react@18.2.45)(react@18.2.0)
+    dev: false
+
+  registry.npmjs.org/react-resizable-panels@1.0.5(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-OP0whNQCko+f4BgoptGaeIc7StBRyeMeJ+8r/7rXACBDf9W5EcMWuM32hfqPDMenS2HFy/eZVi/r8XqK+ZIEag==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/react-resizable-panels/-/react-resizable-panels-1.0.5.tgz}
+    id: registry.npmjs.org/react-resizable-panels/1.0.5
+    name: react-resizable-panels
+    version: 1.0.5
+    peerDependencies:
+      react: ^16.14.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: registry.npmjs.org/react@18.2.0
+      react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
     dev: false
 
   registry.npmjs.org/react-style-singleton@2.2.1(@types/react@18.2.45)(react@18.2.0):
