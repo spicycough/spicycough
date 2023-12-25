@@ -1,9 +1,0 @@
----
-import type { HTMLAttributes } from "astro/types";
-
-export interface Props extends HTMLAttributes<"div"> {}
-
-const { class: className, ...props } = Astro.props;
----
-
-<div class:list={["animate-pulse rounded-md bg-muted", className]} {...props}><slot /></div>
