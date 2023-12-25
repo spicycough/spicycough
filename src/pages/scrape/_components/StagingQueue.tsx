@@ -17,13 +17,7 @@ import {
 	type ColumnDef,
 	type Table as TableType,
 } from "@tanstack/react-table";
-import {
-	useCallback,
-	useMemo,
-	type ComponentPropsWithoutRef,
-	type PropsWithChildren,
-	type HTMLAttributes,
-} from "react";
+import { useCallback, useMemo, type PropsWithChildren, type HTMLAttributes } from "react";
 import { P, match } from "ts-pattern";
 import { useQueue } from "../_hooks/useQueue";
 
@@ -121,7 +115,9 @@ export const StagingQueue = ({
 		() =>
 			match({ data, error, isLoading, isEmpty })
 				// .with({ isLoading: true }, () => <Skeleton />)
-				.with({ isEmpty: true }, () => <EmptyRow numCols={columns.length}>No results.</EmptyRow>)
+				.with({ isEmpty: true }, () => (
+					<EmptyRow numCols={columns.length}>Nothing in queue.</EmptyRow>
+				))
 				.with({ error: P.not(P.nullish) }, () => (
 					<EmptyRow numCols={columns.length}>{error?.message}</EmptyRow>
 				))
