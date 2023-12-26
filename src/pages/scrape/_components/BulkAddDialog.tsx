@@ -28,14 +28,20 @@ export const BulkAddDialog = ({ children }: PropsWithChildren) => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>{children}</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px] md:h-[360px] md:max-w-[680px]">
-				<form onSubmit={submit}>
-					<DialogHeader>
+			<DialogContent className="container flex flex-col sm:max-w-[425px] md:h-[360px] md:max-w-[680px]">
+				<form className="flex h-full flex-col" onSubmit={submit}>
+					<DialogHeader className="pb-4">
 						<DialogTitle>Add urls</DialogTitle>
 						<DialogDescription>Copy/paste urls, one per line.</DialogDescription>
 					</DialogHeader>
-					<Textarea required id="urls" name="urls" placeholder="Enter urls, one per line" />
-					<DialogFooter className="">
+					<Textarea
+						required
+						id="urls"
+						name="urls"
+						placeholder="Enter urls, one per line"
+						className="flex-1"
+					/>
+					<DialogFooter className="pt-4">
 						<Button type="submit" className="dark:bg-green-800 dark:text-white">
 							Add to queue
 						</Button>

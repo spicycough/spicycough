@@ -1,4 +1,3 @@
-import { Checkbox } from "@/components/ui/checkbox";
 import {
 	Table,
 	TableBody,
@@ -17,9 +16,9 @@ import {
 	type ColumnDef,
 	type Table as TableType,
 } from "@tanstack/react-table";
-import { useCallback, useMemo, type PropsWithChildren, type HTMLAttributes } from "react";
+import { useMemo, type PropsWithChildren, type HTMLAttributes, useEffect } from "react";
 import { P, match } from "ts-pattern";
-import { useQueue } from "../_hooks/useQueue";
+import { type UseQueue } from "../_hooks/useQueue";
 
 export interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -53,7 +52,11 @@ const EmptyRow = ({ numCols, children }: PropsWithChildren<{ numCols: number }>)
 
 const Rows = ({ table }: { table: Table }) =>
 	table.getRowModel().rows.map((row) => (
-		<TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+		<TableRow
+			key={row.id}
+			data-state={row.getIsSelected() && "selected"}
+			onClick={row.getToggleSelectedHandler()}
+		>
 			{row.getVisibleCells().map(({ id, column, getContext }) => (
 				<TableCell key={id} className="h-24 text-center">
 					{flexRender(column.columnDef.cell, getContext())}
@@ -64,70 +67,68 @@ const Rows = ({ table }: { table: Table }) =>
 
 export const StagingQueue = ({
 	className,
+	queue,
 	children,
-}: PropsWithChildren & HTMLAttributes<HTMLDivElement>) => {
-	const columns: Columns = [
-		{
-			accessorKey: "selection",
-			header: "",
-			cell: ({ row }) => {
-				<Checkbox
-					checked={row.getIsSelected()}
-					onCheckedChange={(value) => row.toggleSelected(!!value)}
-					aria-label="Select row"
-				/>;
-			},
-		},
-		{
-			accessorKey: "title",
-			header: "Title",
-			cell: ({ row }) => (
-				<div className="flex flex-col">
-					<div className="text-sm text-gray-500">{row.getValue("sourceUrl")}</div>
-				</div>
-			),
-		},
-		{
-			accessorKey: "publisher",
-			header: "Publisher",
-		},
-		{
-			accessorKey: "actions",
-			header: "Actions",
-		},
-	];
+}: PropsWithChildren<{ queue: UseQueue }> & HTMLAttributes<HTMLDivElement>) => {
+	const { data, error, isLoading, rowSelection, setRowSelection, setSelected } = queue;
 
-	const { data, error, isLoading, rowSelection, setRowSelection } = useQueue();
+	const columns: Columns = useMemo(
+		() => [
+			{
+				accessorKey: "title",
+				header: "Title",
+				cell: ({ row }) => (
+					<div className="flex flex-col">
+						<div className="text-sm text-gray-500">{row.getValue("title")}</div>
+					</div>
+				),
+			},
+			{
+				accessorKey: "publisher",
+				header: "Publisher",
+			},
+			{
+				accessorKey: "actions",
+				header: "Actions",
+			},
+		],
+		[],
+	);
 
 	const table = useReactTable<ContentItemStaging>({
 		data,
 		columns,
-		state: { rowSelection },
-		enableRowSelection: true, // enable row selection for all rows
-		onRowSelectionChange: setRowSelection,
+		enableMultiRowSelection: false,
 		getCoreRowModel: getCoreRowModel(),
+		getRowId: (row) => row.id.toString(),
+		onRowSelectionChange: setRowSelection,
+		state: { rowSelection },
 		debugTable: true,
 	});
 
+	useEffect(() => {
+		const selectedIds = table.getSelectedRowModel().flatRows.map((row) => row.original.id);
+		const selectedRow = data.find((entry) => selectedIds.includes(entry.id)) ?? null;
+		console.log("SETTING SELECTED", selectedRow?.title);
+		setSelected(selectedRow);
+	}, [table.getSelectedRowModel().flatRows, data, setSelected]);
+
 	const isEmpty = useMemo(() => table.getRowModel().rows?.length === 0, [table.getRowModel().rows]);
 
-	const Body = useCallback(
-		() =>
-			match({ data, error, isLoading, isEmpty })
-				// .with({ isLoading: true }, () => <Skeleton />)
-				.with({ isEmpty: true }, () => (
-					<EmptyRow numCols={columns.length}>Nothing in queue.</EmptyRow>
-				))
-				.with({ error: P.not(P.nullish) }, () => (
-					<EmptyRow numCols={columns.length}>{error?.message}</EmptyRow>
-				))
-				.otherwise(() => <Rows table={table} />),
-		[data, error, isLoading, isEmpty, columns.length, table],
-	);
+	const Body = () =>
+		match({ data, error, isLoading, isEmpty })
+			// .with({ isLoading: true }, () => <Skeleton />)
+			.with({ isEmpty: true }, () => (
+				<EmptyRow numCols={columns.length}>Nothing in queue.</EmptyRow>
+			))
+			.with({ error: P.not(P.nullish) }, () => (
+				<EmptyRow numCols={columns.length}>{error?.message}</EmptyRow>
+			))
+			.otherwise(() => <Rows table={table} />);
 
 	return (
 		<Table className={cn("", className)}>
-			<TableHeader>
+			<TableHeader className="pointer-events-none">
 				<Heading table={table} />
 			</TableHeader>
 			<TableBody className="">

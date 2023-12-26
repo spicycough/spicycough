@@ -5,8 +5,11 @@ import { DetailsView } from "./DetailsView";
 
 import { cn } from "@/lib/utils";
 import { ActionsBar } from "./ActionsBar";
+import { useQueue } from "../_hooks/useQueue";
 
 export const ContentItemPage = ({ className }: ComponentPropsWithoutRef<"div">) => {
+	const queue = useQueue();
+
 	return (
 		<div
 			className={cn(
@@ -14,9 +17,9 @@ export const ContentItemPage = ({ className }: ComponentPropsWithoutRef<"div">) 
 				className,
 			)}
 		>
-			<DetailsView className="" />
+			<DetailsView queue={queue} />
 			<div className="flex w-full flex-col justify-end">
-				<StagingQueue className="border">
+				<StagingQueue queue={queue} className="border">
 					<ActionsBar />
 				</StagingQueue>
 			</div>

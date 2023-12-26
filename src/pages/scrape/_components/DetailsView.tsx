@@ -2,10 +2,15 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { cn } from "@/lib/utils";
 import { MagicWandIcon, TextAlignBottomIcon } from "@radix-ui/react-icons";
 import type { ComponentPropsWithoutRef } from "react";
-import { useQueue } from "../_hooks/useQueue";
+import { type UseQueue } from "../_hooks/useQueue";
 
-export const DetailsView = ({ className }: ComponentPropsWithoutRef<"div">) => {
-	const { rowSelection } = useQueue();
+export const DetailsView = ({
+	className,
+	queue,
+}: ComponentPropsWithoutRef<"div"> & { queue: UseQueue }) => {
+	const { selected } = queue;
+
+	console.log(selected);
 
 	const headerStyle = "font-bold text-white";
 
@@ -18,7 +23,7 @@ export const DetailsView = ({ className }: ComponentPropsWithoutRef<"div">) => {
 						<h2 className={headerStyle}>Abstract</h2>
 					</div>
 					<div className="overflow-y-scroll">
-						<p>{rowSelection?.abstract}</p>
+						<p>{selected?.fullText}</p>
 					</div>
 				</ResizablePanel>
 				<ResizableHandle withHandle={true} />
@@ -28,7 +33,7 @@ export const DetailsView = ({ className }: ComponentPropsWithoutRef<"div">) => {
 						<h2 className={headerStyle}>Summary</h2>
 					</div>
 					<div className="overflow-y-scroll">
-						<p>{rowSelection?.summary}</p>
+						<p>{selected?.abstract}</p>
 					</div>
 				</ResizablePanel>
 			</ResizablePanelGroup>
