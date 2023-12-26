@@ -13,7 +13,7 @@ export const ContentItemPage = ({ className }: ComponentPropsWithoutRef<"div">) 
 	return (
 		<div
 			className={cn(
-				"flex h-full flex-col rounded-lg border border-radiance-400 border-opacity-50 bg-gradient-to-b from-twilight-800 to-twilight-900 p-4",
+				"flex max-h-full flex-col rounded-lg border border-radiance-400 border-opacity-50 bg-gradient-to-b from-twilight-800 to-twilight-900 p-4",
 				className,
 			)}
 		>
