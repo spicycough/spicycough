@@ -15,10 +15,12 @@ import {
 	useReactTable,
 	type ColumnDef,
 	type Table as TableType,
+	type RowSelectionState,
 } from "@tanstack/react-table";
-import { useMemo, type PropsWithChildren, type HTMLAttributes, useEffect } from "react";
+import { useMemo, type PropsWithChildren, type HTMLAttributes, useEffect, useState } from "react";
 import { P, match } from "ts-pattern";
-import { type UseQueue } from "../_hooks/useQueue";
+import { useQueue } from "../_hooks/useQueue";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -67,10 +69,9 @@ const Rows = ({ table }: { table: Table }) =>
 
 export const StagingQueue = ({
 	className,
-	queue,
 	children,
-}: PropsWithChildren<{ queue: UseQueue }> & HTMLAttributes<HTMLDivElement>) => {
-	const { data, error, isLoading, rowSelection, setRowSelection, setSelected } = queue;
+}: PropsWithChildren & HTMLAttributes<HTMLDivElement>) => {
+	const { data, error, isLoading, setSelected } = useQueue();
 
 	const columns: Columns = useMemo(
 		() => [
@@ -79,7 +80,7 @@ export const StagingQueue = ({
 				header: "Title",
 				cell: ({ row }) => (
 					<div className="flex flex-col">
-						<div className="text-sm text-gray-500">{row.getValue("title")}</div>
+						<h1 className="text-gray-500">{row.getValue("title")}</h1>
 					</div>
 				),
 			},
@@ -101,23 +102,23 @@ export const StagingQueue = ({
 		enableMultiRowSelection: false,
 		getCoreRowModel: getCoreRowModel(),
 		getRowId: (row) => row.id.toString(),
-		onRowSelectionChange: setRowSelection,
-		state: { rowSelection },
 		debugTable: true,
 	});
 
 	useEffect(() => {
-		const selectedIds = table.getSelectedRowModel().flatRows.map((row) => row.original.id);
-		const selectedRow = data.find((entry) => selectedIds.includes(entry.id)) ?? null;
-		console.log("SETTING SELECTED", selectedRow?.title);
-		setSelected(selectedRow);
-	}, [table.getSelectedRowModel().flatRows, data, setSelected]);
+		const selectedIds = table.getSelectedRowModel().flatRows.map(({ original }) => original.id);
+		const selectedRow = data.find(({ id }) => selectedIds.includes(id));
+		setSelected(selectedRow ?? null);
+	}, [table.getSelectedRowModel().flatRows, data]);
 
 	const isEmpty = useMemo(() => table.getRowModel().rows?.length === 0, [table.getRowModel().rows]);
 
+	if (isLoading) {
+		return <Skeleton />;
+	}
+
 	const Body = () =>
 		match({ data, error, isLoading, isEmpty })
-			// .with({ isLoading: true }, () => <Skeleton />)
 			.with({ isEmpty: true }, () => (
 				<EmptyRow numCols={columns.length}>Nothing in queue.</EmptyRow>
 			))
@@ -128,9 +129,6 @@ export const StagingQueue = ({
 
 	return (
 		<Table className={cn("", className)}>
-			<TableHeader className="pointer-events-none">
-				<Heading table={table} />
-			</TableHeader>
 			<TableBody className="">
 				<Body />
 			</TableBody>

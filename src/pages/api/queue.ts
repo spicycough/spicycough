@@ -8,7 +8,6 @@ import { useDatabase } from "@/db/useDatabase";
 import { slugify } from "@/lib/utils";
 
 export const POST: APIRoute = async ({ request }) => {
-	console.error("STEP ONE");
 	try {
 		const data = await request.formData();
 		const { urls } = await parseFormData(data);
