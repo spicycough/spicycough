@@ -60,7 +60,7 @@ const Rows = ({ table }: { table: Table }) =>
 			onClick={row.getToggleSelectedHandler()}
 		>
 			{row.getVisibleCells().map(({ id, column, getContext }) => (
-				<TableCell key={id} className="h-24 text-center">
+				<TableCell key={id} className="h-20 max-h-24 min-h-10 text-center">
 					{flexRender(column.columnDef.cell, getContext())}
 				</TableCell>
 			))}
@@ -80,7 +80,7 @@ export const StagingQueue = ({
 				header: "Title",
 				cell: ({ row }) => (
 					<div className="flex flex-col">
-						<h1 className="text-gray-500">{row.getValue("title")}</h1>
+						<h1 className="text-left text-xl font-bold text-gray-500">{row.getValue("title")}</h1>
 					</div>
 				),
 			},
@@ -106,9 +106,13 @@ export const StagingQueue = ({
 	});
 
 	useEffect(() => {
-		const selectedIds = table.getSelectedRowModel().flatRows.map(({ original }) => original.id);
-		const selectedRow = data.find(({ id }) => selectedIds.includes(id));
-		setSelected(selectedRow ?? null);
+		const updateSelected = () => {
+			const selectedIds = table.getSelectedRowModel().flatRows.map(({ original }) => original.id);
+			const selectedRow = data.find(({ id }) => selectedIds.includes(id));
+			setSelected(selectedRow ?? null);
+		};
+
+		updateSelected();
 	}, [table.getSelectedRowModel().flatRows, data]);
 
 	const isEmpty = useMemo(() => table.getRowModel().rows?.length === 0, [table.getRowModel().rows]);
@@ -132,7 +136,7 @@ export const StagingQueue = ({
 			<TableBody className="">
 				<Body />
 			</TableBody>
-			<TableFooter className="bg-transparent dark:bg-transparent">
+			<TableFooter className="bg-transparent hover:bg-transparent dark:bg-transparent hover:dark:bg-transparent">
 				<TableRow className="">
 					<TableCell colSpan={columns.length} className="">
 						{children}
