@@ -1,19 +1,23 @@
 ---
+import { ViewTransitions } from "astro:transitions";
+
 import Head from "@/components/Head.astro";
 import Header from "@/components/Header.astro";
 import { Toaster } from "@/components/ui/sonner";
-import { ViewTransitions } from "astro:transitions";
+
+const title = "spicycough";
+const description = "Up-to-date resources for SARS-CoV-2 management";
 ---
 
 <!doctype html>
 <html lang="en" class="dark">
 	<head>
-		<Head title="Spicycough" description="Up-to-date resources for SARS-CoV-2 management" />
+		<Head title={title} description={description} />
 		<ViewTransitions fallback="swap" />
 	</head>
 	<body class="min-h-screen font-sans antialiased">
 		<Header />
-		<Toaster client:idle />
+		<Toaster client:load />
 		<slot />
 	</body>
 </html>
