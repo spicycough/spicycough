@@ -15,7 +15,7 @@ export type ParsedData = {
 	authors: string[];
 	publicationDate: string;
 	abstract: string;
-	fullText: string[];
+	fullText: string;
 };
 
 export type ParsedResponse = {

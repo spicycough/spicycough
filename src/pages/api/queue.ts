@@ -58,7 +58,6 @@ const fetchNew = async (urls: string[]) => {
 	const { db, schema } = useDatabase();
 
 	const scrapedContentItems = await Promise.all(urls.map((url) => scrapeUrl(url)));
-	console.log("LOGGED", scrapedContentItems);
 
 	return await db
 		.insert(schema.contentItemStaging)
@@ -80,6 +79,6 @@ export const scrapeUrl = async (url: string | URL): Promise<NewContentItem> => {
 		abstract: data.abstract,
 		slug: slugify(data.title),
 		authors: data.authors.join("\n"),
-		fullText: data.fullText.join("\n"),
+		fullText: data.fullText,
 	};
 };
