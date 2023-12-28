@@ -15,10 +15,11 @@ export default defineConfig({
 			applyBaseStyles: false,
 		}),
 	],
-	prefetch: true,
-	experimental: {
-		contentCollectionCache: true,
+	image: {
+		service: {
+			entrypoint: "astro/assets/services/noop",
+		},
 	},
 	output: "server",
-	adapter: cloudflare(),
+	adapter: cloudflare({ mode: "directory" }),
 });
