@@ -58,22 +58,7 @@ export const ContentItemCard = ({
 			</CardContent>
 			<CardFooter className="justify-end">
 				<div className="flex w-full flex-row justify-between">
-					<HoverCard>
-						<HoverCardTrigger>
-							<InfoCircledIcon />
-						</HoverCardTrigger>
-						<HoverCardContent className="border-dashed">
-							<div className="grid grid-cols-2 space-y-2">
-								<h4 className="text-md col-span-2 font-semibold">{title}</h4>
-								<Separator className="col-span-2" />
-								<Link2Icon />
-								<p>{sourceUrl}</p>
-								<Separator className="col-span-2" />
-								<CalendarIcon />
-								<p className="text-sm text-gray-500">April 16, 2022</p>
-							</div>
-						</HoverCardContent>
-					</HoverCard>
+					<DetailsHoverCard {...item} />
 
 					<Button variant="ghost">
 						<a href={sourceUrl}>
@@ -83,6 +68,27 @@ export const ContentItemCard = ({
 				</div>
 			</CardFooter>
 		</Card>
+	);
+};
+
+const DetailsHoverCard = ({ title, sourceUrl }: ContentItem) => {
+	return (
+		<HoverCard>
+			<HoverCardTrigger>
+				<InfoCircledIcon />
+			</HoverCardTrigger>
+			<HoverCardContent className="border-dashed">
+				<div className="grid grid-cols-2 space-y-2">
+					<h4 className="text-md col-span-2 font-semibold">{title}</h4>
+					<Separator className="col-span-2" />
+					<Link2Icon />
+					<p>{sourceUrl}</p>
+					<Separator className="col-span-2" />
+					<CalendarIcon />
+					<p className="text-sm text-gray-500">April 16, 2022</p>
+				</div>
+			</HoverCardContent>
+		</HoverCard>
 	);
 };
 
