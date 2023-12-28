@@ -1,3 +1,5 @@
+import { type PropsWithChildren, type FormEvent } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -9,7 +11,6 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { type PropsWithChildren, type FormEvent } from "react";
 
 export const BulkAddDialog = ({ children }: PropsWithChildren) => {
 	const submit = async (e: FormEvent<HTMLFormElement>) => {

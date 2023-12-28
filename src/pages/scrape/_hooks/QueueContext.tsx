@@ -6,8 +6,9 @@ import React, {
 	useMemo,
 	type PropsWithChildren,
 } from "react";
-import type { ContentItemStaging } from "@/db/schema/contentItems";
+
 import { useDatabase } from "@/db/useDatabase";
+import type { ContentItemStaging } from "@/db/schema/contentItems";
 
 export type UseQueue = {
 	data: ContentItemStaging[];

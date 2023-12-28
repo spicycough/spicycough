@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import RootLayout from "@/layouts/RootLayout.astro";
 ---
 
-<RootLayout title="Welcome to Astro." description="Test">
+<RootLayout>
 	<main class="mx-auto flex h-screen w-1/2 flex-col content-stretch items-center justify-evenly">
 		<div class="flex w-full flex-col items-center">
 			<h1 class="pb-10 text-[4rem] font-bold">Spicycough</h1>
@@ -23,28 +23,6 @@ import RootLayout from "@/layouts/RootLayout.astro";
 			document.querySelector("Input")?.addEventListener("focus", () => {
 				navigate("/search", { history: "auto" });
 			});
-		});
-	</script>
-
-	<script>
-		document.addEventListener("astro:before-preparation", () => {
-			console.log("before prep");
-		});
-
-		document.addEventListener("astro:after-preparation", () => {
-			console.log("after prep");
-		});
-
-		document.addEventListener("astro:before-swap", () => {
-			console.log("before swap");
-		});
-
-		document.addEventListener("astro:after-swap", () => {
-			console.log("after swap");
-		});
-
-		document.addEventListener("astro:page-load", () => {
-			console.log("page load");
 		});
 	</script>
 </RootLayout>

@@ -1,11 +1,11 @@
 import { type ComponentPropsWithoutRef } from "react";
 
-import { StagingQueue } from "./StagingQueue";
-import { DetailsView } from "./DetailsView";
-
 import { cn } from "@/lib/utils";
-import { ActionsBar } from "./ActionsBar";
-import { QueueProvider } from "../_hooks/QueueContext";
+
+import { QueueProvider } from "./_hooks/QueueContext";
+import { StagingQueue } from "./_components/StagingQueue";
+import { DetailsView } from "./_components/DetailsView";
+import { ActionsBar } from "./_components/ActionsBar";
 
 export const ContentItemPage = ({ className }: ComponentPropsWithoutRef<"div">) => {
 	return (

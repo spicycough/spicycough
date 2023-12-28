@@ -1,6 +1,8 @@
-import type { ContentItem } from "@/db/schema/contentItems";
-import { createFakeContentItems } from "@/db/factories";
 import { useEffect, useState } from "react";
+
+import { createFakeContentItems } from "@/db/factories";
+import type { ContentItem } from "@/db/schema/contentItems";
+
 import { ContentList } from "./_components/ContentList";
 
 export const SearchPage = () => {

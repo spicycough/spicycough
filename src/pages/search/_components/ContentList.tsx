@@ -1,9 +1,9 @@
 import type { PropsWithChildren } from "react";
 
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ContentItemCard } from "@/components/content-item/ContentItemCard";
+
 import type { ContentItem } from "@/db/schema/contentItems";
 
 export const ContentList = ({ contentItems }: { contentItems: ContentItem[] }) => {
