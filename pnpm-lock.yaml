@@ -12,8 +12,8 @@ dependencies:
     specifier: ^0.3.2
     version: registry.npmjs.org/@astrojs/check@0.3.2(prettier-plugin-astro@0.12.2)(prettier@3.1.1)(typescript@5.3.3)
   '@astrojs/cloudflare':
-    specifier: ^8.0.0
-    version: registry.npmjs.org/@astrojs/cloudflare@8.0.0(astro@4.0.5)
+    specifier: ^8.0.1
+    version: registry.npmjs.org/@astrojs/cloudflare@8.0.1(astro@4.0.5)
   '@astrojs/react':
     specifier: ^3.0.8
     version: registry.npmjs.org/@astrojs/react@3.0.8(@types/react-dom@18.2.18)(@types/react@18.2.45)(react-dom@18.2.0)(react@18.2.0)(vite@5.0.9)
@@ -279,11 +279,11 @@ packages:
       - prettier-plugin-astro
     dev: false
 
-  registry.npmjs.org/@astrojs/cloudflare@8.0.0(astro@4.0.5):
-    resolution: {integrity: sha512-JmbxfVjqJXJnzBe69fZEsX3u00DwsEEsCqDlh+pnaFoNjAGMubI+2yME7i0NBdH6TJ/YYWe889xQePZ0I7gu2g==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@astrojs/cloudflare/-/cloudflare-8.0.0.tgz}
-    id: registry.npmjs.org/@astrojs/cloudflare/8.0.0
+  registry.npmjs.org/@astrojs/cloudflare@8.0.1(astro@4.0.5):
+    resolution: {integrity: sha512-Cb7Ym7kj2sfGTbkEAdVfNY2qqvbXoui6m8CO3dYow/8P6nNn3nnaDeV7aqcDjcytpB5S3i8B7czhI2u7Tf5JhQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@astrojs/cloudflare/-/cloudflare-8.0.1.tgz}
+    id: registry.npmjs.org/@astrojs/cloudflare/8.0.1
     name: '@astrojs/cloudflare'
-    version: 8.0.0
+    version: 8.0.1
     peerDependencies:
       astro: ^3.0.0 || ^4.0.0
     dependencies:
