@@ -38,7 +38,6 @@ const nature = ({ response }: RouteContext): ParsedData => {
 		.get()
 		.join("\n");
 
-	console.log("TEXTUAL", fullText);
 	if (fullText.length === 0) {
 		throw new Error("No full text found");
 	}
