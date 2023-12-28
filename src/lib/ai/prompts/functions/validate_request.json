@@ -1,0 +1,16 @@
+{
+  "name": "validate_request",
+  "description": "Validate relevancy to SARS-CoV-2",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "abstract": {
+        "type": "string",
+        "description": "The abstract of the article"
+      }
+    },
+    "required": [
+      "abstract"
+    ]
+  }
+}

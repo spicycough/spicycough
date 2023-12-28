@@ -1,0 +1,33 @@
+{
+  "name": "summarize_article",
+  "description": "Summarize written content relating to the virus, SARS-CoV-2",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "text": {
+        "type": "array",
+        "description": "Paragraphs of text to summarize",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1
+      },
+      "summary_type": {
+        "type": "string",
+        "description": "Type of summary to return: Thesis is only the thesis. Minimal is a 1-2 sentence summary. Short is 5% of original. Long is 20% of original. Paragraph is 1-3 sentences per paragraph.",
+        "default": "short",
+        "enum": [
+          "thesis",
+          "minimal",
+          "short",
+          "long",
+          "paragraph"
+        ]
+      }
+    },
+    "required": [
+      "text",
+      "summary_type"
+    ]
+  }
+}
