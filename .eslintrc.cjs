@@ -8,10 +8,11 @@ module.exports = {
 		"plugin:@typescript-eslint/recommended",
 		"plugin:drizzle/recommended",
 	],
-	ignorePatterns: ["node_modules", "dist"],
+	ignorePatterns: ["node_modules", "dist", "docs", "*.md"],
 	parser: "@typescript-eslint/parser",
 	parserOptions: {
 		ecmaVersion: 2022,
+		extraFileExtensions: [".astro"],
 		sourceType: "module",
 		project: "./tsconfig.json",
 	},
