@@ -8,6 +8,7 @@ import react from "@astrojs/react";
 // https://astro.build/config
 export default defineConfig({
 	site: "https://spicycough.com",
+	output: "server",
 	integrations: [
 		alpinejs(),
 		react(),
@@ -15,11 +16,9 @@ export default defineConfig({
 			applyBaseStyles: false,
 		}),
 	],
-	image: {
-		service: {
-			entrypoint: "astro/assets/services/noop",
-		},
-	},
-	output: "server",
-	adapter: cloudflare({ mode: "directory" }),
+	adapter: cloudflare({
+		mode: "directory",
+		imageService: "passthrough",
+		runtime: { mode: "local", type: "pages" },
+	}),
 });
