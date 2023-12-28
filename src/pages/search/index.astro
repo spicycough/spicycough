@@ -1,18 +1,10 @@
 ---
 import RootLayout from "@/layouts/RootLayout.astro";
-
-import SearchInput from "@/components/SearchInput.astro";
-import { ContentItemList } from "./_ContentItemList";
-import { createFakeContentItem } from "@/db/factories";
-
-const fakeContentItems = Array.from({ length: 10 }, () => createFakeContentItem());
+import { SearchPage } from "./page";
 ---
 
 <RootLayout title="Search!" description="Test">
-	<main class="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-		<!-- <main class="flex flex-col w-full h-full  -->
-		<SearchInput class="my-20" placeholder="Search for something..." transition:animate="slide" />
-
-		<ContentItemList client:load className="" items={fakeContentItems} />
+	<main class="container min-h-screen items-center pb-8 pt-6 md:py-10">
+		<SearchPage client:load />
 	</main>
 </RootLayout>
