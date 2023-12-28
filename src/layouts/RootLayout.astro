@@ -1,5 +1,6 @@
 ---
 import Head from "@/components/Head.astro";
+import Header from "@/components/Header.astro";
 import { Toaster } from "@/components/ui/sonner";
 import { ViewTransitions } from "astro:transitions";
 ---
@@ -10,8 +11,9 @@ import { ViewTransitions } from "astro:transitions";
 		<Head title="Spicycough" description="Up-to-date resources for SARS-CoV-2 management" />
 		<ViewTransitions fallback="swap" />
 	</head>
-	<body class="min-h-screen bg-midnight-900 font-sans antialiased">
-		<Toaster client:load />
+	<body class="min-h-screen font-sans antialiased">
+		<Header heading="Spicy" text="Huh" />
+		<Toaster client:idle />
 		<slot />
 	</body>
 </html>
