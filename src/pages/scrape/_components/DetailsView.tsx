@@ -12,7 +12,11 @@ type PanelProps = PropsWithChildren<{
 
 const Panel = ({ title, icon, children }: PanelProps) => {
 	return (
-		<ResizablePanel minSize={3} className="flex flex-col space-y-3 rounded-lg px-6 pb-3 pt-6">
+		<ResizablePanel
+			defaultSize={50}
+			minSize={3}
+			className="flex flex-col space-y-3 rounded-lg px-6 pb-3 pt-6"
+		>
 			<div className="flex items-center space-x-3 align-text-top">
 				{icon}
 				<h2 className="font-bold uppercase text-white">{title}</h2>
@@ -35,7 +39,7 @@ export const DetailsView = ({ className }: ComponentPropsWithoutRef<"div">) => {
 					<p>{selected?.fullText}</p>
 				</Panel>
 				<ResizableHandle withHandle={true} />
-				<ResizablePanel className="flex flex-col rounded-lg">
+				<ResizablePanel defaultSize={50} className="flex flex-col rounded-lg">
 					<ResizablePanelGroup direction="vertical">
 						<Panel title="Abstract" icon={<MagicWandIcon />}>
 							<p className="">{selected?.abstract}</p>
