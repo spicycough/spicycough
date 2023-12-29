@@ -13,7 +13,7 @@ export const POST: APIRoute = async ({ request }) => {
 		const { urls } = await parseFormData(data);
 
 		const existingContentItems = await fetchExisting(urls);
-		const existingUrls = existingContentItems.map((item) => item.sourceUrl);
+		const existingUrls = existingContentItems.map((item) => item.permalink);
 
 		const newUrls = urls.filter((url) => !existingUrls.includes(url));
 		if (newUrls.length === 0)
@@ -50,7 +50,7 @@ const fetchExisting = async (urls: string[]) => {
 	const { db } = useDatabase();
 
 	return await db.query.contentItemStaging.findMany({
-		where: (contentItems, { inArray }) => inArray(contentItems.sourceUrl, urls),
+		where: (contentItems, { inArray }) => inArray(contentItems.permalink, urls),
 	});
 };
 
@@ -72,7 +72,7 @@ export const scrapeUrl = async (url: string | URL): Promise<NewContentItem> => {
 	const { data } = await useScrape({ url: _url });
 
 	return {
-		sourceUrl: _url.href,
+		permalink: _url.href,
 		kind: ContentItemKind.ARTICLE,
 		title: data.title,
 		publishedAt: data.publicationDate,

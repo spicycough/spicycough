@@ -27,16 +27,10 @@ type ContentItemCardProps = {
 	withAbstract?: boolean;
 };
 
-const emptyContentItem = { title: "", authors: "", abstract: "", publishedAt: "", sourceUrl: "" };
+const emptyContentItem = { title: "", authors: "", abstract: "", publishedAt: "", permalink: "" };
 
-export const ContentItemCard = ({
-	item,
-	rowSpan = 1,
-	colSpan = 1,
-	isSelected = false,
-	withAbstract = true,
-}: ContentItemCardProps) => {
-	const { title, authors, abstract, publishedAt, sourceUrl } = item ?? emptyContentItem;
+export const ContentItemCard = ({ item, withAbstract = true }: ContentItemCardProps) => {
+	const { title, authors, abstract, publishedAt, permalink } = item ?? emptyContentItem;
 
 	const fmtdPublishedAt = new Date(publishedAt).toLocaleDateString("en-US", {
 		year: "numeric",
@@ -57,10 +51,10 @@ export const ContentItemCard = ({
 				{withAbstract && <div className="whitespace-pre-wrap break-words">{abstract}</div>}
 			</CardContent>
 			<CardFooter className="justify-between">
-				<DetailsHoverCard title={title} sourceUrl={sourceUrl} />
+				<DetailsHoverCard title={title} permalink={permalink} />
 
 				<Button variant="ghost" size="icon">
-					<a href={sourceUrl}>
+					<a href={permalink}>
 						<EnterFullScreenIcon />
 					</a>
 				</Button>
@@ -69,7 +63,7 @@ export const ContentItemCard = ({
 	);
 };
 
-const DetailsHoverCard = ({ title, sourceUrl }: Partial<ContentItem>) => {
+const DetailsHoverCard = ({ title, permalink }: Partial<ContentItem>) => {
 	return (
 		<HoverCard>
 			<HoverCardTrigger>
@@ -80,7 +74,7 @@ const DetailsHoverCard = ({ title, sourceUrl }: Partial<ContentItem>) => {
 				<div className="flex flex-col space-y-2">
 					<div className="flex flex-row space-x-2">
 						<Link2Icon />
-						<p className="">{sourceUrl}</p>
+						<p className="">{permalink}</p>
 					</div>
 					<Separator className="" />
 					<div className="flex flex-row space-x-2">

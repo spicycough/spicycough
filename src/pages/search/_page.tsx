@@ -34,13 +34,13 @@ export const SearchPage = () => {
 				<Header title="Featured" />
 				<div className="space-y-4 p-4">
 					<Separator />
-					<img src={featuredContentItem?.sourceUrl} />
+					<img src={featuredContentItem?.permalink} />
 					<ContentItemCard item={featuredContentItem} />
 					<Carousel>
 						<CarouselContent>
 							{contentItems.map((contentItem: ContentItem) => (
 								<CarouselItem className="md:basis-1/2 lg:basis-1/3">
-									<img src={contentItem.sourceUrl} />
+									<img src={contentItem.permalink} />
 									<Separator />
 									{contentItem.title}
 								</CarouselItem>

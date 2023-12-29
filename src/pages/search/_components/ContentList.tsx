@@ -41,17 +41,17 @@ const Header = ({ title }: HeaderProps) => {
 };
 
 type ThumbnailsProps = {
-	sourceUrl: string;
+	permalink: string;
 	alt?: string;
 };
 
-export const Thumbnail = ({ sourceUrl, alt }: ThumbnailsProps) => {
+export const Thumbnail = ({ permalink, alt }: ThumbnailsProps) => {
 	return (
 		<AspectRatio ratio={150 / 100}>
 			<img
 				alt={alt ?? "Article thumbnail"}
 				className="max-h-auto h-[100px] w-[150px] max-w-full"
-				src={sourceUrl}
+				src={permalink}
 			/>
 		</AspectRatio>
 	);

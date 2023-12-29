@@ -41,7 +41,7 @@ export const QueueProvider = ({ children }: PropsWithChildren) => {
 			const items = await db
 				.select()
 				.from(schema.contentItemStaging)
-				.orderBy((item) => item.sourceUrl)
+				.orderBy((item) => item.permalink)
 				.execute();
 			setData(items);
 		} catch (err) {

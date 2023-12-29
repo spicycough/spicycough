@@ -16,7 +16,7 @@ export const createFakeContentItems = (amount: number = 1): ContentItem[] => {
 		const title = randTextRange({ min: 3, max: 15 });
 		const authors = randFullName();
 		const slug = title.toLowerCase().replace(/\s/g, "-");
-		const sourceUrl = "http://unsplash.it/200/200";
+		const permalink = "http://unsplash.it/200/200";
 		const abstract = randLine();
 		const fullText = randParagraph();
 		const publishedAt = randRecentDate().toISOString();
@@ -28,7 +28,7 @@ export const createFakeContentItems = (amount: number = 1): ContentItem[] => {
 			kind,
 			title,
 			authors,
-			sourceUrl,
+			permalink,
 			abstract,
 			fullText,
 			slug,
