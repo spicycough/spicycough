@@ -7,7 +7,7 @@ export const contentItems = sqliteTable("content_items", {
 	title: text("title").notNull(),
 	author: text("author"),
 	publicationDate: text("publication_date").notNull(),
-	sourceUrl: text("source_url").notNull(),
+	permalink: text("source_url").notNull(),
 	abstract: text("abstract"),
 	fullText: text("full_text"),
 	createdAt: text("created_at").default("sql`(CURRENT_TIMESTAMP)`"),
