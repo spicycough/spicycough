@@ -9,8 +9,8 @@ import {
 } from "@ngneat/falso";
 import { ContentItemKind, type ContentItem, type ContentItemId } from "./schema/contentItems";
 
-export const createFakeContentItems = (amount?: number): ContentItem[] => {
-	return Array.from({ length: amount ?? 1 }, () => {
+export const createFakeContentItems = (amount: number = 1): ContentItem[] => {
+	return Array.from({ length: amount }, () => {
 		const id = randNumber() as ContentItemId;
 		const kind = rand(Object.values(ContentItemKind));
 		const title = randTextRange({ min: 3, max: 15 });
