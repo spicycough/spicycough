@@ -21,6 +21,7 @@
     "jsxImportSource": "react"
   },
   "include": [
+    "./database/migrations/*.ts",
     "./astro.config.ts",
     "./src/**/*",
     "./tests/**/*",
