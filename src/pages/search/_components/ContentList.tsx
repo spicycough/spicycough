@@ -19,13 +19,9 @@ export const ContentList = ({ contentItems }: { contentItems: ContentItem[] }) =
 	return (
 		<div className="container mx-auto px-4">
 			<Header title="Most Recent" />
-			<div className="grid h-full grid-cols-3 gap-4">
-				{contentItems.map((contentItem: ContentItem, index: number) => (
-					<ContentItemCard
-						item={contentItem}
-						rowSpan={index % 3 === 0 ? 1 : 2}
-						colSpan={index % 3 === 0 ? 2 : 1}
-					/>
+			<div className="grid h-full w-full grid-cols-1 gap-4">
+				{contentItems.map((contentItem: ContentItem) => (
+					<ContentItemCard key={contentItem.id} item={contentItem} rowSpan={1} colSpan={1} />
 				))}
 			</div>
 		</div>

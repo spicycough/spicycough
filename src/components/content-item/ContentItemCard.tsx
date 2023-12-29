@@ -17,21 +17,26 @@ import {
 } from "@radix-ui/react-icons";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
 import { Separator } from "../ui/separator";
+import { Arrow } from "@radix-ui/react-hover-card";
 
 type ContentItemCardProps = {
-	item: ContentItem;
+	item?: ContentItem;
 	rowSpan?: number;
 	colSpan?: number;
 	isSelected?: boolean;
+	withAbstract?: boolean;
 };
+
+const emptyContentItem = { title: "", authors: "", abstract: "", publishedAt: "", sourceUrl: "" };
 
 export const ContentItemCard = ({
 	item,
 	rowSpan = 1,
 	colSpan = 1,
 	isSelected = false,
+	withAbstract = true,
 }: ContentItemCardProps) => {
-	const { title, authors, abstract, publishedAt, sourceUrl } = item;
+	const { title, authors, abstract, publishedAt, sourceUrl } = item ?? emptyContentItem;
 
 	const fmtdPublishedAt = new Date(publishedAt).toLocaleDateString("en-US", {
 		year: "numeric",
@@ -39,53 +44,49 @@ export const ContentItemCard = ({
 	});
 
 	return (
-		<Card
-			className={`h-full overflow-hidden row-span-${rowSpan} col-span-${colSpan} data-[${
-				isSelected && "selected"
-			}]`}
-		>
+		<Card className={`flex flex-col overflow-hidden border-none`}>
 			<CardHeader className="">
 				<CardTitle>{title}</CardTitle>
 				<CardDescription>
-					<div className="flex flex-row justify-between">
-						<p className="font-bold">{authors}</p>
-						{fmtdPublishedAt}
-					</div>
+					{authors}
+					<br />
+					{fmtdPublishedAt}
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="">
-				<div className="flex flex-col whitespace-pre-wrap break-words">{abstract}</div>
+				{withAbstract && <div className="whitespace-pre-wrap break-words">{abstract}</div>}
 			</CardContent>
-			<CardFooter className="justify-end">
-				<div className="flex w-full flex-row justify-between">
-					<DetailsHoverCard {...item} />
+			<CardFooter className="justify-between">
+				<DetailsHoverCard title={title} sourceUrl={sourceUrl} />
 
-					<Button variant="ghost">
-						<a href={sourceUrl}>
-							<EnterFullScreenIcon />
-						</a>
-					</Button>
-				</div>
+				<Button variant="ghost" size="icon">
+					<a href={sourceUrl}>
+						<EnterFullScreenIcon />
+					</a>
+				</Button>
 			</CardFooter>
 		</Card>
 	);
 };
 
-const DetailsHoverCard = ({ title, sourceUrl }: ContentItem) => {
+const DetailsHoverCard = ({ title, sourceUrl }: Partial<ContentItem>) => {
 	return (
 		<HoverCard>
 			<HoverCardTrigger>
 				<InfoCircledIcon />
 			</HoverCardTrigger>
-			<HoverCardContent className="border-dashed">
-				<div className="grid grid-cols-2 space-y-2">
-					<h4 className="text-md col-span-2 font-semibold">{title}</h4>
-					<Separator className="col-span-2" />
-					<Link2Icon />
-					<p>{sourceUrl}</p>
-					<Separator className="col-span-2" />
-					<CalendarIcon />
-					<p className="text-sm text-gray-500">April 16, 2022</p>
+			<HoverCardContent className="border-dashed" side="right" arrowPadding={5}>
+				<Arrow />
+				<div className="flex flex-col space-y-2">
+					<div className="flex flex-row space-x-2">
+						<Link2Icon />
+						<p className="">{sourceUrl}</p>
+					</div>
+					<Separator className="" />
+					<div className="flex flex-row space-x-2">
+						<CalendarIcon />
+						<p className="text-sm text-gray-500">April 16, 2022</p>
+					</div>
 				</div>
 			</HoverCardContent>
 		</HoverCard>
