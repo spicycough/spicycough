@@ -7,7 +7,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import type { ContentItemStaging } from "@/db/schema/contentItems";
+import type { ContentItem } from "@/db/schema/contentItems";
 import { cn } from "@/lib/utils";
 import {
 	flexRender,
@@ -27,9 +27,9 @@ export interface DataTableProps<TData, TValue> {
 	data: TData[];
 }
 
-type Table = TableType<ContentItemStaging>;
+type Table = TableType<ContentItem>;
 
-type Columns = ColumnDef<ContentItemStaging>[];
+type Columns = ColumnDef<ContentItem>[];
 
 const Heading = ({ table }: { table: Table }) =>
 	table.getHeaderGroups().map((headerGroup) => (
@@ -96,7 +96,7 @@ export const StagingQueue = ({
 		[],
 	);
 
-	const table = useReactTable<ContentItemStaging>({
+	const table = useReactTable<ContentItem>({
 		data,
 		columns,
 		enableMultiRowSelection: false,

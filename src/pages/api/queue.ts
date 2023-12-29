@@ -49,7 +49,7 @@ const parseFormData = async (data: FormData) => {
 const fetchExisting = async (urls: string[]) => {
 	const { db } = useDatabase();
 
-	return await db.query.contentItemStaging.findMany({
+	return await db.query.contentItems.findMany({
 		where: (contentItems, { inArray }) => inArray(contentItems.permalink, urls),
 	});
 };
@@ -59,11 +59,7 @@ const fetchNew = async (urls: string[]) => {
 
 	const scrapedContentItems = await Promise.all(urls.map((url) => scrapeUrl(url)));
 
-	return await db
-		.insert(schema.contentItemStaging)
-		.values(scrapedContentItems)
-		.returning()
-		.execute();
+	return await db.insert(schema.contentItems).values(scrapedContentItems).returning().execute();
 };
 
 export const scrapeUrl = async (url: string | URL): Promise<NewContentItem> => {

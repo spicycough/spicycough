@@ -8,14 +8,14 @@ import React, {
 } from "react";
 
 import { useDatabase } from "@/db/useDatabase";
-import type { ContentItemStaging } from "@/db/schema/contentItems";
+import type { ContentItem } from "@/db/schema/contentItems";
 
 export type UseQueue = {
-	data: ContentItemStaging[];
+	data: ContentItem[];
 	error: Error | null;
 	isLoading: boolean;
-	selected: ContentItemStaging | null;
-	setSelected: React.Dispatch<React.SetStateAction<ContentItemStaging | null>>;
+	selected: ContentItem | null;
+	setSelected: React.Dispatch<React.SetStateAction<ContentItem | null>>;
 };
 
 const defaultQueueState: UseQueue = {
@@ -30,8 +30,8 @@ export const QueueContext = createContext<UseQueue>(defaultQueueState);
 
 export const QueueProvider = ({ children }: PropsWithChildren) => {
 	const { db, schema } = useDatabase();
-	const [data, setData] = useState<ContentItemStaging[]>([]);
-	const [selected, setSelected] = useState<ContentItemStaging | null>(null);
+	const [data, setData] = useState<ContentItem[]>([]);
+	const [selected, setSelected] = useState<ContentItem | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<Error | null>(null);
 
@@ -40,7 +40,7 @@ export const QueueProvider = ({ children }: PropsWithChildren) => {
 		try {
 			const items = await db
 				.select()
-				.from(schema.contentItemStaging)
+				.from(schema.contentItems)
 				.orderBy((item) => item.permalink)
 				.execute();
 			setData(items);
