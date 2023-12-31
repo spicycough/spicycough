@@ -95,6 +95,9 @@ dependencies:
   clsx:
     specifier: ^2.0.0
     version: registry.npmjs.org/clsx@2.0.0
+  domelementtype:
+    specifier: ^2.3.0
+    version: registry.npmjs.org/domelementtype@2.3.0
   drizzle-orm:
     specifier: ^0.29.2
     version: registry.npmjs.org/drizzle-orm@0.29.2(@cloudflare/workers-types@4.20231218.0)(@libsql/client@0.4.0-pre.5)(@types/react@18.2.46)(expo-sqlite@13.2.0)(react@18.2.0)
