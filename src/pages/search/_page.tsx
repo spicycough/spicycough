@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { createFakeContentItems } from "@/db/factories";
-import type { ContentItem } from "@/db/schema/contentItems";
+import type { ContentItem } from "@/db/schema";
 
 import { ContentList } from "./_components/ContentList";
 import { ContentItemCard } from "@/components/content-item/ContentItemCard";
@@ -34,13 +34,13 @@ export const SearchPage = () => {
 				<Header title="Featured" />
 				<div className="space-y-4 p-4">
 					<Separator />
-					<img src={featuredContentItem?.permalink} />
+					<img src={featuredContentItem?.imageUrl ?? ""} />
 					<ContentItemCard item={featuredContentItem} />
 					<Carousel>
 						<CarouselContent>
 							{contentItems.map((contentItem: ContentItem) => (
 								<CarouselItem className="md:basis-1/2 lg:basis-1/3">
-									<img src={contentItem.permalink} />
+									<img src={contentItem?.imageUrl ?? ""} />
 									<Separator />
 									{contentItem.title}
 								</CarouselItem>

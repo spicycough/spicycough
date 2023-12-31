@@ -4,7 +4,7 @@ import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ContentItemCard } from "@/components/content-item/ContentItemCard";
 
-import type { ContentItem } from "@/db/schema/contentItems";
+import type { ContentItem } from "@/db/schema";
 
 export const ContentList = ({ contentItems }: { contentItems: ContentItem[] }) => {
 	const isEmpty = contentItems.length === 0;

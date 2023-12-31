@@ -8,7 +8,7 @@ import React, {
 } from "react";
 
 import { useDatabase } from "@/db/useDatabase";
-import type { ContentItem } from "@/db/schema/contentItems";
+import type { ContentItem } from "@/db/schema";
 
 export type UseQueue = {
 	data: ContentItem[];

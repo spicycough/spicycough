@@ -4,10 +4,9 @@ import {
 	TableCell,
 	TableFooter,
 	TableHead,
-	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import type { ContentItem } from "@/db/schema/contentItems";
+import type { ContentItem } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import {
 	flexRender,
@@ -15,9 +14,8 @@ import {
 	useReactTable,
 	type ColumnDef,
 	type Table as TableType,
-	type RowSelectionState,
 } from "@tanstack/react-table";
-import { useMemo, type PropsWithChildren, type HTMLAttributes, useEffect, useState } from "react";
+import { useMemo, type PropsWithChildren, type HTMLAttributes, useEffect } from "react";
 import { P, match } from "ts-pattern";
 import { useQueue } from "../_hooks/useQueue";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -102,7 +100,7 @@ export const StagingQueue = ({
 		enableMultiRowSelection: false,
 		getCoreRowModel: getCoreRowModel(),
 		getRowId: (row) => row.id.toString(),
-		debugTable: true,
+		debugTable: false,
 	});
 
 	useEffect(() => {

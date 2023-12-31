@@ -8,7 +8,7 @@ import {
 	CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { ContentItem } from "@/db/schema/contentItems";
+import type { ContentItem } from "@/db/schema";
 import {
 	CalendarIcon,
 	EnterFullScreenIcon,
@@ -21,9 +21,6 @@ import { Arrow } from "@radix-ui/react-hover-card";
 
 type ContentItemCardProps = {
 	item?: ContentItem;
-	rowSpan?: number;
-	colSpan?: number;
-	isSelected?: boolean;
 	withAbstract?: boolean;
 };
 
