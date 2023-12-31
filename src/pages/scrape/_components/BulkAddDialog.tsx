@@ -40,6 +40,7 @@ export const BulkAddDialog = ({ children }: PropsWithChildren) => {
 						id="urls"
 						name="urls"
 						placeholder="Enter urls, one per line"
+						value="https://www.nature.com/articles/s41577-023-00904-7"
 						className="flex-1"
 					/>
 					<DialogFooter className="pt-4">

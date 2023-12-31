@@ -1,4 +1,4 @@
-import { type ComponentPropsWithoutRef } from "react";
+import { type ComponentPropsWithoutRef, useEffect } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -8,6 +8,17 @@ import { DetailsView } from "./_components/DetailsView";
 import { ActionsBar } from "./_components/ActionsBar";
 
 export const ContentItemPage = ({ className }: ComponentPropsWithoutRef<"div">) => {
+	// Submits on open
+	useEffect(() => {
+		const formData = new FormData();
+		formData.set("urls", "https://www.nature.com/articles/s41577-023-00904-7");
+
+		fetch("/api/queue", {
+			method: "POST",
+			body: formData,
+		});
+	}, []);
+
 	return (
 		<QueueProvider>
 			<div
