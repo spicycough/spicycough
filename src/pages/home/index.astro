@@ -1,0 +1,10 @@
+---
+import RootLayout from "@/layouts/RootLayout.astro";
+import { HomePage } from "./_page";
+---
+
+<RootLayout>
+	<main class="container flex h-dvh min-h-dvh w-full flex-col gap-12 py-10">
+		<HomePage client:load />
+	</main>
+</RootLayout>
