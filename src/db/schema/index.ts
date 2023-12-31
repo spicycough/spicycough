@@ -1,1 +1,3 @@
-export { contentItems, contentItemPublishers, contentItemSummaries } from "./contentItems";
+export * from "./contentItems/contentItems";
+export * from "./contentItems/contentItemPublisher";
+export * from "./contentItems/contentItemSummaries";

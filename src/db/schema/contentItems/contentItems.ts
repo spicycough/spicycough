@@ -2,7 +2,6 @@ import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
-import { Type } from "@sinclair/typebox";
 
 export const ContentItemKind = {
 	ARTICLE: "article",
@@ -17,7 +16,7 @@ export type ContentItemId = number;
 
 export const contentItems = sqliteTable("content_items", {
 	id: integer("id").$type<ContentItemId>().primaryKey({ autoIncrement: true }),
-	kind: text("content_kind", {
+	kind: text("kind", {
 		mode: "text",
 		enum: Object.values(ContentItemKind) as [string, ...string[]],
 	}).notNull(),
