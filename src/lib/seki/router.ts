@@ -1,7 +1,6 @@
 import * as cheerio from "cheerio";
 import type { RouteContext, ParsedData } from "./types";
 import { parse } from "./parsing";
-import { readFile } from "node:fs";
 
 type Section = {
 	title: string;
@@ -9,15 +8,6 @@ type Section = {
 };
 
 const nature = ({ response }: RouteContext): ParsedData => {
-	// reads file as string
-	const filename =
-		"file:///Users/tim/Dropbox/projects/astro/spicycough-react/src/lib/seki/test.html";
-	let body;
-	readFile(filename, "utf8", (e, d) => {
-		if (e) throw e;
-		else body = d;
-	});
-
 	const $ = cheerio.load(response.body, { recognizeSelfClosing: true });
 
 	const sections = $(".c-article-body > .main-content section");

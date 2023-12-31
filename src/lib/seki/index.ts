@@ -25,11 +25,6 @@ export const useScrape = async ({
 	url,
 	options,
 }: UseScrape): Promise<{ data: ParsedData; response: Response<string> }> => {
-	const debugLocal = true;
-	url = debugLocal
-		? new URL("file:///Users/tim/Dropbox/projects/astro/spicycough-react/src/lib/seki/test.html")
-		: url;
-
 	console.info(`Processing ${url}`);
 
 	const response = await gotScraping(url.href, options);

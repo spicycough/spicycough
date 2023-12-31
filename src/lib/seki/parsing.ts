@@ -3,27 +3,6 @@ import { P, match } from "ts-pattern";
 import { ElementType } from "domelementtype";
 
 export const parse = (element: cheerio.AnyNode): string => {
-	const pattern = P.union(
-		...[
-			"address",
-			"article",
-			"aside",
-			"footer",
-			"header",
-			"h1",
-			"h2",
-			"h3",
-			"h4",
-			"h5",
-			"h6",
-			"hgroup",
-			"main",
-			"nav",
-			"section",
-			"search",
-		],
-	);
-
 	const $ = cheerio.load(element);
 
 	const asText = (el: cheerio.Element) => $(el).text();
@@ -88,6 +67,27 @@ export const parse = (element: cheerio.AnyNode): string => {
 	}
 	return r;
 };
+
+// const pattern = P.union(
+// 	...[
+// 		"address",
+// 		"article",
+// 		"aside",
+// 		"footer",
+// 		"header",
+// 		"h1",
+// 		"h2",
+// 		"h3",
+// 		"h4",
+// 		"h5",
+// 		"h6",
+// 		"hgroup",
+// 		"main",
+// 		"nav",
+// 		"section",
+// 		"search",
+// 	],
+// );
 
 const oldParse = (element: cheerio.AnyNode) => {
 	const $ = cheerio.load(element);
