@@ -19,6 +19,9 @@ import { useMemo, type PropsWithChildren, type HTMLAttributes, useEffect } from 
 import { P, match } from "ts-pattern";
 import { useQueue } from "../_hooks/useQueue";
 import { Skeleton } from "@/components/ui/skeleton";
+import { EditDialog } from "./EditDialog";
+import { Button } from "@/components/ui/button";
+import { Pencil1Icon } from "@radix-ui/react-icons";
 
 export interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -77,18 +80,24 @@ export const StagingQueue = ({
 				accessorKey: "title",
 				header: "Title",
 				cell: ({ row }) => (
-					<div className="flex flex-col">
-						<h1 className="text-left text-xl font-bold text-gray-500">{row.getValue("title")}</h1>
-					</div>
+					<h1 className="text-left text-xl font-bold text-gray-500">{row.getValue("title")}</h1>
 				),
-			},
-			{
-				accessorKey: "publisher",
-				header: "Publisher",
 			},
 			{
 				accessorKey: "actions",
 				header: "Actions",
+				cell: ({ row }) => (
+					<EditDialog contentItem={row.original}>
+						<Button
+							variant="outline"
+							size="icon"
+							className="rounded-lg dark:bg-warmth-500 dark:text-midnight-800"
+							onClick={(e) => e.stopPropagation()}
+						>
+							<Pencil1Icon className="size-4" />
+						</Button>
+					</EditDialog>
+				),
 			},
 		],
 		[],

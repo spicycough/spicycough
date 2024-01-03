@@ -74,7 +74,7 @@ export const scrapeUrl = async (url: string | URL): Promise<NewContentItem> => {
 		publishedAt: data.publicationDate,
 		abstract: data.abstract,
 		slug: slugify(data.title),
-		authors: data.authors.join("\n"),
+		authors: data.authors,
 		fullText: data.fullText,
 	};
 };
