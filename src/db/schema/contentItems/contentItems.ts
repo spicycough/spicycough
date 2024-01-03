@@ -8,7 +8,9 @@ export const ContentItemKind = {
 	REPORT: "report",
 	STUDY: "study",
 	THREAD: "thread",
-};
+} as const;
+
+export const ContentItemKinds = Object.values(ContentItemKind) as [string, ...string[]];
 
 export type ContentItemKind = (typeof ContentItemKind)[keyof typeof ContentItemKind];
 
@@ -18,8 +20,10 @@ export const contentItems = sqliteTable("content_items", {
 	id: integer("id").$type<ContentItemId>().primaryKey({ autoIncrement: true }),
 	kind: text("kind", {
 		mode: "text",
-		enum: Object.values(ContentItemKind) as [string, ...string[]],
-	}).notNull(),
+		enum: ContentItemKinds,
+	})
+		.default(ContentItemKind.ARTICLE)
+		.notNull(),
 	title: text("title").notNull(),
 	authors: text("authors"),
 	permalink: text("permalink").notNull(),
