@@ -12,10 +12,18 @@ export type ParsingFunction = (context: RouteContext) => ParsedData;
 
 export type ParsedData = {
 	title: string;
-	authors: string[];
+	authors: string;
 	publicationDate: string;
 	abstract: string;
 	fullText: string;
+};
+
+export type ContentSelectors = {
+	title: string[];
+	authors: string[];
+	publicationDate: string[];
+	abstract: string[];
+	fullText: string[];
 };
 
 export type ParsedResponse = {

@@ -1,19 +1,9 @@
+import * as cheerio from "cheerio";
 import { gotScraping, type Response } from "got-scraping";
-import { P, match } from "ts-pattern";
-import { router } from "./router";
+import { getSelectors } from "./router";
+import { parse } from "./parsing";
 
-import { type ScrapeOptions, type ParsedData } from "./types";
-import { Hostnames } from "./constants";
-
-const includes = P.string.includes;
-
-const parse = (url: URL, response: Response<string>): ParsedData => {
-	const parsingFunc = match(url.hostname)
-		.with(includes(Hostnames.NATURE), () => router.nature)
-		.otherwise(() => () => ({}) as ParsedData);
-
-	return parsingFunc({ response });
-};
+import { type ScrapeOptions, type ParsedData, type ContentSelectors } from "./types";
 
 type UseScrape = {
 	url: URL;
@@ -25,11 +15,35 @@ export const useScrape = async ({
 	url,
 	options,
 }: UseScrape): Promise<{ data: ParsedData; response: Response<string> }> => {
-	console.info(`Processing ${url}`);
+	console.debug(`Processing ${url}`);
 
 	const response = await gotScraping(url.href, options);
 
-	const parsedData = parse(url, response);
+	const $ = cheerio.load(response.body, { recognizeSelfClosing: true });
 
-	return { data: parsedData, response };
+	const cssSelectors = getSelectors(url.hostname);
+	const results: ParsedData = {
+		title: "",
+		authors: "",
+		publicationDate: "",
+		abstract: "",
+		fullText: "",
+	};
+
+	Object.keys(cssSelectors).forEach((key) => {
+		const selectors: string[] = cssSelectors[key as keyof ContentSelectors];
+
+		selectors.forEach((selector) => {
+			console.debug(`Processing ${key} with selector: ${selector}`);
+
+			const elements = $(selector);
+			if (elements.length > 0) {
+				elements.each((_, element) => {
+					const parsedOutput = parse(element);
+					results[key as keyof ParsedData] += parsedOutput;
+				});
+			}
+		});
+	});
+	return { data: results, response };
 };

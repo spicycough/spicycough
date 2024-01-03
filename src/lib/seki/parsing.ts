@@ -2,6 +2,27 @@ import * as cheerio from "cheerio";
 import { P, match } from "ts-pattern";
 import { ElementType } from "domelementtype";
 
+type StructuredElement = {
+	tag: string;
+	prefix?: string;
+	suffix?: string;
+};
+
+type StructuredElementWithChildren = StructuredElement & {
+	children?: StructuredElement[];
+};
+
+const Heading1: StructuredElementWithChildren = { tag: "h1", prefix: "# ", suffix: "\n\n" };
+const Heading2: StructuredElementWithChildren = { tag: "h2", prefix: "## ", suffix: "\n\n" };
+const Heading3: StructuredElementWithChildren = { tag: "h3", prefix: "### ", suffix: "\n\n" };
+const Heading4: StructuredElementWithChildren = { tag: "h4", prefix: "#### ", suffix: "\n\n" };
+const Heading5: StructuredElementWithChildren = { tag: "h5", prefix: "##### ", suffix: "\n\n" };
+const Heading6: StructuredElementWithChildren = { tag: "h6", prefix: "###### ", suffix: "\n\n" };
+
+const Paragraph: StructuredElementWithChildren = { tag: "p", prefix: "", suffix: "\n\n" };
+const Bold: StructuredElement = { tag: "b", prefix: "", suffix: "" };
+const Italic: StructuredElement = { tag: "i", prefix: "", suffix: "" };
+
 export const parse = (element: cheerio.AnyNode): string => {
 	if (!element) {
 		console.error("Invalid input: element is null or undefined.");
