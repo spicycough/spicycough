@@ -17,7 +17,7 @@ export const createFakeContentItems = (amount: number = 1): ContentItem[] => {
 		const authors = randFullName();
 		const slug = title.toLowerCase().replace(/\s/g, "-");
 		const permalink = "https://www.nature.com/articles/s41586-021-03402-5";
-		const imageUrl = "http://unsplash.it/200/200";
+		const imageUrl = "http://unsplash.it/800/600";
 		const abstract = randLine();
 		const fullText = randParagraph();
 		const publishedAt = randRecentDate().toISOString();
