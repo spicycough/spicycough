@@ -2,27 +2,6 @@ import * as cheerio from "cheerio";
 import { P, match } from "ts-pattern";
 import { ElementType } from "domelementtype";
 
-type StructuredElement = {
-	tag: string;
-	prefix?: string;
-	suffix?: string;
-};
-
-type StructuredElementWithChildren = StructuredElement & {
-	children?: StructuredElement[];
-};
-
-const Heading1: StructuredElementWithChildren = { tag: "h1", prefix: "# ", suffix: "\n\n" };
-const Heading2: StructuredElementWithChildren = { tag: "h2", prefix: "## ", suffix: "\n\n" };
-const Heading3: StructuredElementWithChildren = { tag: "h3", prefix: "### ", suffix: "\n\n" };
-const Heading4: StructuredElementWithChildren = { tag: "h4", prefix: "#### ", suffix: "\n\n" };
-const Heading5: StructuredElementWithChildren = { tag: "h5", prefix: "##### ", suffix: "\n\n" };
-const Heading6: StructuredElementWithChildren = { tag: "h6", prefix: "###### ", suffix: "\n\n" };
-
-const Paragraph: StructuredElementWithChildren = { tag: "p", prefix: "", suffix: "\n\n" };
-const Bold: StructuredElement = { tag: "b", prefix: "", suffix: "" };
-const Italic: StructuredElement = { tag: "i", prefix: "", suffix: "" };
-
 export const parse = (element: cheerio.AnyNode): string => {
 	if (!element) {
 		console.error("Invalid input: element is null or undefined.");
@@ -46,9 +25,8 @@ export const parse = (element: cheerio.AnyNode): string => {
 				const tagName = el.tagName.toLowerCase();
 
 				return match(tagName)
-					.with(P.union("sub", "sup"), () => "")
-					.with(P.union("figure"), () => "")
-					.with("br", () => `\n`)
+					.with(P.union("sub", "sup", "figure"), () => "")
+					.with(P.union("br"), () => `\n`)
 					.with(P.union("i", "em"), () => `*${parseChildren(el)}*`)
 					.with(P.union("b", "strong"), () => `**${parseChildren(el)}**`)
 					.with(P.union("p", "section"), () => `${parseChildren(el)}\n\n`)
@@ -61,14 +39,12 @@ export const parse = (element: cheerio.AnyNode): string => {
 					.with("blockquote", () => `> ${parseChildren(el)}\n`)
 					.with("code", () => `\`${parseChildren(el)}\``)
 					.with("pre", () => `\`\`\`${parseChildren(el)}\`\`\``)
-					.with("a", () => `[${parseChildren(el)}](${el.attribs.href})`)
+					.with("a", () => `[${parseChildren(el)}]()`)
 					.with("img", () => `![${el.attribs.alt}](${el.attribs.src})`)
 					.with(P.union("ol", "ul"), (tag) =>
 						$(el)
 							.find("li")
-							.map((_, li) => {
-								return `${tag === "ol" ? "1." : "-"} ${parseChildren(li)}`;
-							})
+							.map((_, li) => `${tag === "ol" ? "1." : "-"} ${parseChildren(li)}`)
 							.get()
 							.join("\n"),
 					)
@@ -81,4 +57,103 @@ export const parse = (element: cheerio.AnyNode): string => {
 		console.error(`Error while parsing: ${e}`);
 		return "";
 	}
+};
+
+export const extractTitle = (
+	element: cheerio.AnyNode,
+	extraSelectors?: string[],
+): string | undefined => {
+	const fallbackSelectors = [`*[class*="title"]`];
+
+	const $ = cheerio.load(element);
+
+	const selectors = [...(extraSelectors ?? []), ...fallbackSelectors];
+	for (const selector of selectors) {
+		const text = $(selector).text().trim();
+		if (!text) continue;
+
+		return text;
+	}
+
+	return;
+};
+
+export const extractAuthors = (
+	element: cheerio.AnyNode,
+	extraSelectors?: string[],
+): string | undefined => {
+	const fallbackSelectors = [`*[class*="author"]`];
+
+	const $ = cheerio.load(element);
+
+	const selectors = [...(extraSelectors ?? []), ...fallbackSelectors];
+	for (const selector of selectors) {
+		const text = $(selector).text().trim();
+		if (!text) continue;
+
+		return text;
+	}
+
+	return;
+};
+
+export const extractPublicationDate = (
+	element: cheerio.AnyNode,
+	extraSelectors?: string[],
+): string | undefined => {
+	const fallbackSelectors = [`*[class*="publish"]`];
+
+	const $ = cheerio.load(element);
+
+	const selectors = [...(extraSelectors ?? []), ...fallbackSelectors];
+	for (const selector of selectors) {
+		const text = $(selector).text().trim();
+		if (!text) continue;
+
+		try {
+			const date = new Date(text);
+			return date.toISOString();
+		} catch (e) {
+			continue;
+		}
+	}
+
+	return;
+};
+
+export const extractAbstract = (
+	element: cheerio.AnyNode,
+	extraSelectors?: string[],
+): string | undefined => {
+	const fallbackSelectors = [`main :contains("Abstract")`, `main *[class*="abstract"`];
+
+	const $ = cheerio.load(element);
+
+	const selectors = [...(extraSelectors ?? []), ...fallbackSelectors];
+	for (const selector of selectors) {
+		const text = $(selector).text().trim();
+		if (!text) continue;
+
+		return text;
+	}
+
+	return;
+};
+
+export const extractFullText = (
+	element: cheerio.AnyNode,
+	extraSelectors?: string[],
+): string | undefined => {
+	const fallbackSelectors = [`main section`];
+
+	const $ = cheerio.load(element);
+
+	const selectors = [...(extraSelectors ?? []), ...fallbackSelectors];
+	return selectors
+		.map((selector) =>
+			$(selector)
+				.contents()
+				.map((_, child) => parse(child)),
+		)
+		.join("\n");
 };
