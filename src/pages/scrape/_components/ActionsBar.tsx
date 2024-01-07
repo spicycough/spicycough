@@ -1,23 +1,30 @@
 import type { ComponentPropsWithoutRef } from "react";
-import { ListStartIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 import { BulkAddDialog } from "./BulkAddDialog";
+import { DeleteAllButton } from "./DeleteAllButton";
+import { CardStackPlusIcon, TrashIcon } from "@radix-ui/react-icons";
+import { useQueue } from "../_hooks/useQueue";
 
 export const ActionsBar = ({ className }: ComponentPropsWithoutRef<"div">) => {
+	const { isEmpty } = useQueue();
+
 	return (
-		<div className={cn("flex justify-end space-x-4 pr-4", className)}>
+		<div className={cn("flex flex-none justify-end space-x-4 pr-4", className)}>
 			<BulkAddDialog>
 				<Button
-					variant="outline"
+					variant="ghost"
 					size="default"
-					className="rounded-lg dark:bg-warmth-500 dark:text-midnight-800"
+					className="rounded-md dark:border dark:border-warmth-700 dark:text-warmth-500"
 				>
-					<ListStartIcon className="size-4" />
+					<CardStackPlusIcon className="m-2" />
 				</Button>
 			</BulkAddDialog>
+			<DeleteAllButton disabled={isEmpty}>
+				<TrashIcon className="m-2" />
+			</DeleteAllButton>
 		</div>
 	);
 };

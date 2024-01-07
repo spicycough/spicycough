@@ -13,7 +13,10 @@ import type { ContentItem } from "@/db/schema";
 export type UseQueue = {
 	data: ContentItem[];
 	error: Error | null;
+	clear: () => void;
+	refresh: () => void;
 	isLoading: boolean;
+	isEmpty: boolean;
 	selected: ContentItem | null;
 	setSelected: React.Dispatch<React.SetStateAction<ContentItem | null>>;
 };
@@ -21,7 +24,10 @@ export type UseQueue = {
 const defaultQueueState: UseQueue = {
 	data: [],
 	error: null,
+	clear: () => null,
+	refresh: () => null,
 	isLoading: false,
+	isEmpty: true,
 	selected: null,
 	setSelected: () => {},
 };
@@ -60,7 +66,10 @@ export const QueueProvider = ({ children }: PropsWithChildren) => {
 		() => ({
 			data,
 			error,
+			clear: () => setData([]),
+			refresh: fetchQueueData,
 			isLoading,
+			isEmpty: data.length === 0,
 			selected,
 			setSelected,
 		}),

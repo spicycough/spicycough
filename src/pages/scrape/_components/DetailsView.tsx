@@ -1,9 +1,8 @@
 import type { ComponentPropsWithoutRef, PropsWithChildren, ReactNode } from "react";
 
-import { MagicWandIcon, SymbolIcon, TextAlignBottomIcon } from "@radix-ui/react-icons";
+import { MagicWandIcon, TextAlignBottomIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 
 import { useQueue } from "../_hooks/useQueue";
@@ -33,11 +32,8 @@ export const DetailsView = ({ className }: ComponentPropsWithoutRef<"div">) => {
 	const { selected } = useQueue();
 
 	return (
-		<div className={cn("relative max-h-full overflow-y-hidden border-x border-t pt-3", className)}>
-			<Button variant="ghost" size="icon" className="absolute bottom-2 right-2">
-				<SymbolIcon />
-			</Button>
-			<ResizablePanelGroup direction="horizontal">
+		<div className={cn("flex flex-col border-x border-t pt-3", className)}>
+			<ResizablePanelGroup direction="horizontal" className="flex-1">
 				<Panel title="All" icon={<TextAlignBottomIcon />}>
 					<p>{selected?.fullText}</p>
 				</Panel>

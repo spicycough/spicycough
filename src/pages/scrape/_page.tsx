@@ -12,15 +12,14 @@ export const ContentItemPage = ({ className }: ComponentPropsWithoutRef<"div">) 
 		<QueueProvider>
 			<div
 				className={cn(
-					"flex max-h-full min-h-full flex-col rounded-lg border border-radiance-400 border-opacity-50 bg-gradient-to-b from-twilight-800 to-twilight-900 p-4",
+					"container flex flex-1 flex-col rounded-lg border border-gray-800 border-opacity-50 bg-gradient-to-b from-twilight-800 to-twilight-900 p-4 pt-4",
 					className,
 				)}
 			>
-				<DetailsView className="max-h-full flex-grow" />
-				<div className="flex flex-col">
-					<StagingQueue className="border">
-						<ActionsBar />
-					</StagingQueue>
+				<DetailsView className="flex-auto" />
+				<div className="flex-none space-y-4">
+					<StagingQueue className="border" />
+					<ActionsBar />
 				</div>
 			</div>
 		</QueueProvider>

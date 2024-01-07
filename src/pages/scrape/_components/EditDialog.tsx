@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -11,7 +10,6 @@ import {
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -30,6 +28,7 @@ import { match } from "ts-pattern";
 import { useState, type PropsWithChildren } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useQueue } from "../_hooks/useQueue";
 
 type EditDialogProps = PropsWithChildren<{
 	contentItem: ContentItem;
@@ -42,15 +41,15 @@ export const EditDialog = ({ contentItem, children }: EditDialogProps) => {
 	});
 
 	const { db, schema } = useDatabase();
+	const { refresh } = useQueue();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const onSubmit = async (values: Static<typeof insertContentItemSchema>) => {
-		console.debug("onSubmit", values);
-		const { id = -1, ...rest } = values;
+		const { id, ...rest } = values;
 
 		db.update(schema.contentItems)
 			.set(rest)
-			.where(eq(contentItems.id, id))
+			.where(eq(contentItems.id, id!))
 			.returning()
 			.execute()
 			.then((result) => {
@@ -60,6 +59,7 @@ export const EditDialog = ({ contentItem, children }: EditDialogProps) => {
 			});
 
 		setIsLoading(isLoading);
+		refresh();
 	};
 
 	return (

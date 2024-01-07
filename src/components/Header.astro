@@ -1,4 +1,6 @@
 ---
+import type { HTMLAttributes } from "astro/types";
+
 import {
 	TwitterLogo as TwitterIcon,
 	EnvelopeClosed as EnvelopeClosedIcon,
@@ -6,10 +8,12 @@ import {
 	Shadow as ShadowIcon,
 } from "@astropub/icons";
 
-interface Props {}
+interface Props extends HTMLAttributes<"header"> {}
+
+const { class: className } = Astro.props;
 ---
 
-<header class="flex h-20 items-center justify-between px-6">
+<header class:list={["flex h-20 items-center justify-between px-6", className]}>
 	<a class="flex items-center space-x-3" href="https://spicycough.com">
 		<ShadowIcon class="size-6 stroke-muted-foreground" />
 		<p class="text-2xl font-light text-gleam-200 md:text-3xl">spicycough</p>
