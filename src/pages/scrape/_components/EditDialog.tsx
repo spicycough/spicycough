@@ -29,6 +29,7 @@ import { useState, type PropsWithChildren } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQueue } from "../_hooks/useQueue";
+import { toast } from "sonner";
 
 type EditDialogProps = PropsWithChildren<{
 	contentItem: ContentItem;
@@ -47,16 +48,25 @@ export const EditDialog = ({ contentItem, children }: EditDialogProps) => {
 	const onSubmit = async (values: Static<typeof insertContentItemSchema>) => {
 		const { id, ...rest } = values;
 
-		db.update(schema.contentItems)
-			.set(rest)
-			.where(eq(contentItems.id, id!))
-			.returning()
-			.execute()
-			.then((result) => {
-				if (result[0]) {
-					contentItem = result[0];
-				}
+		try {
+			const resp = await db
+				.update(schema.contentItems)
+				.set(rest)
+				.where(eq(contentItems.id, id!))
+				.returning()
+				.execute();
+
+			if (resp) {
+				contentItem = resp[0]!;
+				refresh();
+				toast.success(`Success`, { position: "top-right" });
+			}
+		} catch (err) {
+			toast.error(`Error updating row`, {
+				description: err instanceof Error ? err.message : "Unknown error",
+				position: "top-right",
 			});
+		}
 
 		setIsLoading(isLoading);
 		refresh();

@@ -8,13 +8,21 @@ import {
 	type ColumnDef,
 	type Table as TableType,
 } from "@tanstack/react-table";
-import { useMemo, type PropsWithChildren, type HTMLAttributes, useEffect } from "react";
+import {
+	useMemo,
+	type PropsWithChildren,
+	type HTMLAttributes,
+	useEffect,
+	useCallback,
+} from "react";
 import { P, match } from "ts-pattern";
 import { useQueue } from "../_hooks/useQueue";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EditDialog } from "./EditDialog";
 import { Button } from "@/components/ui/button";
 import { Component1Icon, Pencil1Icon, ReloadIcon } from "@radix-ui/react-icons";
+import { toast } from "sonner";
+import { Separator } from "@/components/ui/separator";
 
 export interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -24,19 +32,6 @@ export interface DataTableProps<TData, TValue> {
 type Table = TableType<ContentItem>;
 
 type Columns = ColumnDef<ContentItem>[];
-
-// const Heading = ({ table }: { table: Table }) =>
-// 	table.getHeaderGroups().map((headerGroup) => (
-// 		<TableRow key={headerGroup.id}>
-// 			{headerGroup.headers.map((header) => (
-// 				<TableHead key={header.id}>
-// 					{!header.isPlaceholder
-// 						? flexRender(header.column.columnDef.header, header.getContext())
-// 						: null}
-// 				</TableHead>
-// 			))}
-// 		</TableRow>
-// 	));
 
 const EmptyRow = ({ numCols, children }: PropsWithChildren<{ numCols: number }>) => (
 	<TableRow>
@@ -55,7 +50,7 @@ const Rows = ({ table }: { table: Table }) =>
 			className="flex justify-between"
 		>
 			{row.getVisibleCells().map(({ id, column, getContext }) => (
-				<TableCell key={id} className="h-20 max-h-24 min-h-10 text-center">
+				<TableCell key={id} className="text-left">
 					{flexRender(column.columnDef.cell, getContext())}
 				</TableCell>
 			))}
@@ -64,6 +59,24 @@ const Rows = ({ table }: { table: Table }) =>
 
 export const StagingQueue = ({ className }: HTMLAttributes<HTMLDivElement>) => {
 	const { data, error, refresh, isLoading, setSelected } = useQueue();
+
+	const refreshContentItem = useCallback(async (id: string) => {
+		const url = new URL("/api/scrape");
+		url.searchParams.append("ids", id);
+
+		return await fetch(url, {
+			method: "POST",
+		})
+			.then((res) => {
+				if (res.ok) {
+					refresh();
+					toast.success("Content item refreshed");
+				}
+			})
+			.catch((err) => {
+				toast.error(`Failed to refresh content item: ${err.message}`);
+			});
+	}, []);
 
 	const columns: Columns = useMemo(
 		() => [
@@ -80,21 +93,22 @@ export const StagingQueue = ({ className }: HTMLAttributes<HTMLDivElement>) => {
 				accessorKey: "actions",
 				header: "Actions",
 				cell: ({ row }) => (
-					<div className="flex-none space-x-4">
+					<div className="flex flex-none items-center space-x-2">
 						<EditDialog contentItem={row.original}>
 							<Button
-								variant="outline"
-								className="rounded-md dark:bg-fog-200 dark:text-midnight-800"
+								size="icon"
+								variant="ghost"
+								className="rounded-md dark:text-fog-400"
 								onClick={(e) => e.stopPropagation()}
 							>
 								<Pencil1Icon className="" />
 							</Button>
 						</EditDialog>
-
 						<Button
-							className="rounded-md dark:bg-radiance-500 dark:text-midnight-800"
-							variant="outline"
-							onClick={() => refresh()}
+							size="icon"
+							variant="ghost"
+							className="rounded-md dark:text-radiance-500"
+							onClick={() => refreshContentItem(row.id)}
 						>
 							<ReloadIcon />
 						</Button>
