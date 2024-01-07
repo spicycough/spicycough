@@ -3,6 +3,7 @@
   "compilerOptions": {
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
+    "useUnknownInCatchVariables": true,
     "types": [
       "astro/client"
     ],
