@@ -22,7 +22,6 @@ import { EditDialog } from "./EditDialog";
 import { Button } from "@/components/ui/button";
 import { Component1Icon, Pencil1Icon, ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
-import { Separator } from "@/components/ui/separator";
 
 export interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
