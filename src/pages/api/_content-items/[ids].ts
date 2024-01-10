@@ -51,6 +51,7 @@ export const DELETE: APIRoute = async ({ params }) => {
 	const { db, schema } = useDatabase();
 
 	const ids = parseIds(params.ids);
+	console.log("DELETING", ids);
 
 	try {
 		const resp = await db
@@ -58,7 +59,7 @@ export const DELETE: APIRoute = async ({ params }) => {
 			.where(inArray(schema.contentItems.id, ids))
 			.execute();
 
-		return new Response(JSON.stringify(resp.rowsAffected), { status: 204 });
+		return new Response(JSON.stringify({ rows: resp.rowsAffected }), { status: 200 });
 	} catch (err) {
 		return new Response(
 			JSON.stringify({ message: err instanceof Error ? err.message : "Unknown error" }),

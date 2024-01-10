@@ -1,27 +1,24 @@
-import { type ComponentPropsWithoutRef } from "react";
-
-import { cn } from "@/lib/utils";
-
-import { QueueProvider } from "./_hooks/QueueContext";
-import { StagingQueue } from "./_components/StagingQueue";
-import { DetailsView } from "./_components/DetailsView";
+import { Server } from "@/hooks/useServer";
 import { ActionsBar } from "./_components/ActionsBar";
+import { DetailsView } from "./_components/DetailsView";
+import { Queue } from "./_components/Staging/Table";
 
-export const ContentItemPage = ({ className }: ComponentPropsWithoutRef<"div">) => {
+import type { ContentItem } from "@/db/schema";
+import { useState } from "react";
+
+export const ContentItemPage = () => {
+	const [selected, setSelected] = useState<ContentItem | null>(null);
 	return (
-		<QueueProvider>
-			<div
-				className={cn(
-					"container flex flex-1 flex-col rounded-lg border border-gray-800 border-opacity-50 bg-gradient-to-b from-twilight-800 to-twilight-900 p-4 pt-4",
-					className,
-				)}
-			>
-				<DetailsView className="flex-auto" />
-				<div className="flex-none space-y-4">
-					<StagingQueue className="border" />
-					<ActionsBar />
+		<Server>
+			<main className="container flex flex-grow py-4">
+				<div className="flex flex-auto flex-col justify-between rounded-lg border border-gray-800 border-opacity-50 bg-gradient-to-b from-twilight-800 to-twilight-900 p-4 pt-4">
+					<DetailsView selected={selected} className="" />
+					<div className="flex-none space-y-4">
+						<Queue selected={selected} setSelected={setSelected} className="border" />
+						<ActionsBar />
+					</div>
 				</div>
-			</div>
-		</QueueProvider>
+			</main>
+		</Server>
 	);
 };

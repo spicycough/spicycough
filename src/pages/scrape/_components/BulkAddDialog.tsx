@@ -1,5 +1,6 @@
-import { type PropsWithChildren, type FormEvent, useState } from "react";
+import { useState, type FormEvent, type PropsWithChildren } from "react";
 
+import { trpcReact } from "@/client";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -11,42 +12,49 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { useQueue } from "../_hooks/useQueue";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { toast } from "sonner";
 
 export const BulkAddDialog = ({ children }: PropsWithChildren) => {
 	const [open, setOpen] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const { refresh } = useQueue();
+
+	const { mutate, data, isPending } = trpcReact.contentItem.create.useMutation({
+		onMutate: async () => {
+			setOpen(false);
+		},
+		onSuccess: async (_, { urls }) => {
+			toast.success("Success", {
+				description: `Created ${urls.length} content items`,
+				position: "top-right",
+			});
+		},
+		onError: async (err) => {
+			toast.error("Error", {
+				description: err instanceof Error ? err.message : "Unknown error",
+				position: "top-right",
+			});
+		},
+		onSettled: async () => {},
+	});
 
 	const submit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		setIsLoading(true);
-
 		const formData = new FormData(e.target as HTMLFormElement);
+		const urls = formData.get("urls") as string;
 
-		return await fetch("/api/queue", {
-			method: "POST",
-			body: formData,
-		})
-			.then((res) => {
-				console.debug("Response:", res);
-				if (res.ok) {
-					setOpen(false);
-					refresh();
-				}
-			})
-			.catch((err) => {
-				console.error("Error:", err);
-			})
-			.finally(() => setIsLoading(false));
+		return mutate({ urls: urls.split("\n") });
 	};
 
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent className="container flex flex-col sm:max-w-[425px] md:h-[360px] md:max-w-[680px]">
-				<form className="flex h-full flex-col" onSubmit={submit}>
+				<form
+					className="flex h-full flex-col"
+					onSubmit={(e) => {
+						e.preventDefault();
+						submit(e);
+					}}
+				>
 					<DialogHeader className="pb-4">
 						<DialogTitle>Add urls</DialogTitle>
 						<DialogDescription>Copy/paste urls, one per line.</DialogDescription>
@@ -62,10 +70,10 @@ export const BulkAddDialog = ({ children }: PropsWithChildren) => {
 						<Button
 							type="submit"
 							size="default"
-							disabled={isLoading}
+							disabled={!!data || isPending}
 							className="dark:bg-green-800 dark:text-white"
 						>
-							{!isLoading ? "Add to queue" : <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+							{!isPending ? "Add to queue" : <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
 						</Button>
 					</DialogFooter>
 				</form>

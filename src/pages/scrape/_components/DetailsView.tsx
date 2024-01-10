@@ -5,7 +5,7 @@ import { MagicWandIcon, TextAlignBottomIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 
-import { useQueue } from "../_hooks/useQueue";
+import type { ContentItem } from "@/db/schema";
 
 type PanelProps = PropsWithChildren<{
 	title: string;
@@ -28,11 +28,13 @@ const Panel = ({ title, icon, children }: PanelProps) => {
 	);
 };
 
-export const DetailsView = ({ className }: ComponentPropsWithoutRef<"div">) => {
-	const { selected } = useQueue();
+interface DetailsViewProps extends ComponentPropsWithoutRef<"div"> {
+	selected: ContentItem | null;
+}
 
+export const DetailsView = ({ selected, className }: DetailsViewProps) => {
 	return (
-		<div className={cn("flex flex-col border-x border-t pt-3", className)}>
+		<div className={cn("flex h-full flex-col border-x border-t pt-3", className)}>
 			<ResizablePanelGroup direction="horizontal" className="flex-1">
 				<Panel title="All" icon={<TextAlignBottomIcon />}>
 					<p>{selected?.fullText}</p>
