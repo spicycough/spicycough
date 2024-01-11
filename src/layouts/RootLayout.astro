@@ -17,11 +17,9 @@ const description = "Up-to-date resources for SARS-CoV-2 management";
 	</head>
 	<body class="font-sans antialiased">
 		<Toaster client:load />
-		<div class="flex min-h-svh flex-col">
-			<Header class="sticky top-0 flex-grow-0" />
-			<main class="container flex h-full flex-1 flex-col py-4">
-				<slot />
-			</main>
+		<div class="flex h-svh flex-col">
+			<Header class="flex-0 top-0 shrink-0" />
+			<slot />
 		</div>
 	</body>
 </html>
