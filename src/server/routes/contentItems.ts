@@ -2,7 +2,7 @@ import { ContentItemKind, type ContentItem, insertContentItemSchema } from "@/db
 import { useDatabase } from "@/db/useDatabase";
 import { useScrape } from "@/lib/seki";
 import { slugify } from "@/lib/utils";
-import { Type } from "@sinclair/typebox";
+import { Partial, Type } from "@sinclair/typebox";
 import { eq } from "drizzle-orm";
 import { publicProcedure, router } from "../router";
 import { RpcType } from "../utils";
@@ -53,6 +53,18 @@ export const buildRouter = () => {
 
 			return ret[0]!;
 		}),
+		partialUpdate: publicProcedure
+			.input(RpcType(Partial(insertContentItemSchema)))
+			.mutation(async ({ input }) => {
+				const ret = await db
+					.update(schema.contentItems)
+					.set(input)
+					.where(eq(schema.contentItems.id, input.id!))
+					.returning()
+					.execute();
+
+				return ret[0]!;
+			}),
 		// eslint-disable-next-line drizzle/enforce-delete-with-where
 		clear: publicProcedure.mutation(async () => await db.delete(schema.contentItems).execute()),
 		refresh: publicProcedure
