@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 
 import type { ContentItem } from "@/db/schema";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 type PanelProps = PropsWithChildren<{
 	title: string;
@@ -17,12 +19,12 @@ const Panel = ({ title, icon, children }: PanelProps) => {
 		<ResizablePanel
 			defaultSize={50}
 			minSize={3}
-			className="flex flex-col space-y-3 rounded-lg px-6 pb-3 pt-6"
+			className="flex flex-col space-y-3 overflow-hidden rounded-lg px-6 pb-3 pt-3"
 		>
-			<div className="flex items-center space-x-3 align-text-top">
+			<span className="flex items-center space-x-3 align-text-top">
 				{icon}
 				<h2 className="font-bold uppercase text-white">{title}</h2>
-			</div>
+			</span>
 			<div className="overflow-y-scroll pr-6">{children}</div>
 		</ResizablePanel>
 	);
@@ -34,7 +36,12 @@ interface DetailsViewProps extends ComponentPropsWithoutRef<"div"> {
 
 export const DetailsView = ({ selected, className }: DetailsViewProps) => {
 	return (
-		<div className={cn("flex h-full flex-col border-x border-t pt-3", className)}>
+		<div className={cn("flex h-full flex-col overflow-hidden border-x border-t pt-3", className)}>
+			<span>
+				<Label htmlFor="detail-view">Full text</Label>
+				<Switch id="detail-view" />
+				<Label htmlFor="detail-view">Abstract</Label>
+			</span>
 			<ResizablePanelGroup direction="horizontal" className="flex-1">
 				<Panel title="All" icon={<TextAlignBottomIcon />}>
 					<p>{selected?.fullText}</p>

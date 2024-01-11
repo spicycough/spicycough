@@ -1,8 +1,9 @@
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { Separator } from "@/components/ui/separator";
 import type { ContentItem } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { useEffect, type HTMLAttributes, type Dispatch, type SetStateAction } from "react";
+import { type HTMLAttributes, type Dispatch, type SetStateAction } from "react";
 import { columns } from "./Columns";
 import { trpcReact } from "@/client";
 
@@ -23,16 +24,6 @@ export const Queue = ({ setSelected, className }: QueueProps) => {
 		debugTable: false,
 	});
 
-	useEffect(() => {
-		const updateSelected = () => {
-			const selectedIds = table.getSelectedRowModel().flatRows.map(({ original }) => original.id);
-			const selectedRow = data?.find(({ id }) => selectedIds.includes(id)) ?? null;
-			setSelected(selectedRow);
-		};
-
-		updateSelected();
-	}, [table.getSelectedRowModel().flatRows, data]);
-
 	return (
 		<Table className={cn("", className)}>
 			<TableBody className="">
@@ -41,7 +32,10 @@ export const Queue = ({ setSelected, className }: QueueProps) => {
 						<TableRow
 							key={row.id}
 							data-state={row.getIsSelected() && "selected"}
-							onClick={row.getToggleSelectedHandler()}
+							onClick={() => {
+								row.toggleSelected();
+								setSelected(row.original);
+							}}
 							className="flex items-center justify-center space-x-2 align-middle"
 						>
 							{row.getVisibleCells().map(({ id, column, getContext }) => (
@@ -49,6 +43,7 @@ export const Queue = ({ setSelected, className }: QueueProps) => {
 									{flexRender(column.columnDef.cell, getContext())}
 								</TableCell>
 							))}
+							<Separator orientation="vertical" />
 						</TableRow>
 					))
 				) : (

@@ -25,11 +25,13 @@ export const columns: Columns = [
 		accessorKey: "actions",
 		header: "Actions",
 		cell: ({ row }) => (
-			<div className="flex flex-none">
-				<EditButton row={row} />
-				<RefreshButton row={row} />
-				<RemoveButton row={row} />
-			</div>
+			<>
+				<div className="flex flex-none">
+					<EditButton row={row} />
+					<RefreshButton row={row} />
+					<RemoveButton row={row} />
+				</div>
+			</>
 		),
 	},
 ];
