@@ -3,6 +3,7 @@ import { gotScraping, type Response } from "got-scraping";
 import { convert, type HtmlToTextOptions } from "html-to-text";
 
 import { type ScrapeOptions, type ParsedData } from "./types";
+import { parseMetadata } from "./metadata";
 
 type UseScrape = {
 	url: URL;
@@ -14,14 +15,9 @@ export const useScrape = async ({
 	url,
 	options,
 }: UseScrape): Promise<{ data: ParsedData; response: Response<string> }> => {
-	console.debug(`Processing ${url}`);
-
 	const response = await gotScraping(url.href, options);
 
 	const $ = cheerio.load(response.body, { recognizeSelfClosing: true });
-
-	// const body = $("main").toString();
-	// console.log(body);
 
 	const opts: HtmlToTextOptions = {
 		wordwrap: 80,
@@ -108,11 +104,13 @@ export const useScrape = async ({
 		whitespaceCharacters: " \t\r\n\f\u200b",
 	};
 
+	const metadata = await parseMetadata(response.body);
 	const fullText = convert(response.body, opts);
+
 	const parsedData: ParsedData = {
-		title: "",
-		authors: "",
-		publicationDate: "",
+		title: metadata.title,
+		authors: metadata.author,
+		publicationDate: metadata.publicationDate ?? "",
 		abstract: "",
 		fullText,
 	};
