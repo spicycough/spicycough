@@ -23,3 +23,5 @@ export const useDatabase = (params?: DatabaseParams) => {
 
 	return { db, schema };
 };
+
+export type UseDatabase = ReturnType<typeof useDatabase>;
