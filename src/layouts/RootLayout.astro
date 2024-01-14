@@ -16,7 +16,7 @@ const description = "Up-to-date resources for SARS-CoV-2 management";
 		<ViewTransitions fallback="swap" />
 	</head>
 	<body class="font-sans antialiased">
-		<Toaster client:load />
+		<Toaster client:only="react" />
 		<div class="flex h-svh flex-col">
 			<Header class="flex-0 top-0 shrink-0" />
 			<slot />
