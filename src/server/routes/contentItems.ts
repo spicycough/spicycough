@@ -1,5 +1,4 @@
 import { ContentItemKind } from "@/db/schema";
-import { useDatabase } from "@/db/useDatabase";
 import { useScrape } from "@/lib/seki";
 import { slugify } from "@/lib/utils";
 import { eq } from "drizzle-orm";
@@ -8,21 +7,26 @@ import { RpcType, head } from "../utils";
 import { useValidationSchema } from "./validation";
 
 export const buildRouter = () => {
-	const { db, schema } = useDatabase();
-	const { contentItems } = schema;
-
 	const validationSchemas = useValidationSchema();
 
 	return router({
-		list: publicProcedure.query(async () => await db.select().from(contentItems).execute()),
+		list: publicProcedure.query(
+			async ({ ctx: { db, schema } }) => await db.select().from(schema.contentItems).execute(),
+		),
 		byId: publicProcedure
 			.input(RpcType(validationSchemas.byId))
-			.query(async ({ input: { id } }) =>
-				head(await db.select().from(contentItems).where(eq(contentItems.id, id)).execute()),
+			.query(async ({ ctx: { db, schema }, input: { id } }) =>
+				head(
+					await db
+						.select()
+						.from(schema.contentItems)
+						.where(eq(schema.contentItems.id, id))
+						.execute(),
+				),
 			),
 		create: publicProcedure
 			.input(RpcType(validationSchemas.create))
-			.mutation(async ({ input: { url } }) => {
+			.mutation(async ({ ctx: { db, schema }, input: { url } }) => {
 				const _url = new URL(url);
 
 				const { data } = await useScrape({ url: _url });
@@ -37,11 +41,15 @@ export const buildRouter = () => {
 					fullText: data.fullText,
 				};
 
-				return await db.insert(contentItems).values(scrapedContentItems).returning().execute();
+				return await db
+					.insert(schema.contentItems)
+					.values(scrapedContentItems)
+					.returning()
+					.execute();
 			}),
 		bulkCreate: publicProcedure
 			.input(RpcType(validationSchemas.bulkCreate))
-			.mutation(async ({ input: { urls } }) => {
+			.mutation(async ({ ctx: { db, schema }, input: { urls } }) => {
 				const scrapedContentItems = await Promise.all(
 					urls.map(async (url) => {
 						const _url = new URL(url);
@@ -59,44 +67,56 @@ export const buildRouter = () => {
 						};
 					}),
 				);
-				return await db.insert(contentItems).values(scrapedContentItems).returning().execute();
+				return await db
+					.insert(schema.contentItems)
+					.values(scrapedContentItems)
+					.returning()
+					.execute();
 			}),
 		delete: publicProcedure
 			// eslint-disable-next-line drizzle/enforce-delete-with-where
 			.input(RpcType(validationSchemas.delete))
 			.mutation(
-				async ({ input: { id } }) =>
-					await db.delete(contentItems).where(eq(contentItems.id, id)).execute(),
+				async ({ ctx: { db, schema }, input: { id } }) =>
+					await db.delete(schema.contentItems).where(eq(schema.contentItems.id, id)).execute(),
 			),
-		update: publicProcedure.input(RpcType(validationSchemas.update)).mutation(async ({ input }) => {
-			return head(
-				await db
-					.update(contentItems)
-					.set(input)
-					.where(eq(contentItems.id, input.id!))
-					.returning()
-					.execute(),
-			);
-		}),
-		patch: publicProcedure.input(RpcType(validationSchemas.patch)).mutation(async ({ input }) => {
-			return head(
-				await db
-					.update(contentItems)
-					.set(input)
-					.where(eq(contentItems, input.id))
-					.returning()
-					.execute(),
-			);
-		}),
+		update: publicProcedure
+			.input(RpcType(validationSchemas.update))
+			.mutation(async ({ ctx: { db, schema }, input }) => {
+				return head(
+					await db
+						.update(schema.contentItems)
+						.set(input)
+						.where(eq(schema.contentItems.id, input.id!))
+						.returning()
+						.execute(),
+				);
+			}),
+		patch: publicProcedure
+			.input(RpcType(validationSchemas.patch))
+			.mutation(async ({ ctx: { db, schema }, input }) => {
+				return head(
+					await db
+						.update(schema.contentItems)
+						.set(input)
+						.where(eq(schema.contentItems, input.id))
+						.returning()
+						.execute(),
+				);
+			}),
 		clear: publicProcedure
 			.input(RpcType(validationSchemas.clear))
 			// eslint-disable-next-line drizzle/enforce-delete-with-where
-			.mutation(async () => await db.delete(contentItems).execute()),
+			.mutation(async ({ ctx: { db, schema } }) => await db.delete(schema.contentItems).execute()),
 		refresh: publicProcedure
 			.input(RpcType(validationSchemas.refresh))
-			.mutation(async ({ input: { id } }) => {
+			.mutation(async ({ ctx: { db, schema }, input: { id } }) => {
 				const existing = head(
-					await db.select().from(contentItems).where(eq(contentItems.id, id)).execute(),
+					await db
+						.select()
+						.from(schema.contentItems)
+						.where(eq(schema.contentItems.id, id))
+						.execute(),
 				);
 				if (!existing) throw new Error(`Content item with ID ${id} does not exist.`);
 
@@ -104,7 +124,7 @@ export const buildRouter = () => {
 				const { data } = await useScrape({ url });
 
 				return await db
-					.update(contentItems)
+					.update(schema.contentItems)
 					.set({
 						permalink: url.href,
 						kind: ContentItemKind.ARTICLE,
@@ -115,7 +135,7 @@ export const buildRouter = () => {
 						authors: data.authors,
 						fullText: data.fullText,
 					})
-					.where(eq(contentItems.permalink, url.href))
+					.where(eq(schema.contentItems.permalink, url.href))
 					.returning()
 					.execute();
 			}),
