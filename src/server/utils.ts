@@ -18,6 +18,25 @@ export function RpcType<T extends TSchema>(schema: T) {
 	};
 }
 
+type Head = {
+	<T extends string>(val: T): T extends `${infer F}${string}` ? F : T extends "" ? "" : string;
+	<T extends unknown[]>(
+		val: T,
+	): T extends readonly never[] | []
+		? undefined
+		: T extends readonly [infer U, ...infer _]
+			? U
+			: T[0] | undefined;
+};
+
+type T = string | unknown[];
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const head: Head = (val: T): any => {
+	const _head = (val as T)[0];
+	return Array.isArray(val) ? _head : _head ?? "";
+};
+
 // import Ajv from "ajv";
 // import addFormats from "ajv-formats";
 //
