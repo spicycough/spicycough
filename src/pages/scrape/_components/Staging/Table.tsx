@@ -13,7 +13,7 @@ interface QueueProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const Queue = ({ setSelected, className }: QueueProps) => {
-	const { data } = trpcReact.contentItem.get.useQuery();
+	const { data } = trpcReact.contentItem.list.useQuery();
 
 	const table = useReactTable<ContentItem>({
 		data: data ?? [],
