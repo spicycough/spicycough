@@ -74,7 +74,7 @@ export const EmptyQueue = () => {
 								<FormControl>
 									<Textarea
 										placeholder="Enter urls to scrape, one per line"
-										className="resize-none rounded-sm border border-dashed dark:border-fog-400 dark:focus-visible:border-none"
+										className="resize-none rounded-sm border border-dashed font-display dark:border-fog-400 dark:focus-visible:border-none"
 										{...field}
 										onChange={(e) => field.onChange(e.target.value.split("\n"))}
 									/>
