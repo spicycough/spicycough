@@ -11,16 +11,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { EditableText } from "@/components/editable-text";
 import { insertContentItemSchema } from "@/db/schema";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import type { Static } from "@sinclair/typebox";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { match } from "ts-pattern";
-import { H3 } from "@/components/typegraphy/h";
+import { EditableTextFormField } from "./EditableTextFormField";
 
 type FormSchema = Static<typeof insertContentItemSchema>;
 export const EditContentItem = () => {
@@ -55,20 +53,13 @@ export const EditContentItem = () => {
 	return (
 		<Form {...form}>
 			<form className="flex flex-col" onSubmit={form.handleSubmit(onSubmit)}>
-				<ScrollArea>
-					<FormField
-						control={form.control}
+				<div className="space-y-2 p-2">
+					<EditableTextFormField
 						name="title"
-						render={({ field }) => {
-							return (
-								<FormItem>
-									<FormLabel>{field.name}</FormLabel>
-									<FormControl>
-										<EditableText defaultValue="COVID19 Study" {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							);
+						control={form.control}
+						defaultValue="testo"
+						onPersist={(field) => {
+							toast.success(` Persisted ${field.value}`, { position: "top-right" });
 						}}
 					/>
 					<FormField
@@ -76,7 +67,6 @@ export const EditContentItem = () => {
 						name="permalink"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>{field.name}</FormLabel>
 								<FormControl>
 									<Input defaultValue={field.value} />
 								</FormControl>
@@ -89,7 +79,6 @@ export const EditContentItem = () => {
 						name="abstract"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel className="uppercase">Abstract</FormLabel>
 								<FormControl>
 									<Textarea defaultValue={field.value ?? ""} />
 								</FormControl>
@@ -120,7 +109,7 @@ export const EditContentItem = () => {
 					>
 						{!isPending ? "Submit" : <ReloadIcon className="animate-spin" />}
 					</Button>
-				</ScrollArea>
+				</div>
 			</form>
 		</Form>
 	);
