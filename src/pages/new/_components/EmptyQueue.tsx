@@ -1,13 +1,13 @@
-import { ArrowRightIcon, MoonIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { trpcReact } from "@/client";
-import { H1, H2, H3, H5 } from "@/components/typegraphy/h";
-import { Textarea } from "@/components/ui/textarea";
+import { H1, H3 } from "@/components/typography/h";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { typeboxResolver } from "@hookform/resolvers/typebox";
-import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
 import { useValidationSchema } from "@/db/schema/contentItems/validation";
+import { typeboxResolver } from "@hookform/resolvers/typebox";
+import { ArrowRightIcon, MoonIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export const EmptyQueue = () => {
 	const { bulkCreate: validationSchema } = useValidationSchema();
@@ -27,19 +27,19 @@ export const EmptyQueue = () => {
 		},
 		onSuccess: async (contentItems) => {
 			toast.success("Success", {
-				description: `Created ${contentItems.length} entries`,
+				description: `Add ${contentItems.length} urls to queue`,
 				position: "top-right",
 			});
 		},
-		onError: async (err, urls) => {
+		onError: async (err, { urls }) => {
+			form.setValue("urls", urls);
 			toast.error("Error", {
-				description: err instanceof Error ? err.message : `Error creating ${urls}`,
+				description: err instanceof Error ? err.message : `Error fetching ${urls.length} urls`,
 				position: "top-right",
 			});
-			form.setValue("urls", urls);
 		},
 		onSettled: async () => {
-			utils.contentItem.invalidate();
+			await utils.contentItem.invalidate();
 		},
 	});
 
@@ -88,10 +88,7 @@ export const EmptyQueue = () => {
 							variant="ghost"
 							size="icon"
 							className="size-12 rounded-full dark:bg-fog-900/65"
-							onClick={(e) => {
-								e.stopPropagation();
-								console.log("clicked");
-							}}
+							onClick={(e) => e.stopPropagation()}
 						>
 							{!isPending ? (
 								<ArrowRightIcon className="size-6" />
