@@ -15,4 +15,4 @@ const authToken =
 	import.meta.env.PUBLIC_TURSO_DB_AUTH_TOKEN ?? process.env.PUBLIC_TURSO_DB_AUTH_TOKEN;
 const { db } = useDatabase({ url, authToken });
 
-migrate(db);
+await drizzleMigrate(db, { migrationsFolder: "./database/migrations" });
