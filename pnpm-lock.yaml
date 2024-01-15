@@ -50,6 +50,9 @@ dependencies:
   '@radix-ui/react-scroll-area':
     specifier: ^1.0.5
     version: registry.npmjs.org/@radix-ui/react-scroll-area@1.0.5(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+  '@radix-ui/react-select':
+    specifier: ^2.0.0
+    version: registry.npmjs.org/@radix-ui/react-select@2.0.0(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-separator':
     specifier: ^1.0.3
     version: registry.npmjs.org/@radix-ui/react-separator@1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
@@ -250,6 +253,9 @@ devDependencies:
   prettier-plugin-astro:
     specifier: ^0.12.3
     version: registry.npmjs.org/prettier-plugin-astro@0.12.3
+  snarkdown:
+    specifier: ^2.0.0
+    version: registry.npmjs.org/snarkdown@2.0.0
   ts-node:
     specifier: ^10.9.2
     version: registry.npmjs.org/ts-node@10.9.2(@types/node@20.10.5)(typescript@5.3.3)
@@ -4721,6 +4727,33 @@ packages:
       react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
     dev: false
 
+  registry.npmjs.org/@radix-ui/react-collection@1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-3SzW+0PW7yBBoQlT8wNcGtaxaD0XSu0uLUFgrtHY08Acx05TaHaOmVLR73c0j/cqpDy53KBMO7s0dx2wmOIDIA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@radix-ui/react-collection/-/react-collection-1.0.3.tgz}
+    id: registry.npmjs.org/@radix-ui/react-collection/1.0.3
+    name: '@radix-ui/react-collection'
+    version: 1.0.3
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': registry.npmjs.org/@babel/runtime@7.23.5
+      '@radix-ui/react-compose-refs': registry.npmjs.org/@radix-ui/react-compose-refs@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-context': registry.npmjs.org/@radix-ui/react-context@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-primitive': registry.npmjs.org/@radix-ui/react-primitive@1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-slot': registry.npmjs.org/@radix-ui/react-slot@1.0.2(@types/react@18.2.46)(react@18.2.0)
+      '@types/react': registry.npmjs.org/@types/react@18.2.46
+      '@types/react-dom': registry.npmjs.org/@types/react-dom@18.2.18
+      react: registry.npmjs.org/react@18.2.0
+      react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
+    dev: false
+
   registry.npmjs.org/@radix-ui/react-compose-refs@1.0.1(@types/react@18.2.46)(react@18.2.0):
     resolution: {integrity: sha512-fDSBgd44FKHa1FRMU59qBMPFcl2PZE+2nmqunj+BWFyYYjnhIDWL2ItDs3rrbJDQOtzt5nIebLCQc4QRfz6LJw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@radix-ui/react-compose-refs/-/react-compose-refs-1.0.1.tgz}
     id: registry.npmjs.org/@radix-ui/react-compose-refs/1.0.1
@@ -5101,6 +5134,50 @@ packages:
       '@types/react-dom': registry.npmjs.org/@types/react-dom@18.2.18
       react: registry.npmjs.org/react@18.2.0
       react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
+    dev: false
+
+  registry.npmjs.org/@radix-ui/react-select@2.0.0(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-RH5b7af4oHtkcHS7pG6Sgv5rk5Wxa7XI8W5gvB1N/yiuDGZxko1ynvOiVhFM7Cis2A8zxF9bTOUVbRDzPepe6w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@radix-ui/react-select/-/react-select-2.0.0.tgz}
+    id: registry.npmjs.org/@radix-ui/react-select/2.0.0
+    name: '@radix-ui/react-select'
+    version: 2.0.0
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': registry.npmjs.org/@babel/runtime@7.23.5
+      '@radix-ui/number': registry.npmjs.org/@radix-ui/number@1.0.1
+      '@radix-ui/primitive': registry.npmjs.org/@radix-ui/primitive@1.0.1
+      '@radix-ui/react-collection': registry.npmjs.org/@radix-ui/react-collection@1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-compose-refs': registry.npmjs.org/@radix-ui/react-compose-refs@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-context': registry.npmjs.org/@radix-ui/react-context@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-direction': registry.npmjs.org/@radix-ui/react-direction@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-dismissable-layer': registry.npmjs.org/@radix-ui/react-dismissable-layer@1.0.5(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-focus-guards': registry.npmjs.org/@radix-ui/react-focus-guards@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-focus-scope': registry.npmjs.org/@radix-ui/react-focus-scope@1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-id': registry.npmjs.org/@radix-ui/react-id@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-popper': registry.npmjs.org/@radix-ui/react-popper@1.1.3(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-portal': registry.npmjs.org/@radix-ui/react-portal@1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-primitive': registry.npmjs.org/@radix-ui/react-primitive@1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-slot': registry.npmjs.org/@radix-ui/react-slot@1.0.2(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-use-callback-ref': registry.npmjs.org/@radix-ui/react-use-callback-ref@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-use-controllable-state': registry.npmjs.org/@radix-ui/react-use-controllable-state@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-use-layout-effect': registry.npmjs.org/@radix-ui/react-use-layout-effect@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-use-previous': registry.npmjs.org/@radix-ui/react-use-previous@1.0.1(@types/react@18.2.46)(react@18.2.0)
+      '@radix-ui/react-visually-hidden': registry.npmjs.org/@radix-ui/react-visually-hidden@1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
+      '@types/react': registry.npmjs.org/@types/react@18.2.46
+      '@types/react-dom': registry.npmjs.org/@types/react-dom@18.2.18
+      aria-hidden: registry.npmjs.org/aria-hidden@1.2.3
+      react: registry.npmjs.org/react@18.2.0
+      react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
+      react-remove-scroll: registry.npmjs.org/react-remove-scroll@2.5.5(@types/react@18.2.46)(react@18.2.0)
     dev: false
 
   registry.npmjs.org/@radix-ui/react-separator@1.0.3(@types/react-dom@18.2.18)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0):
@@ -14942,6 +15019,12 @@ packages:
     version: 1.6.6
     engines: {node: '>=8.0.0'}
     dev: false
+
+  registry.npmjs.org/snarkdown@2.0.0:
+    resolution: {integrity: sha512-MgL/7k/AZdXCTJiNgrO7chgDqaB9FGM/1Tvlcenenb7div6obaDATzs16JhFyHHBGodHT3B7RzRc5qk8pFhg3A==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/snarkdown/-/snarkdown-2.0.0.tgz}
+    name: snarkdown
+    version: 2.0.0
+    dev: true
 
   registry.npmjs.org/sonner@1.3.1(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-+rOAO56b2eI3q5BtgljERSn2umRk63KFIvgb2ohbZ5X+Eb5u+a/7/0ZgswYqgBMg8dyl7n6OXd9KasA8QF9ToA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/sonner/-/sonner-1.3.1.tgz}
