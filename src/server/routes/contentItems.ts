@@ -1,7 +1,7 @@
 import { ContentItemKind } from "@/db/schema";
 import { useScrape } from "@/lib/seki";
 import { slugify } from "@/lib/utils";
-import { eq } from "drizzle-orm";
+import { eq, count } from "drizzle-orm";
 import { publicProcedure, router } from "../router";
 import { RpcType, head } from "../utils";
 import { useValidationSchema } from "./validation";
@@ -10,6 +10,14 @@ export const buildRouter = () => {
 	const validationSchemas = useValidationSchema();
 
 	return router({
+		count: publicProcedure.query(async ({ ctx: { db, schema } }) => {
+			return head(
+				await db
+					.select({ count: count(schema.contentItems.id) })
+					.from(schema.contentItems)
+					.execute(),
+			)?.count;
+		}),
 		list: publicProcedure.query(
 			async ({ ctx: { db, schema } }) => await db.select().from(schema.contentItems).execute(),
 		),
@@ -135,7 +143,7 @@ export const buildRouter = () => {
 						authors: data.authors,
 						fullText: data.fullText,
 					})
-					.where(eq(schema.contentItems.permalink, url.href))
+					.where(eq(schema.contentItems.id, id))
 					.returning()
 					.execute();
 			}),
