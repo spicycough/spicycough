@@ -18,6 +18,22 @@ export type ParsedData = {
 	fullText: string;
 };
 
+export type Metadata = {
+	image: string;
+	title: string;
+	author: string;
+	publicationDate: string | null;
+	description: string;
+	abstract: string;
+	tags: string[];
+	readTime: number;
+};
+
+export type Content = {
+	abstract: string;
+	fullText: string;
+};
+
 export type ContentSelectors = {
 	title: string[];
 	authors: string[];

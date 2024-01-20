@@ -1,24 +1,16 @@
+import type { ContentItem } from "@/db/schema";
 import * as cheerio from "cheerio";
 
-type Metadata = {
-	image: string;
-	title: string;
-	author: string;
-	publicationDate: string | null;
-	description: string;
-	tags: string[];
-	readTime: number;
-};
-
-export const parseMetadata = async (html: string): Promise<Metadata> => {
+export const parseMetadata = async (html: string): Promise<ContentItem> => {
 	const $ = cheerio.load(html, { recognizeSelfClosing: true });
 
 	return {
-		image: getImage($),
+		imageUrl: getImage($),
 		title: getTitle($),
-		author: getAuthor($),
-		publicationDate: getPublicationDate($),
+		authors: getAuthor($),
+		publishedAt: getPublicationDate($),
 		description: getDescription($),
+		abstract: getAbstract($),
 		tags: getTags($),
 		readTime: getReadTime($),
 	};
@@ -38,6 +30,8 @@ const getTitle = (_$: cheerio.CheerioAPI) => {
 
 const getImage = (_$: cheerio.CheerioAPI) => {
 	const $ = _$;
+
+	const r = $("meta[property='og:image']").attr("content");
 
 	return (
 		$("meta[property='og:image']").attr("content") ||
@@ -116,6 +110,20 @@ const getDescription = (_$: cheerio.CheerioAPI) => {
 		$("meta[name='twitter:description']").attr("content") ||
 		$("meta[name='dc.description']").attr("content") ||
 		$("meta[name='summary']").attr("content") ||
+		$("article p").first().text() ||
+		""
+	);
+};
+
+const getAbstract = (_$: cheerio.CheerioAPI) => {
+	const $ = _$;
+
+	return (
+		$("meta[name='abstract']").attr("content") ||
+		$("meta[property='og:abstract']").attr("content") ||
+		$("meta[name='twitter:abstract']").attr("content") ||
+		$("meta[name='dc.abstract']").attr("content") ||
+		$("meta[name='abstract']").attr("content") ||
 		$("article p").first().text() ||
 		""
 	);
