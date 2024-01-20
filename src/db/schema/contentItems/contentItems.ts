@@ -1,7 +1,9 @@
+import { Type } from "@sinclair/typebox";
 import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
+import { nanoid } from "nanoid";
 
 export const ContentItemKind = {
 	ARTICLE: "article",
@@ -17,21 +19,23 @@ export type ContentItemKind = (typeof ContentItemKind)[keyof typeof ContentItemK
 export type ContentItemId = number;
 
 export const contentItems = sqliteTable("content_items", {
-	id: integer("id").$type<ContentItemId>().primaryKey({ autoIncrement: true }),
+	id: text("id")
+		.primaryKey()
+		.$defaultFn(() => nanoid()),
 	kind: text("kind", {
 		mode: "text",
 		enum: ContentItemKinds,
 	})
 		.default(ContentItemKind.ARTICLE)
 		.notNull(),
-	title: text("title").notNull(),
-	authors: text("authors"),
 	permalink: text("permalink").notNull(),
+	title: text("title").notNull(),
+	authors: text("authors", { mode: "json" }),
 	imageUrl: text("image_url"),
 	abstract: text("abstract"),
 	fullText: text("full_text"),
 	slug: text("slug").notNull(),
-	publishedAt: text("published_at").notNull(),
+	publishedAt: integer("published_at", { mode: "timestamp" }).notNull(),
 	createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
 	updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
@@ -40,7 +44,7 @@ export type ContentItemTable = typeof contentItems;
 export type ContentItem = InferSelectModel<ContentItemTable>;
 export type NewContentItem = InferInsertModel<ContentItemTable>;
 
-// Schema for inserting a user - can be used to validate API requests
-export const insertContentItemSchema = createInsertSchema(contentItems);
-// Schema for selecting a user - can be used to validate API responses
+export const insertContentItemSchema = createInsertSchema(contentItems, {
+	id: Type.String(),
+});
 export const selectContentItemSchema = createSelectSchema(contentItems);
