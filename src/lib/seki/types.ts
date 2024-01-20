@@ -1,16 +1,3 @@
-import type { NewContentItem } from "@/db/schema";
-import { Hostnames } from "./constants";
-
-import type { ExtendedOptionsOfTextResponseBody, Response } from "got-scraping";
-
-export type RouteContext = {
-	response: Response<string>;
-};
-
-export type ScrapeOptions = ExtendedOptionsOfTextResponseBody;
-
-export type ParsingFunction = (context: RouteContext) => NewContentItem;
-
 export type Metadata = {
 	image: string;
 	title: string;
@@ -35,9 +22,8 @@ export type ContentSelectors = {
 	fullText: string[];
 };
 
-export type ParsedResponse = {
-	data: NewContentItem;
-	response: Response<string>;
-};
+export const Hostnames = {
+	NATURE: "nature.com",
+} as const;
 
 export type Hostnames = (typeof Hostnames)[keyof typeof Hostnames];

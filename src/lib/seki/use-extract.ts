@@ -2,6 +2,8 @@ import type { NewContentItem } from "@/db/schema";
 import * as cheerio from "cheerio";
 import { takeFirst } from "@/lib/utils";
 import { convert, type HtmlToTextOptions } from "html-to-text";
+import { gotScraping, type ExtendedOptionsOfTextResponseBody } from "got-scraping";
+import { isNull } from "drizzle-orm";
 
 const REGEX_COMMAS_AND_SPACES = /[, ]+/;
 const REGEX_ANY_WHITESPACE = /\s+/;
@@ -10,17 +12,53 @@ const MAX_INPUT_LENGTH = 1 << 24; // 16_777_216
 const Errors = {
 	NO_ABSTRACT: "No abstract found",
 	NO_AUTHORS: "No authors found",
-	NO_CONTENT: "No content found",
+	NO_FULL_TEXT: "No full text found",
 	NO_IMAGE_URL: "No image url found",
 	NO_KEYWORDS: "No keywords found",
 	NO_PUBLISHED_AT: "No publication date found",
 	NO_TITLE: "No title found",
 } as const;
 
-const content = (html: string): NewContentItem["fullText"] => {
+export type ExtractOpts = ExtendedOptionsOfTextResponseBody;
+
+type SelectorOverrides = {
+	fullText: string[];
+	abstract: string[];
+	title: string[];
+	authors: string[];
+	publishedAt: string[];
+	imageUrl: string[];
+};
+
+const useExtract = async (url: URL | string, selectors?: SelectorOverrides, opts?: ExtractOpts) => {
+	const response = await gotScraping(url, opts);
+
+	const $ = cheerio.load(response.body, { recognizeSelfClosing: true });
+
+	const content = {
+		fullText: fullText(response.body, selectors?.fullText),
+		abstract: abstract($, selectors?.abstract),
+	};
+
+	const metadata = {
+		title: title($, selectors?.title),
+		authors: authors($, selectors?.authors),
+		publishedAt: publishedAt($, selectors?.publishedAt),
+		imageUrl: imageUrl($, selectors?.imageUrl),
+	};
+
+	return {
+		response,
+		$,
+		content,
+		metadata,
+	};
+};
+
+const fullText = (html: string, extra?: string[]) => {
 	const opts: HtmlToTextOptions = {
 		baseElements: {
-			selectors: [".main-content > section"],
+			selectors: [...(extra ? extra : []), ".main-content > section"],
 			orderBy: "occurrence",
 			returnDomByDefault: true,
 		},
@@ -128,23 +166,29 @@ const content = (html: string): NewContentItem["fullText"] => {
 		formatters: {},
 	};
 
-	const content = convert(html, opts);
-	if (!content) throw new Error(Errors.NO_CONTENT);
+	const fullText = convert(html, opts);
+	if (!fullText) throw new Error(Errors.NO_FULL_TEXT);
 
-	return content;
+	return fullText satisfies NewContentItem["fullText"];
 };
 
-const title = ($: cheerio.CheerioAPI): NewContentItem["title"] | Error => {
-	const selectors = [$("title").text(), $("meta[name='title']").attr("content"), document.title];
+const title = ($: cheerio.CheerioAPI, extra?: string[]) => {
+	const selectors = [
+		...(extra ? extra : []),
+		$("title").text(),
+		$("meta[name='title']").attr("content"),
+		document.title,
+	];
 
 	const title = takeFirst(selectors);
 	if (!title) throw new Error(Errors.NO_TITLE);
 
-	return title;
+	return title satisfies NewContentItem["title"];
 };
 
-const authors = ($: cheerio.CheerioAPI): NewContentItem["authors"] => {
+const authors = ($: cheerio.CheerioAPI, extra?: string[]) => {
 	const selectors = [
+		...(extra ? extra : []),
 		$("meta[name='author']").attr("content"),
 		$("meta[property='article:author']").attr("content"),
 		$("meta[name='twitter:creator']").attr("content"),
@@ -155,11 +199,12 @@ const authors = ($: cheerio.CheerioAPI): NewContentItem["authors"] => {
 	const authors = takeFirst(selectors)?.split(",");
 	if (!authors || authors.length === 0) throw new Error(Errors.NO_AUTHORS);
 
-	return authors;
+	return authors satisfies NewContentItem["authors"];
 };
 
-const publishedAt = ($: cheerio.CheerioAPI): NewContentItem["publishedAt"] => {
+const publishedAt = ($: cheerio.CheerioAPI, extra?: string[]) => {
 	const selectors = [
+		...(extra ? extra : []),
 		$("meta[name='date']").attr("content"),
 		$("meta[property='article:published_time']").attr("content"),
 		$("meta[name='article:published_time']").attr("content"),
@@ -178,11 +223,12 @@ const publishedAt = ($: cheerio.CheerioAPI): NewContentItem["publishedAt"] => {
 	const standardizedDate = new Date(date);
 	if (!isNaN(standardizedDate.getTime())) throw new Error(Errors.NO_PUBLISHED_AT);
 
-	return standardizedDate;
+	return standardizedDate satisfies NewContentItem["publishedAt"];
 };
 
-const abstract = ($: cheerio.CheerioAPI): NewContentItem["abstract"] => {
+const abstract = ($: cheerio.CheerioAPI, extra?: string[]) => {
 	const selectors = [
+		...(extra ? extra : []),
 		$(`article section[data-title="Abstract"] p`).text(),
 		$("meta[name='abstract']").attr("content"),
 		$("meta[property='og:abstract']").attr("content"),
@@ -195,11 +241,12 @@ const abstract = ($: cheerio.CheerioAPI): NewContentItem["abstract"] => {
 	const abstract = takeFirst(selectors);
 	if (!abstract) throw new Error(Errors.NO_ABSTRACT);
 
-	return abstract;
+	return abstract satisfies NewContentItem["abstract"];
 };
 
-const imageUrl = ($: cheerio.CheerioAPI): NewContentItem["imageUrl"] => {
+const imageUrl = ($: cheerio.CheerioAPI, extra?: string[]) => {
 	const selectors = [
+		...(extra ? extra : []),
 		$("meta[property='og:image']").attr("content"),
 		$("meta[name='twitter:image']").attr("content"),
 		$("meta[itemprop='image']").attr("content"),
@@ -208,12 +255,13 @@ const imageUrl = ($: cheerio.CheerioAPI): NewContentItem["imageUrl"] => {
 	const imageUrl = takeFirst(selectors);
 	if (!imageUrl) throw new Error(Errors.NO_IMAGE_URL);
 
-	return imageUrl;
+	return imageUrl satisfies NewContentItem["imageUrl"];
 };
 
 // TODO: add field to db schema
-const keywords = ($: cheerio.CheerioAPI): string[] => {
+const keywords = ($: cheerio.CheerioAPI, extra?: string[]): string[] => {
 	const selectors = [
+		...(extra ? extra : []),
 		$("meta[name='keywords']").attr("content"),
 		$("meta[property='article:tag']").attr("content"),
 		$("meta[name='news_keywords']").attr("content"),
@@ -237,4 +285,14 @@ const readTime = ($: cheerio.CheerioAPI): number => {
 	return readTimeInMinutes;
 };
 
-export { abstract, authors, content, imageUrl, keywords, publishedAt, readTime, title };
+export {
+	useExtract,
+	abstract,
+	authors,
+	fullText,
+	imageUrl,
+	keywords,
+	publishedAt,
+	readTime,
+	title,
+};
