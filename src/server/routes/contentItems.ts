@@ -1,7 +1,7 @@
-import { ContentItemKind } from "@/db/schema";
+import { ContentItemKind, type NewContentItem } from "@/db/schema";
 import { useScrape } from "@/lib/seki";
 import { slugify } from "@/lib/utils";
-import { eq, count } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { publicProcedure, router } from "../router";
 import { RpcType, head } from "../utils";
 import { useValidationSchema } from "./validation";
@@ -38,11 +38,11 @@ export const buildRouter = () => {
 				const _url = new URL(url);
 
 				const { data } = await useScrape({ url: _url });
-				const scrapedContentItems = {
+				const scrapedContentItems: NewContentItem = {
 					permalink: _url.href,
 					kind: ContentItemKind.ARTICLE,
 					title: data.title,
-					publishedAt: data.publicationDate,
+					publishedAt: new Date(data.publicationDate),
 					abstract: data.abstract,
 					slug: slugify(data.title),
 					authors: data.authors,
@@ -67,7 +67,7 @@ export const buildRouter = () => {
 							permalink: _url.href,
 							kind: ContentItemKind.ARTICLE,
 							title: data.title,
-							publishedAt: data.publicationDate,
+							publishedAt: new Date(data.publicationDate),
 							abstract: data.abstract,
 							slug: slugify(data.title),
 							authors: data.authors,
@@ -137,7 +137,7 @@ export const buildRouter = () => {
 						permalink: url.href,
 						kind: ContentItemKind.ARTICLE,
 						title: data.title,
-						publishedAt: data.publicationDate,
+						publishedAt: new Date(data.publicationDate),
 						abstract: data.abstract,
 						slug: slugify(data.title),
 						authors: data.authors,
