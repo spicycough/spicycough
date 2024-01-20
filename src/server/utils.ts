@@ -1,6 +1,12 @@
+import type { UseDatabase } from "@/db/useDatabase";
 import type { TSchema } from "@sinclair/typebox";
 import { TypeCompiler } from "@sinclair/typebox/compiler";
 import { TRPCError } from "@trpc/server";
+import type { TObject } from "@sinclair/typebox";
+import type { Context } from "./context";
+import { publicProcedure, router } from "./router";
+import { match } from "ts-pattern";
+import type { inferProcedureParams } from "node_modules/@trpc/server/dist/unstableDoNotImportThis";
 
 /**
  * Create a type-safe RPC type from a schema
@@ -37,41 +43,41 @@ export const head: Head = (val: T): any => {
 	return Array.isArray(val) ? _head : _head ?? "";
 };
 
-// import Ajv from "ajv";
-// import addFormats from "ajv-formats";
-//
-// /**
-//  * Create a type-safe RPC type from a schema
-//  *
-//  * Taken from:
-//  * https://github.com/sinclairzx81/typebox/blob/6cfcdc02cc813af2f1be57407c771fc4fadfc34a/example/trpc/readme.md#with-ajv
-//  * */
-// export function AjvRpcType<T extends TSchema>(schema: T, references: TSchema[] = []) {
-// 	const ajv = addFormats(new Ajv({ coerceTypes: true }), [
-// 		"date-time",
-// 		"time",
-// 		"date",
-// 		"email",
-// 		"hostname",
-// 		"ipv4",
-// 		"ipv6",
-// 		"uri",
-// 		"uri-reference",
-// 		"uuid",
-// 		"uri-template",
-// 		"json-pointer",
-// 		"relative-json-pointer",
-// 		"regex",
-// 	]);
+export type ValidationSchema = TObject;
 
-// 	references.forEach((reference) => ajv.addSchema(reference));
-// 	const validate = ajv.compile(schema);
+export const EndpointType = {
+	QUERY: "query",
+	MUTATION: "mutation",
+} as const;
 
-// 	return (value: unknown): Static<T> => {
-// 		const isValid = validate(value);
-// 		if (isValid) return value;
+export type EndpointType = (typeof EndpointType)[keyof typeof EndpointType];
 
-// 		const { message, instancePath } = validate.errors![0];
-// 		throw new TRPCError({ message: `${message} for ${instancePath}`, code: "BAD_REQUEST" });
-// 	};
-// }
+export type Endpoint = {
+	name: string;
+	type: EndpointType;
+	validationSchema?: ValidationSchema;
+	procedure: typeof publicProcedure;
+	fn: inferProcedureParams<typeof publicProcedure>;
+};
+
+export const buildRouter = () => {
+	const [queries, mutations]: [Endpoint[], Endpoint[]] = [[], []];
+
+	const endpoints: Endpoint[] = [...queries, ...mutations];
+	return router(
+		endpoints.reduce((router, endpoint) => {
+			const { name, type, validationSchema, procedure, fn } = endpoint;
+			const base = validationSchema ? procedure.input(RpcType(validationSchema)) : procedure;
+
+			const route = match(type)
+				.with("query", () => ({
+					[name]: base.query(fn),
+				}))
+				.with("mutation", () => ({
+					[name]: base.mutation(fn),
+				})).exhaustive;
+
+			return { ...router, route };
+		}, {}),
+	);
+};

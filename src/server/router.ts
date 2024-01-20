@@ -1,7 +1,7 @@
 import { initTRPC, type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import type { Context } from "./context";
-import { buildRouter as buildContentItemRouter } from "./routes/contentItems";
 import type { inferReactQueryProcedureOptions } from "@trpc/react-query";
+import { contentItemRouter } from "./routers/contentItems";
 
 export const t = initTRPC.context<Context>().create();
 
@@ -9,7 +9,7 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 
 export const appRouter = router({
-	contentItem: buildContentItemRouter(),
+	contentItem: contentItemRouter,
 });
 
 export type AppRouter = typeof appRouter;
