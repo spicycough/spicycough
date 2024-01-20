@@ -2,7 +2,6 @@ import { trpcReact } from "@/client";
 import { H2 } from "@/components/typography/h";
 import { P } from "@/components/typography/p";
 import { Button } from "@/components/ui/button";
-import snarkdown from "snarkdown";
 import {
 	Form,
 	FormControl,
@@ -20,13 +19,13 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { ContentItemKinds, insertContentItemSchema, type ContentItem } from "@/db/schema";
+import { cn } from "@/lib/utils";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
-import { ExternalLinkIcon, ReloadIcon, Share2Icon, UpdateIcon } from "@radix-ui/react-icons";
+import { ExternalLinkIcon, ReloadIcon, UpdateIcon } from "@radix-ui/react-icons";
 import type { Static } from "@sinclair/typebox";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 type FormSchema = Static<typeof insertContentItemSchema>;
 
