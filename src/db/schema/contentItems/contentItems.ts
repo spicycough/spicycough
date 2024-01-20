@@ -46,4 +46,8 @@ export const insertContentItemSchema = createInsertSchema(contentItems, {
 	id: Type.String(),
 	authors: Type.Array(Type.String()),
 });
-export const selectContentItemSchema = createSelectSchema(contentItems);
+
+export const selectContentItemSchema = createSelectSchema(contentItems, {
+	id: Type.String(),
+	authors: Type.Array(Type.String()),
+});
