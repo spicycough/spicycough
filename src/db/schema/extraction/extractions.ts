@@ -1,14 +1,29 @@
-import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
+import { extractedFields } from "./fields";
+import { extractedUrls } from "./urls";
+import type { NanoId } from "@/db/types";
 
-export const extractions = sqliteTable("extractions", {
-	id: integer("id").primaryKey({ autoIncrement: true }),
-	urlId: integer("url_id").notNull(),
-	createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
-	updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
-});
+export const extractions = sqliteTable(
+	"extractions",
+	{
+		attempt: integer("attempt").primaryKey({ autoIncrement: true }),
+		fieldId: text("field_id")
+			.$type<NanoId>()
+			.notNull()
+			.references(() => extractedFields.id),
+		urlId: text("url_id")
+			.$type<NanoId>()
+			.notNull()
+			.references(() => extractedUrls.id),
+		isCorrect: integer("is_correct", { mode: "boolean" }).default(false),
+	},
+	(table) => ({
+		pk: primaryKey({ columns: [table.attempt, table.fieldId, table.urlId] }),
+	}),
+);
 
 export type ExtractionTable = typeof extractions;
 export type Extraction = InferSelectModel<ExtractionTable>;

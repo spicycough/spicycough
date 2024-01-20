@@ -1,27 +1,25 @@
-import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { extractions } from "./extractions";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { nanoid } from "nanoid";
 
+import type { NanoId } from "@/db/types";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 
 export const extractedFields = sqliteTable("extracted_fields", {
-	id: integer("id").primaryKey({ autoIncrement: true }),
-	extractionId: integer("extraction_id")
-		.notNull()
-		.references(() => extractions.id),
+	id: text("id")
+		.primaryKey()
+		.$defaultFn(() => nanoid())
+		.$type<NanoId>(),
 	name: text("name").notNull(),
 	value: text("value"),
 	cssSelector: text("css_selector").notNull(),
 	selectionMethod: text("selection_method", {
 		mode: "text",
 		enum: ["text", "attr", "prop", "val"],
-	})
-		.default("text")
-		.notNull(),
-	isCorrect: integer("is_correct", { mode: "boolean" }).notNull().default(false),
+	}).default("text"),
 });
 
-export type ExtractedFieldTable = typeof extractions;
+export type ExtractedFieldTable = typeof extractedFields;
 export type ExtractedField = InferSelectModel<ExtractedFieldTable>;
 export type NewExtractedField = InferInsertModel<ExtractedFieldTable>;
 
