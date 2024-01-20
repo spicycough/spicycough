@@ -1,3 +1,4 @@
+import type { NewContentItem } from "@/db/schema";
 import { Hostnames } from "./constants";
 
 import type { ExtendedOptionsOfTextResponseBody, Response } from "got-scraping";
@@ -8,15 +9,7 @@ export type RouteContext = {
 
 export type ScrapeOptions = ExtendedOptionsOfTextResponseBody;
 
-export type ParsingFunction = (context: RouteContext) => ParsedData;
-
-export type ParsedData = {
-	title: string;
-	authors: string;
-	publicationDate: string;
-	abstract: string;
-	fullText: string;
-};
+export type ParsingFunction = (context: RouteContext) => NewContentItem;
 
 export type Metadata = {
 	image: string;
@@ -43,7 +36,7 @@ export type ContentSelectors = {
 };
 
 export type ParsedResponse = {
-	data: ParsedData;
+	data: NewContentItem;
 	response: Response<string>;
 };
 

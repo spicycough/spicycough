@@ -1,18 +1,17 @@
-import type { ContentItem } from "@/db/schema";
+import type { NewContentItem } from "@/db/schema";
 import * as cheerio from "cheerio";
 
-export const parseMetadata = async (html: string): Promise<ContentItem> => {
+export const parseMetadata = async (
+	html: string,
+): Promise<Omit<NewContentItem, "permalink" | "slug">> => {
 	const $ = cheerio.load(html, { recognizeSelfClosing: true });
 
 	return {
 		imageUrl: getImage($),
 		title: getTitle($),
-		authors: getAuthor($),
-		publishedAt: getPublicationDate($),
-		description: getDescription($),
+		authors: getAuthors($) ?? [],
+		publishedAt: getPublicationAt($),
 		abstract: getAbstract($),
-		tags: getTags($),
-		readTime: getReadTime($),
 	};
 };
 
@@ -20,6 +19,7 @@ const getTitle = (_$: cheerio.CheerioAPI) => {
 	const $ = _$;
 
 	return (
+		$("h1.c-article-title").text() ||
 		$("title").text() ||
 		$("meta[name='title']").attr("content") ||
 		document.title ||
@@ -31,8 +31,6 @@ const getTitle = (_$: cheerio.CheerioAPI) => {
 const getImage = (_$: cheerio.CheerioAPI) => {
 	const $ = _$;
 
-	const r = $("meta[property='og:image']").attr("content");
-
 	return (
 		$("meta[property='og:image']").attr("content") ||
 		$("meta[name='twitter:image']").attr("content") ||
@@ -42,17 +40,18 @@ const getImage = (_$: cheerio.CheerioAPI) => {
 	);
 };
 
-const getAuthor = (_$: cheerio.CheerioAPI) => {
+const getAuthors = (_$: cheerio.CheerioAPI): string[] => {
 	const $ = _$;
 
 	return (
+		$("li.c-article-author-list__item > a").text() ||
 		$("meta[name='author']").attr("content") ||
 		$("meta[property='article:author']").attr("content") ||
 		$("meta[name='twitter:creator']").attr("content") ||
 		$("meta[name='twitter:site']").attr("content") ||
 		$("meta[property='og:site_name']").attr("content") ||
 		""
-	);
+	).split(",");
 };
 
 const getTags = (_$: cheerio.CheerioAPI) => {
@@ -70,7 +69,7 @@ const getTags = (_$: cheerio.CheerioAPI) => {
 	return tags.split(allCommaAndSpaces).filter((tag) => tag.trim() !== "");
 };
 
-const getPublicationDate = (_$: cheerio.CheerioAPI) => {
+const getPublicationAt = (_$: cheerio.CheerioAPI): Date => {
 	const $ = _$;
 
 	const date =
@@ -88,7 +87,7 @@ const getPublicationDate = (_$: cheerio.CheerioAPI) => {
 
 	const standardizedDate = new Date(date);
 
-	return standardizedDate?.toString() !== "Invalid Date" ? standardizedDate.toISOString() : null;
+	return standardizedDate?.toString() !== "Invalid Date" ? standardizedDate : new Date();
 };
 
 const getReadTime = (_$: cheerio.CheerioAPI, options = { wordsPerMinute: 100 }) => {
@@ -119,6 +118,7 @@ const getAbstract = (_$: cheerio.CheerioAPI) => {
 	const $ = _$;
 
 	return (
+		$(`article section[data-title="Abstract"] p`).text() ||
 		$("meta[name='abstract']").attr("content") ||
 		$("meta[property='og:abstract']").attr("content") ||
 		$("meta[name='twitter:abstract']").attr("content") ||

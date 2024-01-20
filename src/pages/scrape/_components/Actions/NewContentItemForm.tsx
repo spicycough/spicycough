@@ -35,7 +35,7 @@ export const NewContentItemForm = ({ className, children, ...props }: InputProps
 		onMutate: async () => {
 			resetField("url");
 
-			const queryKey = getQueryKey(trpcReact.contentItem.get);
+			const queryKey = getQueryKey(trpcReact.contentItem.byId);
 
 			await queryClient.cancelQueries({ queryKey });
 
@@ -47,11 +47,11 @@ export const NewContentItemForm = ({ className, children, ...props }: InputProps
 			return { prev, placeholder };
 		},
 		onSuccess: async (url) => {
-			const description = `Created ${url?.slug}`;
+			const description = `Created ${url}`;
 
 			toast.success("Success", { description, position: "top-right" });
 		},
-		onError: async (err, url) => {
+		onError: async (err, { url }) => {
 			setValue("url", url);
 			const description = err instanceof Error ? err.message : `Error creating ${url}`;
 

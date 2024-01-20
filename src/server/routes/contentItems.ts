@@ -1,4 +1,4 @@
-import { ContentItemKind, type NewContentItem } from "@/db/schema";
+import { ContentItemKind } from "@/db/schema";
 import { useScrape } from "@/lib/seki";
 import { slugify } from "@/lib/utils";
 import { count, eq } from "drizzle-orm";
@@ -38,22 +38,13 @@ export const buildRouter = () => {
 				const _url = new URL(url);
 
 				const { data } = await useScrape({ url: _url });
-				const scrapedContentItems: NewContentItem = {
-					permalink: _url.href,
-					kind: ContentItemKind.ARTICLE,
-					title: data.title,
-					publishedAt: new Date(data.publicationDate),
-					abstract: data.abstract,
-					slug: slugify(data.title),
-					authors: data.authors,
-					fullText: data.fullText,
-				};
 
-				return await db
-					.insert(schema.contentItems)
-					.values(scrapedContentItems)
-					.returning()
-					.execute();
+				data.permalink = _url.href;
+				data.slug = slugify(data.title);
+				data.kind = ContentItemKind.ARTICLE;
+				data.publishedAt = new Date(data.publishedAt);
+
+				return await db.insert(schema.contentItems).values(data).returning().execute();
 			}),
 		bulkCreate: publicProcedure
 			.input(RpcType(validationSchemas.bulkCreate))
@@ -63,16 +54,13 @@ export const buildRouter = () => {
 						const _url = new URL(url);
 
 						const { data } = await useScrape({ url: _url });
-						return {
-							permalink: _url.href,
-							kind: ContentItemKind.ARTICLE,
-							title: data.title,
-							publishedAt: new Date(data.publicationDate),
-							abstract: data.abstract,
-							slug: slugify(data.title),
-							authors: data.authors,
-							fullText: data.fullText,
-						};
+
+						data.permalink = _url.href;
+						data.slug = slugify(data.title);
+						data.kind = ContentItemKind.ARTICLE;
+						data.publishedAt = new Date(data.publishedAt);
+
+						return data;
 					}),
 				);
 				return await db
@@ -131,18 +119,12 @@ export const buildRouter = () => {
 				const url = new URL(existing.permalink);
 				const { data } = await useScrape({ url });
 
+				data.kind = ContentItemKind.ARTICLE;
+				data.publishedAt = new Date(data.publishedAt);
+
 				return await db
 					.update(schema.contentItems)
-					.set({
-						permalink: url.href,
-						kind: ContentItemKind.ARTICLE,
-						title: data.title,
-						publishedAt: new Date(data.publicationDate),
-						abstract: data.abstract,
-						slug: slugify(data.title),
-						authors: data.authors,
-						fullText: data.fullText,
-					})
+					.set(data)
 					.where(eq(schema.contentItems.id, id))
 					.returning()
 					.execute();
