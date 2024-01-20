@@ -25,12 +25,10 @@ export const contentItems = sqliteTable("content_items", {
 	kind: text("kind", {
 		mode: "text",
 		enum: ContentItemKinds,
-	})
-		.default(ContentItemKind.ARTICLE)
-		.notNull(),
+	}).default(ContentItemKind.ARTICLE),
 	permalink: text("permalink").notNull(),
 	title: text("title").notNull(),
-	authors: text("authors", { mode: "json" }),
+	authors: text("authors", { mode: "json" }).$type<string[]>(),
 	imageUrl: text("image_url"),
 	abstract: text("abstract"),
 	fullText: text("full_text"),
@@ -46,5 +44,6 @@ export type NewContentItem = InferInsertModel<ContentItemTable>;
 
 export const insertContentItemSchema = createInsertSchema(contentItems, {
 	id: Type.String(),
+	authors: Type.Array(Type.String()),
 });
 export const selectContentItemSchema = createSelectSchema(contentItems);

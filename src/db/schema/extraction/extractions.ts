@@ -9,7 +9,7 @@ import type { NanoId } from "@/db/types";
 export const extractions = sqliteTable(
 	"extractions",
 	{
-		attempt: integer("attempt").primaryKey({ autoIncrement: true }),
+		attempt: integer("attempt"),
 		fieldId: text("field_id")
 			.$type<NanoId>()
 			.notNull()

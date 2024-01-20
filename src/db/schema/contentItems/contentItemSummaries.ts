@@ -18,5 +18,5 @@ export const contentItemSummaries = sqliteTable("content_item_summaries", {
 	kind: text("kind", {
 		mode: "text",
 		enum: ContentItemSummaryKinds,
-	}).notNull(),
+	}),
 });
