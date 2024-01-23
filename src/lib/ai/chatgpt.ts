@@ -1,8 +1,8 @@
 import OpenAI, { type ClientOptions } from "openai";
 import type {
 	ChatCompletion,
-	ChatCompletionMessageParam,
 	ChatCompletionCreateParamsBase,
+	ChatCompletionMessageParam,
 } from "openai/resources/chat/completions";
 import { useCallback, useState } from "react";
 

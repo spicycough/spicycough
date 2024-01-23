@@ -1,22 +1,25 @@
+import { typeboxResolver } from "@hookform/resolvers/typebox";
+import { ArrowRightIcon, MoonIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { Type as tb } from "@sinclair/typebox";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
 import { trpcReact } from "@/client";
 import { H1, H3 } from "@/components/typography/h";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { useValidationSchema } from "@/db/schema/contentItems/validation";
-import { typeboxResolver } from "@hookform/resolvers/typebox";
-import { ArrowRightIcon, MoonIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+
+const formSchema = tb.Object({
+	urls: tb.String(),
+});
 
 export const EmptyQueue = () => {
-	const { bulkCreate: validationSchema } = useValidationSchema();
-
-	const form = useForm<typeof validationSchema>({
-		resolver: typeboxResolver(validationSchema),
-		defaultValues: {
-			urls: "",
+	const form = useForm({
+		resolver: (data, context, x) => {
+			return typeboxResolver<typeof formSchema>(formSchema)(data, context, x);
 		},
+		defaultValues: { urls: "" },
 	});
 
 	const utils = trpcReact.useUtils();
@@ -31,8 +34,8 @@ export const EmptyQueue = () => {
 				position: "top-right",
 			});
 		},
-		onError: async (err, { urls }) => {
-			form.setValue("urls", urls);
+		onError: async (err, urls) => {
+			form.setValue("urls", urls.join("\n"));
 			toast.error("Error", {
 				description: err instanceof Error ? err.message : `Error fetching ${urls.length} urls`,
 				position: "top-right",
@@ -44,10 +47,20 @@ export const EmptyQueue = () => {
 	});
 
 	const onSubmit = form.handleSubmit(
-		async (data) => await mutateAsync({ urls: data.urls }),
-		({ root: err }) => {
+		async ({ urls }) => {
+			try {
+				const splitUrls = urls.split("\n");
+				return await mutateAsync(splitUrls);
+			} catch (err) {
+				toast.error("Error", {
+					description: err instanceof Error ? err.message : `Error in try/catch`,
+					position: "top-right",
+				});
+			}
+		},
+		async (urls) => {
 			toast.error("Error", {
-				description: err instanceof Error ? err.message : `Error creating ${form.getValues().urls}`,
+				description: urls instanceof Error ? urls.message : `Error creating ${urls}`,
 				position: "top-right",
 			});
 		},
@@ -64,7 +77,7 @@ export const EmptyQueue = () => {
 			</div>
 			<Form {...form}>
 				<form className="flex w-full items-center" onSubmit={onSubmit}>
-					<div className="w-1/5"></div>
+					<div className="w-1/5" />
 					<FormField
 						control={form.control}
 						name="urls"
@@ -76,7 +89,6 @@ export const EmptyQueue = () => {
 										placeholder="Enter urls to scrape, one per line"
 										className="resize-none rounded-sm border border-dashed font-display dark:border-fog-400 dark:focus-visible:border-none"
 										{...field}
-										onChange={(e) => field.onChange(e.target.value.split("\n"))}
 									/>
 								</FormControl>
 							</FormItem>

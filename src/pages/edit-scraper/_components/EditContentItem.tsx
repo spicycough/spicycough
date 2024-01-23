@@ -1,8 +1,14 @@
+import { typeboxResolver } from "@hookform/resolvers/typebox";
+import { ExternalLinkIcon, ReloadIcon, UpdateIcon } from "@radix-ui/react-icons";
+import type { Static } from "@sinclair/typebox";
+import { useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
 import { trpcReact } from "@/client";
 import { H2 } from "@/components/typography/h";
 import { P } from "@/components/typography/p";
 import { Button } from "@/components/ui/button";
-import snarkdown from "snarkdown";
 import {
 	Form,
 	FormControl,
@@ -19,20 +25,14 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { ContentItemKinds, insertContentItemSchema, type ContentItem } from "@/db/schema";
-import { typeboxResolver } from "@hookform/resolvers/typebox";
-import { ExternalLinkIcon, ReloadIcon, Share2Icon, UpdateIcon } from "@radix-ui/react-icons";
-import type { Static } from "@sinclair/typebox";
-import { useCallback } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { type ContentItem, ContentItemKinds, insertContentItemSchema } from "@/db/schema";
 import { cn } from "@/lib/utils";
 
 type FormSchema = Static<typeof insertContentItemSchema>;
 
-type EditContentItemProps = {
+interface EditContentItemProps {
 	contentItem: ContentItem;
-};
+}
 
 export const EditContentItem = ({ contentItem }: EditContentItemProps) => {
 	const form = useForm<FormSchema>({
@@ -58,8 +58,8 @@ export const EditContentItem = ({ contentItem }: EditContentItemProps) => {
 
 	const { mutateAsync: refreshContentItem, isPending: isRefreshing } =
 		trpcReact.contentItem.refresh.useMutation({
-			onMutate: async (val) => {
-				utils.contentItem.byId.refetch(val);
+			onMutate: async () => {
+				utils.contentItem.byId.refetch();
 			},
 			onSuccess: async () => toast.success("Refreshed", { position: "top-right" }),
 			onError: async (err) => {
@@ -89,7 +89,7 @@ export const EditContentItem = ({ contentItem }: EditContentItemProps) => {
 										<H2 className="min-w-20 font-display">{field.value}</H2>
 										<div className="absolute bottom-2 right-1 flex space-x-4">
 											<UpdateIcon
-												onClick={() => refreshContentItem({ id: contentItem.id })}
+												onClick={() => refreshContentItem(contentItem.id)}
 												className={cn(
 													"size-4 stroke-fog-400/25 hover:stroke-radiance-400/50",
 													isRefreshing && "animate-spin",

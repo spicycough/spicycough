@@ -1,10 +1,10 @@
-import { Button, type ButtonProps } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
+
 import { trpcReact } from "@/client";
+import { Button, type ButtonProps } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 export const DeleteAllButton = ({ className, children, ...props }: ButtonProps) => {
 	const utils = trpcReact.useUtils();

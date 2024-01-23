@@ -1,13 +1,11 @@
+import { MagicWandIcon, TextAlignBottomIcon } from "@radix-ui/react-icons";
 import type { ComponentPropsWithoutRef, PropsWithChildren, ReactNode } from "react";
 
-import { MagicWandIcon, TextAlignBottomIcon } from "@radix-ui/react-icons";
-
-import { cn } from "@/lib/utils";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-
-import type { ContentItem } from "@/db/schema";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { Switch } from "@/components/ui/switch";
+import type { ContentItem } from "@/db/schema";
+import { cn } from "@/lib/utils";
 
 type PanelProps = PropsWithChildren<{
 	title: string;

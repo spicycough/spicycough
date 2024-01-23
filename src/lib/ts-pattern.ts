@@ -1,4 +1,4 @@
-import { P, isMatching } from "ts-pattern";
+import { isMatching, P } from "ts-pattern";
 
 declare module "ts-pattern" {
 	interface Pattern<T> {

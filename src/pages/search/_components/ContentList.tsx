@@ -1,9 +1,8 @@
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 import type { PropsWithChildren } from "react";
 
-import { ChevronRightIcon } from "@radix-ui/react-icons";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { ContentItemCard } from "@/components/content-item/ContentItemCard";
-
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import type { ContentItem } from "@/db/schema";
 
 export const ContentList = ({ contentItems }: { contentItems: ContentItem[] }) => {
@@ -28,9 +27,9 @@ export const ContentList = ({ contentItems }: { contentItems: ContentItem[] }) =
 	);
 };
 
-export type HeaderProps = {
+export interface HeaderProps {
 	title: string;
-};
+}
 
 const Header = ({ title }: HeaderProps) => {
 	return (
@@ -40,10 +39,10 @@ const Header = ({ title }: HeaderProps) => {
 	);
 };
 
-type ThumbnailsProps = {
+interface ThumbnailsProps {
 	permalink: string;
 	alt?: string;
-};
+}
 
 export const Thumbnail = ({ permalink, alt }: ThumbnailsProps) => {
 	return (

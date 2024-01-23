@@ -1,8 +1,9 @@
 import { type LibSQLDatabase } from "drizzle-orm/libsql";
 import { migrate as drizzleMigrate } from "drizzle-orm/libsql/migrator";
+
 import { useDatabase } from "./useDatabase";
 
-type Database = LibSQLDatabase<Record<string, never>>;
+type Database = LibSQLDatabase<{ [key: string]: never }>;
 
 export const migrate = (db: Database) => {
 	drizzleMigrate(db, { migrationsFolder: "./database/migrations" })

@@ -1,13 +1,14 @@
 import { createClient as createLocalClient } from "@libsql/client";
-import { drizzle } from "drizzle-orm/libsql";
 import { createClient } from "@libsql/client/web";
+import { drizzle } from "drizzle-orm/libsql";
 import { match } from "ts-pattern";
+
 import * as schema from "./schema";
 
-type DatabaseParams = {
+interface DatabaseParams {
 	url: string;
 	authToken: string;
-};
+}
 
 export const useDatabase = (params?: DatabaseParams) => {
 	const createClientFn = match(import.meta.env.PROD)

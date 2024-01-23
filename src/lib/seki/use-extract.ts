@@ -1,9 +1,9 @@
-import type { NewContentItem } from "@/db/schema";
 import * as cheerio from "cheerio";
-import { takeFirst } from "@/lib/utils";
+import { type ExtendedOptionsOfTextResponseBody, gotScraping } from "got-scraping";
 import { convert, type HtmlToTextOptions } from "html-to-text";
-import { gotScraping, type ExtendedOptionsOfTextResponseBody } from "got-scraping";
-import { isNull } from "drizzle-orm";
+
+import type { NewContentItem } from "@/db/schema";
+import { takeFirst } from "@/lib/utils";
 
 const REGEX_COMMAS_AND_SPACES = /[, ]+/;
 const REGEX_ANY_WHITESPACE = /\s+/;
@@ -21,14 +21,14 @@ const Errors = {
 
 export type ExtractOpts = ExtendedOptionsOfTextResponseBody;
 
-type SelectorOverrides = {
+interface SelectorOverrides {
 	fullText: string[];
 	abstract: string[];
 	title: string[];
 	authors: string[];
 	publishedAt: string[];
 	imageUrl: string[];
-};
+}
 
 const useExtract = async (url: URL | string, selectors?: SelectorOverrides, opts?: ExtractOpts) => {
 	const response = await gotScraping(url, opts);
@@ -167,7 +167,9 @@ const fullText = (html: string, extra?: string[]) => {
 	};
 
 	const fullText = convert(html, opts);
-	if (!fullText) throw new Error(Errors.NO_FULL_TEXT);
+	if (!fullText) {
+		throw new Error(Errors.NO_FULL_TEXT);
+	}
 
 	return fullText satisfies NewContentItem["fullText"];
 };
@@ -181,7 +183,9 @@ const title = ($: cheerio.CheerioAPI, extra?: string[]) => {
 	];
 
 	const title = takeFirst(selectors);
-	if (!title) throw new Error(Errors.NO_TITLE);
+	if (!title) {
+		throw new Error(Errors.NO_TITLE);
+	}
 
 	return title satisfies NewContentItem["title"];
 };
@@ -197,7 +201,9 @@ const authors = ($: cheerio.CheerioAPI, extra?: string[]) => {
 	];
 
 	const authors = takeFirst(selectors)?.split(",");
-	if (!authors || authors.length === 0) throw new Error(Errors.NO_AUTHORS);
+	if (!authors || authors.length === 0) {
+		throw new Error(Errors.NO_AUTHORS);
+	}
 
 	return authors satisfies NewContentItem["authors"];
 };
@@ -218,10 +224,14 @@ const publishedAt = ($: cheerio.CheerioAPI, extra?: string[]) => {
 	];
 
 	const date = takeFirst(selectors);
-	if (!date) throw new Error(Errors.NO_PUBLISHED_AT);
+	if (!date) {
+		throw new Error(Errors.NO_PUBLISHED_AT);
+	}
 
 	const standardizedDate = new Date(date);
-	if (!isNaN(standardizedDate.getTime())) throw new Error(Errors.NO_PUBLISHED_AT);
+	if (!isNaN(standardizedDate.getTime())) {
+		throw new Error(Errors.NO_PUBLISHED_AT);
+	}
 
 	return standardizedDate satisfies NewContentItem["publishedAt"];
 };
@@ -239,7 +249,9 @@ const abstract = ($: cheerio.CheerioAPI, extra?: string[]) => {
 	];
 
 	const abstract = takeFirst(selectors);
-	if (!abstract) throw new Error(Errors.NO_ABSTRACT);
+	if (!abstract) {
+		throw new Error(Errors.NO_ABSTRACT);
+	}
 
 	return abstract satisfies NewContentItem["abstract"];
 };
@@ -253,7 +265,9 @@ const imageUrl = ($: cheerio.CheerioAPI, extra?: string[]) => {
 		$("meta[name='image']").attr("content"),
 	];
 	const imageUrl = takeFirst(selectors);
-	if (!imageUrl) throw new Error(Errors.NO_IMAGE_URL);
+	if (!imageUrl) {
+		throw new Error(Errors.NO_IMAGE_URL);
+	}
 
 	return imageUrl satisfies NewContentItem["imageUrl"];
 };
@@ -270,7 +284,9 @@ const keywords = ($: cheerio.CheerioAPI, extra?: string[]): string[] => {
 	];
 
 	const keywords = takeFirst(selectors);
-	if (!keywords) throw new Error(Errors.NO_KEYWORDS);
+	if (!keywords) {
+		throw new Error(Errors.NO_KEYWORDS);
+	}
 
 	return keywords.split(REGEX_COMMAS_AND_SPACES).filter((tag) => tag.trim() !== "");
 };
@@ -286,7 +302,6 @@ const readTime = ($: cheerio.CheerioAPI): number => {
 };
 
 export {
-	useExtract,
 	abstract,
 	authors,
 	fullText,
@@ -295,4 +310,5 @@ export {
 	publishedAt,
 	readTime,
 	title,
+	useExtract,
 };

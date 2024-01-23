@@ -5,10 +5,14 @@ export const useDebug = () => {
 	const fn = new Date().toISOString().replace(/:/g, "-") + ".md";
 
 	const write = (data: string, filename: string = fn) => {
-		if (process.env.PROD) return;
+		if (process.env.PROD) {
+			return;
+		}
 
-		writeFile(filename, data, function (err) {
-			if (err) return console.error(err);
+		writeFile(filename, data, (err) => {
+			if (err) {
+				return console.error(err);
+			}
 		});
 
 		console.debug(`Writing to ${filename}`);

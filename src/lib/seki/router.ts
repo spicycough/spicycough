@@ -1,6 +1,7 @@
-import { P, match } from "ts-pattern";
 import * as cheerio from "cheerio";
-import type { ContentSelectors } from "./types";
+import { match, P } from "ts-pattern";
+
+import { type ContentSelectors, Hostnames } from "./types";
 
 const nature = ($: cheerio.CheerioAPI) =>
 	({
@@ -19,7 +20,7 @@ const fallback: ContentSelectors = {
 	fullText: [".article", "article"],
 } as const;
 
-export const getSelectors = (hostname: string): ContentSelectors => {
+export const getSelectors = (hostname: string) => {
 	return match(hostname)
 		.with(P.string.includes(Hostnames.NATURE), () => nature)
 		.otherwise(() => fallback);

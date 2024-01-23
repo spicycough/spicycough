@@ -1,12 +1,11 @@
-import type { UseDatabase } from "@/db/useDatabase";
 import type { TSchema } from "@sinclair/typebox";
+import type { TObject } from "@sinclair/typebox";
 import { TypeCompiler } from "@sinclair/typebox/compiler";
 import { TRPCError } from "@trpc/server";
-import type { TObject } from "@sinclair/typebox";
-import type { Context } from "./context";
-import { publicProcedure, router } from "./router";
-import { match } from "ts-pattern";
 import type { inferProcedureParams } from "node_modules/@trpc/server/dist/unstableDoNotImportThis";
+import { match } from "ts-pattern";
+
+import { publicProcedure, router } from "./router";
 
 /**
  * Create a type-safe RPC type from a schema
@@ -17,14 +16,16 @@ import type { inferProcedureParams } from "node_modules/@trpc/server/dist/unstab
 export function RpcType<T extends TSchema>(schema: T) {
 	const check = TypeCompiler.Compile(schema);
 	return (value: unknown) => {
-		if (check.Check(value)) return value;
+		if (check.Check(value)) {
+			return value;
+		}
 
 		const { path, message } = check.Errors(value).First()!;
 		throw new TRPCError({ message: `${message} for ${path}`, code: "BAD_REQUEST" });
 	};
 }
 
-type Head = {
+interface Head {
 	<T extends string>(val: T): T extends `${infer F}${string}` ? F : T extends "" ? "" : string;
 	<T extends unknown[]>(
 		val: T,
@@ -33,7 +34,7 @@ type Head = {
 		: T extends readonly [infer U, ...infer _]
 			? U
 			: T[0] | undefined;
-};
+}
 
 type T = string | unknown[];
 
@@ -52,13 +53,13 @@ export const EndpointType = {
 
 export type EndpointType = (typeof EndpointType)[keyof typeof EndpointType];
 
-export type Endpoint = {
+export interface Endpoint {
 	name: string;
 	type: EndpointType;
 	validationSchema?: ValidationSchema;
 	procedure: typeof publicProcedure;
 	fn: inferProcedureParams<typeof publicProcedure>;
-};
+}
 
 export const buildRouter = () => {
 	const [queries, mutations]: [Endpoint[], Endpoint[]] = [[], []];

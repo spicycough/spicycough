@@ -1,13 +1,7 @@
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 
-import { createFakeContentItems } from "@/db/factories";
-import type { ContentItem } from "@/db/schema";
-
-import { ContentList } from "./_components/ContentList";
 import { ContentItemCard } from "@/components/content-item/ContentItemCard";
-import { ChevronRightIcon } from "@radix-ui/react-icons";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
 	Carousel,
 	CarouselContent,
@@ -15,6 +9,12 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@/components/ui/carousel";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { createFakeContentItems } from "@/db/factories";
+import type { ContentItem } from "@/db/schema";
+
+import { ContentList } from "./_components/ContentList";
 
 export const SearchPage = () => {
 	const [contentItems, setContentItems] = useState<ContentItem[]>([]);
@@ -79,9 +79,9 @@ export const SearchPage = () => {
 	);
 };
 
-export type HeaderProps = {
+export interface HeaderProps {
 	title: string;
-};
+}
 
 const Header = ({ title }: HeaderProps) => {
 	return (

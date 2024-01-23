@@ -1,9 +1,11 @@
+import { Suspense } from "react";
+
 import { trpcReact } from "@/client";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Server } from "@/hooks/useServer";
+
 import { EditContentItem } from "./_components/EditContentItem";
 import { EmptyQueue } from "./_components/EmptyQueue";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Suspense } from "react";
 
 export const NewContentItemPage = () => {
 	return (
@@ -18,9 +20,13 @@ export const NewContentItemPage = () => {
 };
 
 const Queue = () => {
-	const { isLoading, data: contentItems } = trpcReact.contentItem.list.useQuery();
-	if (isLoading) return <Skeleton className="h-20 w-20" />;
-	if (!contentItems || !contentItems[0]) return <EmptyQueue />;
+	const { isLoading, data: contentItems } = trpcReact.contentItem.all.useQuery();
+	if (isLoading) {
+		return <Skeleton className="h-20 w-20" />;
+	}
+	if (!contentItems || !contentItems[0]) {
+		return <EmptyQueue />;
+	}
 
 	return <EditContentItem contentItem={contentItems[0]} />;
 };

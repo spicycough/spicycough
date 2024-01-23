@@ -1,12 +1,12 @@
+import { CardStackPlusIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
 import { type ComponentPropsWithoutRef } from "react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-import { BulkAddDialog } from "./BulkAddDialog";
-import { CardStackPlusIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons";
-import { NewContentItemForm } from "./Actions/NewContentItemForm";
 import { DeleteAllButton } from "./Actions/DeleteAllButton";
+import { NewContentItemForm } from "./Actions/NewContentItemForm";
+import { BulkAddDialog } from "./BulkAddDialog";
 
 export const ActionsBar = ({ className }: ComponentPropsWithoutRef<"div">) => {
 	return (

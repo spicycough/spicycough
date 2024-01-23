@@ -1,11 +1,13 @@
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { type Dispatch, type HTMLAttributes, type SetStateAction } from "react";
+
+import { trpcReact } from "@/client";
 import { Separator } from "@/components/ui/separator";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import type { ContentItem } from "@/db/schema";
 import { cn } from "@/lib/utils";
-import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { type HTMLAttributes, type Dispatch, type SetStateAction } from "react";
+
 import { columns } from "./Columns";
-import { trpcReact } from "@/client";
 
 interface QueueProps extends HTMLAttributes<HTMLDivElement> {
 	selected: ContentItem | null;
@@ -13,7 +15,7 @@ interface QueueProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const Queue = ({ setSelected, className }: QueueProps) => {
-	const { data } = trpcReact.contentItem.list.useQuery();
+	const { data } = trpcReact.contentItem.all.useQuery();
 
 	const table = useReactTable<ContentItem>({
 		data: data ?? [],

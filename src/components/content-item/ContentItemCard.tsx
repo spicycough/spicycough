@@ -1,28 +1,30 @@
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import {
-	Card,
-	CardHeader,
-	CardTitle,
-	CardDescription,
-	CardContent,
-	CardFooter,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import type { ContentItem } from "@/db/schema";
+import { Arrow } from "@radix-ui/react-hover-card";
 import {
 	CalendarIcon,
 	EnterFullScreenIcon,
 	InfoCircledIcon,
 	Link2Icon,
 } from "@radix-ui/react-icons";
-import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
-import { Separator } from "../ui/separator";
-import { Arrow } from "@radix-ui/react-hover-card";
 
-type ContentItemCardProps = {
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import type { ContentItem } from "@/db/schema";
+
+import { Separator } from "../ui/separator";
+
+interface ContentItemCardProps {
 	item?: ContentItem;
 	withAbstract?: boolean;
-};
+}
 
 const emptyContentItem = { title: "", authors: "", abstract: "", publishedAt: "", permalink: "" };
 
@@ -84,10 +86,10 @@ const DetailsHoverCard = ({ title, permalink }: Partial<ContentItem>) => {
 	);
 };
 
-type ThumbnailsProps = {
+interface ThumbnailsProps {
 	url: string;
 	alt: string;
-};
+}
 
 export const Thumbnail = ({ url, alt }: ThumbnailsProps) => {
 	const [w, h] = [150, 100];

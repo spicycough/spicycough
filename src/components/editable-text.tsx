@@ -1,8 +1,8 @@
+import { Slot, type SlotProps } from "@radix-ui/react-slot";
 import * as React from "react";
+import { match } from "ts-pattern";
 
 import { cn } from "@/lib/utils";
-import { Slot, type SlotProps } from "@radix-ui/react-slot";
-import { match } from "ts-pattern";
 
 export interface EditableTextAsProps extends React.HTMLAttributes<HTMLElement> {}
 
@@ -42,11 +42,15 @@ const EditableText = React.forwardRef<HTMLInputElement, EditableTextProps>(
 				ref={ref}
 				onChange={(event) => {
 					updateText(event);
-					if (onChange) onChange(event);
+					if (onChange) {
+						onChange(event);
+					}
 				}}
 				onBlur={(event) => {
 					stopEditing();
-					if (onBlur) onBlur(event);
+					if (onBlur) {
+						onBlur(event);
+					}
 				}}
 				onKeyUp={(event) => {
 					match(event.key)

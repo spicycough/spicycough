@@ -1,10 +1,11 @@
+import { useState } from "react";
+
+import type { ContentItem } from "@/db/schema";
 import { Server } from "@/hooks/useServer";
+
 import { ActionsBar } from "./_components/ActionsBar";
 import { DetailsView } from "./_components/DetailsView";
 import { Queue } from "./_components/Staging/Table";
-
-import type { ContentItem } from "@/db/schema";
-import { useState } from "react";
 
 export const ContentItemPage = () => {
 	const [selected, setSelected] = useState<ContentItem | null>(null);

@@ -1,11 +1,10 @@
 import { useCallback } from "react";
-import { useList } from "@uidotdev/usehooks";
 
-type Callbacks = {
+interface Callbacks {
 	onSuccess?: () => void;
 	onFailure?: (err: Error) => void;
 	onFinish?: () => void;
-};
+}
 
 type CreateEndpoint = (url: string, callbacks: Callbacks) => void;
 
@@ -18,8 +17,6 @@ type RefreshAllEndpoint = (callbacks: Callbacks) => void;
 type DeleteAllEndpoint = (callbacks: Callbacks) => void;
 
 export const useContentItems = () => {
-	const [list, { set, push, removeAt, insertAt, updateAt, clear }] = useList();
-
 	const bulkCreate: BulkCreateEndpoint = useCallback(
 		async (urls: string, { onSuccess, onFailure, onFinish }: Callbacks) => {
 			console.log(`useContentItems.bulkCreate`);
@@ -29,14 +26,22 @@ export const useContentItems = () => {
 					method: "POST",
 					body: JSON.stringify({ urls: urls.split(",") }),
 				});
-				if (!resp.ok) throw new Error(await resp.text());
+				if (!resp.ok) {
+					throw new Error(await resp.text());
+				}
 
-				if (onSuccess) onSuccess();
+				if (onSuccess) {
+					onSuccess();
+				}
 			} catch (err) {
-				if (onFailure && err instanceof Error) onFailure(err);
+				if (onFailure && err instanceof Error) {
+					onFailure(err);
+				}
 			}
 
-			if (onFinish) onFinish();
+			if (onFinish) {
+				onFinish();
+			}
 		},
 		[],
 	);
@@ -55,13 +60,21 @@ export const useContentItems = () => {
 
 			try {
 				const resp = await fetch(`/api/content-items/${ids}`, { method: "POST" });
-				if (!resp.ok) throw new Error(await resp.text());
+				if (!resp.ok) {
+					throw new Error(await resp.text());
+				}
 
-				if (onSuccess) onSuccess();
+				if (onSuccess) {
+					onSuccess();
+				}
 			} catch (err) {
-				if (onFailure && err instanceof Error) onFailure(err);
+				if (onFailure && err instanceof Error) {
+					onFailure(err);
+				}
 			}
-			if (onFinish) onFinish();
+			if (onFinish) {
+				onFinish();
+			}
 		},
 		[],
 	);
@@ -72,13 +85,21 @@ export const useContentItems = () => {
 
 			try {
 				const resp = await fetch(`/api/content-items/${ids}`, { method: "DELETE" });
-				if (!resp.ok) throw new Error(await resp.text());
+				if (!resp.ok) {
+					throw new Error(await resp.text());
+				}
 
-				if (onSuccess) onSuccess();
+				if (onSuccess) {
+					onSuccess();
+				}
 			} catch (err) {
-				if (onFailure && err instanceof Error) onFailure(err);
+				if (onFailure && err instanceof Error) {
+					onFailure(err);
+				}
 			}
-			if (onFinish) onFinish();
+			if (onFinish) {
+				onFinish();
+			}
 		},
 		[],
 	);
@@ -89,14 +110,22 @@ export const useContentItems = () => {
 
 			try {
 				const resp = await fetch("/api/content-items", { method: "GET" });
-				if (!resp.ok) throw new Error(await resp.text());
+				if (!resp.ok) {
+					throw new Error(await resp.text());
+				}
 
-				if (onSuccess) onSuccess();
+				if (onSuccess) {
+					onSuccess();
+				}
 			} catch (err) {
-				if (onFailure && err instanceof Error) onFailure(err);
+				if (onFailure && err instanceof Error) {
+					onFailure(err);
+				}
 			}
 
-			if (onFinish) onFinish();
+			if (onFinish) {
+				onFinish();
+			}
 		},
 		[],
 	);
@@ -107,13 +136,21 @@ export const useContentItems = () => {
 
 			try {
 				const resp = await fetch("/api/content-items", { method: "POST" });
-				if (!resp.ok) throw new Error(await resp.text());
+				if (!resp.ok) {
+					throw new Error(await resp.text());
+				}
 
-				if (onSuccess) onSuccess();
+				if (onSuccess) {
+					onSuccess();
+				}
 			} catch (err) {
-				if (onFailure && err instanceof Error) onFailure(err);
+				if (onFailure && err instanceof Error) {
+					onFailure(err);
+				}
 			}
-			if (onFinish) onFinish();
+			if (onFinish) {
+				onFinish();
+			}
 		},
 		[],
 	);
@@ -123,13 +160,21 @@ export const useContentItems = () => {
 
 		try {
 			const resp = await fetch("/api/content-items", { method: "DELETE" });
-			if (!resp.ok) throw new Error(await resp.text());
+			if (!resp.ok) {
+				throw new Error(await resp.text());
+			}
 
-			if (onSuccess) onSuccess();
+			if (onSuccess) {
+				onSuccess();
+			}
 		} catch (err) {
-			if (onFailure && err instanceof Error) onFailure(err);
+			if (onFailure && err instanceof Error) {
+				onFailure(err);
+			}
 		}
-		if (onFinish) onFinish();
+		if (onFinish) {
+			onFinish();
+		}
 	}, []);
 
 	return { fetch, create, bulkCreate, bulkDelete, bulkRefresh, fetchAll, deleteAll, refreshAll };

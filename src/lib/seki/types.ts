@@ -1,4 +1,4 @@
-export type Metadata = {
+export interface Metadata {
 	image: string;
 	title: string;
 	author: string;
@@ -7,20 +7,20 @@ export type Metadata = {
 	abstract: string;
 	tags: string[];
 	readTime: number;
-};
+}
 
-export type Content = {
+export interface Content {
 	abstract: string;
 	fullText: string;
-};
+}
 
-export type ContentSelectors = {
+export interface ContentSelectors {
 	title: string[];
 	authors: string[];
 	publicationDate: string[];
 	abstract: string[];
 	fullText: string[];
-};
+}
 
 export const Hostnames = {
 	NATURE: "nature.com",

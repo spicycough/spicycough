@@ -1,18 +1,17 @@
-import { Button } from "@/components/ui/button";
-
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input, type InputProps } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
 import { typeboxResolver } from "@hookform/resolvers/typebox";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { Type, type Static } from "@sinclair/typebox";
+import { type Static, Type } from "@sinclair/typebox";
+import { useQueryClient } from "@tanstack/react-query";
+import { getQueryKey } from "@trpc/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { trpcReact } from "@/client";
-import { useQueryClient } from "@tanstack/react-query";
-import { getQueryKey } from "@trpc/react-query";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Input, type InputProps } from "@/components/ui/input";
 import { createFakeContentItems } from "@/db/factories";
+import { cn } from "@/lib/utils";
 
 const FormSchema = Type.Object({
 	url: Type.String(),
@@ -51,13 +50,13 @@ export const NewContentItemForm = ({ className, children, ...props }: InputProps
 
 			toast.success("Success", { description, position: "top-right" });
 		},
-		onError: async (err, { url }) => {
+		onError: async (err, url) => {
 			setValue("url", url);
-			const description = err instanceof Error ? err.message : `Error creating ${url}`;
+			const description = err instanceof Error ? err.message : `Error! creating ${url}`;
 
 			toast.error("Error", {
 				description,
-				position: "top-right",
+				position: "bottom-right",
 			});
 		},
 		onSettled: async () => {

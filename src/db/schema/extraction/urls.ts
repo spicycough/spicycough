@@ -1,8 +1,9 @@
-import type { NanoId } from "@/db/types";
-import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel, sql } from "drizzle-orm";
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { nanoid } from "nanoid";
+
+import type { NanoId } from "@/db/types";
 
 export const extractedUrls = sqliteTable("extracted_urls", {
 	id: text("id")

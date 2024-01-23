@@ -1,5 +1,4 @@
 import type { Config } from "drizzle-kit";
-
 import { loadEnv } from "vite";
 
 const { PUBLIC_TURSO_DB_URL, PUBLIC_TURSO_DB_AUTH_TOKEN } = loadEnv(

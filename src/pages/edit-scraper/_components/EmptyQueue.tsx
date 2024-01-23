@@ -1,22 +1,23 @@
+import { typeboxResolver } from "@hookform/resolvers/typebox";
+import { ArrowRightIcon, MoonIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { Type as tb } from "@sinclair/typebox";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
 import { trpcReact } from "@/client";
 import { H1, H3 } from "@/components/typography/h";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { useValidationSchema } from "@/db/schema/contentItems/validation";
-import { typeboxResolver } from "@hookform/resolvers/typebox";
-import { ArrowRightIcon, MoonIcon, UpdateIcon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+
+const formSchema = tb.Object({
+	urls: tb.String(),
+});
 
 export const EmptyQueue = () => {
-	const { bulkCreate: validationSchema } = useValidationSchema();
-
-	const form = useForm<typeof validationSchema>({
-		resolver: typeboxResolver(validationSchema),
-		defaultValues: {
-			urls: "",
-		},
+	const form = useForm({
+		resolver: typeboxResolver<typeof formSchema>(formSchema),
+		defaultValues: { urls: "" },
 	});
 
 	const utils = trpcReact.useUtils();
@@ -31,8 +32,8 @@ export const EmptyQueue = () => {
 				position: "top-right",
 			});
 		},
-		onError: async (err, { urls }) => {
-			form.setValue("urls", urls);
+		onError: async (err, urls) => {
+			form.setValue("urls", urls.join("\n"));
 			toast.error("Error", {
 				description: err instanceof Error ? err.message : `Error fetching ${urls.length} urls`,
 				position: "top-right",
@@ -44,7 +45,10 @@ export const EmptyQueue = () => {
 	});
 
 	const onSubmit = form.handleSubmit(
-		async (data) => await mutateAsync({ urls: data.urls }),
+		async (data) => {
+			const splitUrls = data.urls.split("\n");
+			await mutateAsync(splitUrls);
+		},
 		({ root: err }) => {
 			toast.error("Error", {
 				description: err instanceof Error ? err.message : `Error creating ${form.getValues().urls}`,

@@ -1,10 +1,12 @@
-import { trpcReact } from "@/client";
-import { Button } from "@/components/ui/button";
-import type { ContentItem } from "@/db/schema";
 import { Pencil1Icon, ReloadIcon, TrashIcon } from "@radix-ui/react-icons";
 import { type ColumnDef, type Row } from "@tanstack/react-table";
 import { type HTMLAttributes } from "react";
 import { toast } from "sonner";
+
+import { trpcReact } from "@/client";
+import { Button } from "@/components/ui/button";
+import type { ContentItem } from "@/db/schema";
+
 import { EditDialog } from "../EditDialog";
 
 export type Columns = ColumnDef<ContentItem>[];
@@ -90,7 +92,7 @@ type RemoveButtonProps = HTMLAttributes<HTMLButtonElement> & { row: Row<ContentI
 
 const RemoveButton = ({ row }: RemoveButtonProps) => {
 	// eslint-disable-next-line drizzle/enforce-delete-with-where
-	const { mutate: deleteContentItem } = trpcReact.contentItem.delete.useMutation({
+	const { mutate: deleteContentItem } = trpcReact.contentItem.remove.useMutation({
 		onMutate: () => {},
 		onSuccess: () => {
 			toast.success("Success", {
@@ -114,7 +116,7 @@ const RemoveButton = ({ row }: RemoveButtonProps) => {
 			className="rounded-md dark:text-destructive"
 			onClick={(e) => {
 				e.stopPropagation();
-				deleteContentItem(parseInt(row.id));
+				deleteContentItem(row.id);
 			}}
 		>
 			<TrashIcon />

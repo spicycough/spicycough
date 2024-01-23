@@ -1,7 +1,6 @@
 import { Type } from "@sinclair/typebox";
-import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
-
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
 import { nanoid } from "nanoid";
 
@@ -12,9 +11,11 @@ export const ContentItemKind = {
 	THREAD: "thread",
 } as const;
 
-export const ContentItemKinds = Object.values(ContentItemKind) as [string, ...string[]];
-
 export type ContentItemKind = (typeof ContentItemKind)[keyof typeof ContentItemKind];
+
+export const ContentItemKinds: [ContentItemKind, ...ContentItemKind[]] = Object.values(
+	ContentItemKind,
+) as [ContentItemKind, ...ContentItemKind[]];
 
 export type ContentItemId = number;
 
@@ -23,7 +24,6 @@ export const contentItems = sqliteTable("content_items", {
 		.primaryKey()
 		.$defaultFn(() => nanoid()),
 	kind: text("kind", {
-		mode: "text",
 		enum: ContentItemKinds,
 	}).default(ContentItemKind.ARTICLE),
 	permalink: text("permalink").notNull(),
@@ -34,8 +34,12 @@ export const contentItems = sqliteTable("content_items", {
 	fullText: text("full_text"),
 	slug: text("slug").notNull(),
 	publishedAt: integer("published_at", { mode: "timestamp" }).notNull(),
-	createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
-	updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+	// createdAt: integer("created_at", { mode: "timestamp_ms" })
+	// 	.$default(() => new Date())
+	// 	.$type<Date>(),
+	// updatedAt: integer("updated_at", { mode: "timestamp_ms" })
+	// 	.$default(() => new Date())
+	// 	.$type<Date>(),
 });
 
 export type ContentItemTable = typeof contentItems;

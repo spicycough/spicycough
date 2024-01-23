@@ -1,4 +1,5 @@
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+
 import { contentItems } from "./contentItems";
 
 export const ContentItemSummaryKind = {

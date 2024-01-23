@@ -1,23 +1,24 @@
-import { H3 } from "@/components/typography/h";
-import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import * as React from "react";
 import {
-	useFormContext,
 	type Control,
 	type ControllerFieldState,
 	type ControllerRenderProps,
+	useFormContext,
 	type UseFormStateReturn,
 } from "react-hook-form";
 import { match } from "ts-pattern";
 
-type RenderProps = {
+import { H3 } from "@/components/typography/h";
+import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+interface RenderProps {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	field: ControllerRenderProps<any, string>;
 	fieldState: ControllerFieldState;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	formState: UseFormStateReturn<any>;
-};
+}
 
 type EditableTextFormFieldProps = React.PropsWithRef<{
 	name: string;
@@ -45,7 +46,9 @@ export const EditableTextFormField = React.forwardRef<HTMLInputElement, Editable
 				})
 				.with("Escape", () => {
 					stopEditing();
-					if (onAbort) onAbort();
+					if (onAbort) {
+						onAbort();
+					}
 				}).exhaustive;
 		};
 

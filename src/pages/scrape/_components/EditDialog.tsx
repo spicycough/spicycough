@@ -1,3 +1,10 @@
+import { typeboxResolver } from "@hookform/resolvers/typebox";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { type Static } from "@sinclair/typebox";
+import { type PropsWithChildren } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
 import { trpcReact } from "@/client";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,13 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { insertContentItemSchema, type ContentItem } from "@/db/schema";
-import { typeboxResolver } from "@hookform/resolvers/typebox";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { type Static } from "@sinclair/typebox";
-import { type PropsWithChildren } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { type ContentItem, insertContentItemSchema } from "@/db/schema";
 
 type EditDialogProps = PropsWithChildren<{
 	contentItem: ContentItem;

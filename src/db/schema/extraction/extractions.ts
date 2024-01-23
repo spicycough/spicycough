@@ -1,10 +1,11 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
-
 import { createInsertSchema, createSelectSchema } from "drizzle-typebox";
+
+import type { NanoId } from "@/db/types";
+
 import { extractedFields } from "./fields";
 import { extractedUrls } from "./urls";
-import type { NanoId } from "@/db/types";
 
 export const extractions = sqliteTable(
 	"extractions",

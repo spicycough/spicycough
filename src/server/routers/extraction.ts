@@ -1,10 +1,12 @@
 import { Type } from "@sinclair/typebox";
+import * as cheerio from "cheerio";
+import { gotScraping } from "got-scraping";
+import { match } from "ts-pattern";
+
+import type { NewExtractedField } from "@/db/schema";
+
 import { publicProcedure, router } from "../router";
 import { RpcType } from "../utils";
-import { gotScraping } from "got-scraping";
-import * as cheerio from "cheerio";
-import type { NewExtractedField } from "@/db/schema";
-import { match } from "ts-pattern";
 
 const getField = (_$: cheerio.CheerioAPI, { cssSelector, selectionMethod }: NewExtractedField) => {
 	return match(selectionMethod)

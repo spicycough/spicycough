@@ -1,5 +1,6 @@
-import { useDatabase } from "@/db/useDatabase";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+
+import { useDatabase } from "@/db/useDatabase";
 
 export function createContext({ req, resHeaders }: FetchCreateContextFnOptions) {
 	const { db, schema } = useDatabase();

@@ -1,4 +1,6 @@
-import { useState, type FormEvent, type PropsWithChildren } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { type FormEvent, type PropsWithChildren, useState } from "react";
+import { toast } from "sonner";
 
 import { trpcReact } from "@/client";
 import { Button } from "@/components/ui/button";
@@ -12,8 +14,6 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { toast } from "sonner";
 
 export const BulkAddDialog = ({ children }: PropsWithChildren) => {
 	const [open, setOpen] = useState(false);
