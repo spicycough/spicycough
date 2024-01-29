@@ -4,8 +4,8 @@ import RootLayout from "@/layouts/RootLayout.astro";
 import { HomePage } from "./_page";
 ---
 
-<RootLayout>
-	<main class="container flex h-dvh min-h-dvh w-full flex-col gap-12 py-10">
-		<HomePage client:load />
+<RootLayout title="Search!" description="Test">
+	<main class="max-h-dvh min-h-screen items-center pb-8 pt-6 md:py-10">
+		<HomePage client:only="react" />
 	</main>
 </RootLayout>
