@@ -1,0 +1,11 @@
+---
+import RootLayout from "@/layouts/RootLayout.astro";
+
+import { AdminPage } from "./_page";
+---
+
+<RootLayout title="Search!" description="Test">
+	<main class="max-h-dvh min-h-screen items-center pb-8 pt-6 md:py-10">
+		<AdminPage client:only="react" />
+	</main>
+</RootLayout>
