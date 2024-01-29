@@ -1,8 +1,9 @@
 import { typeboxResolver } from "@hookform/resolvers/typebox";
-import { ExternalLinkIcon, ReloadIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { ExternalLinkIcon, ReloadIcon, TrashIcon, UpdateIcon } from "@radix-ui/react-icons";
 import type { Static } from "@sinclair/typebox";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import snarkdown from "snarkdown";
 import { toast } from "sonner";
 
 import { trpcReact } from "@/client";
@@ -71,34 +72,43 @@ export const EditContentItem = ({ contentItem }: EditContentItemProps) => {
 			onSettled: async () => {},
 		});
 
+	const { mutateAsync: deleteContentItem, isPending: isDeleting } =
+		trpcReact.contentItem.remove.useMutation({
+			onMutate: async () => {
+				utils.contentItem.byId.refetch();
+			},
+		});
+
 	const onSubmit = useCallback(() => {
 		updateContentItem(form.getValues());
 	}, []);
 
 	return (
-		<div className="container flex h-full w-full flex-col gap-y-20">
+		<div className="container flex flex-col gap-y-40">
 			<Form {...form}>
-				<form className="w-full space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+				<form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
 					<FormField
 						control={form.control}
 						name="title"
 						render={({ field }) => (
-							<FormItem className="flex min-h-20 w-full min-w-20 items-baseline space-x-2">
+							<FormItem className="flex min-h-20 flex-col space-x-2">
+								<H2 className="min-w-20 basis-full">{field.value}</H2>
 								<FormControl>
-									<div className="relative">
-										<H2 className="min-w-20 font-display">{field.value}</H2>
-										<div className="absolute bottom-2 right-1 flex space-x-4">
-											<UpdateIcon
-												onClick={() => refreshContentItem(contentItem.id)}
-												className={cn(
-													"size-4 stroke-fog-400/25 hover:stroke-radiance-400/50",
-													isRefreshing && "animate-spin",
-												)}
-											/>
-											<a href={form.getValues("permalink")}>
-												<ExternalLinkIcon className="size-4 stroke-fog-400/25 hover:stroke-gleam-400" />
-											</a>
-										</div>
+									<div className="absolute right-1 flex space-x-4">
+										<UpdateIcon
+											onClick={() => refreshContentItem(contentItem.id)}
+											className={cn(
+												"size-4 stroke-fog-400/25 hover:stroke-radiance-400/50",
+												isRefreshing && "animate-spin",
+											)}
+										/>
+										<a href={form.getValues("permalink")}>
+											<ExternalLinkIcon className="size-4 stroke-fog-400/25 hover:stroke-gleam-400" />
+										</a>
+										<TrashIcon
+											onClick={() => deleteContentItem(contentItem.id)}
+											className={cn("size-4 stroke-fog-400/25 hover:stroke-slate-400/50")}
+										/>
 									</div>
 								</FormControl>
 								<FormMessage />
@@ -160,22 +170,7 @@ export const EditContentItem = ({ contentItem }: EditContentItemProps) => {
 							</FormItem>
 						)}
 					/>
-					<FormField
-						control={form.control}
-						name="fullText"
-						render={({ field }) => (
-							<FormItem className="max-h-80 min-h-20 overflow-y-scroll rounded-md border border-gray-200/25 p-4">
-								<FormLabel className="font-display font-bold uppercase">{field.name}</FormLabel>
-								<FormControl>
-									<ScrollArea>
-										{/*<div dangerouslySetInnerHTML={{ __html: snarkdown(field.value ?? "") }} />*/}
-										<P>{field.value}</P>
-									</ScrollArea>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<div dangerouslySetInnerHTML={{ __html: snarkdown(contentItem.fullText ?? "") }} />
 					<Button
 						type="submit"
 						disabled={!!data || isPending}
