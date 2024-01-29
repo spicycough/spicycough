@@ -1,3 +1,4 @@
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -21,4 +22,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 Input.displayName = "Input";
 
-export { Input };
+export interface SearchProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+const Search = React.forwardRef<HTMLInputElement, InputProps>(
+	({ className, type, ...props }, ref) => {
+		return (
+			<div className={cn("relative flex max-w-5xl items-center")}>
+				<MagnifyingGlassIcon className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 transform" />
+				<Input />
+			</div>
+		);
+	},
+);
+Input.displayName = "Input";
+
+export { Input, Search };
