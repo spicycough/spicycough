@@ -7,27 +7,65 @@ import {
 	type NewContentItem,
 	selectContentItemSchema,
 } from "@/db/schema";
-import { useExtract } from "@/lib/seki";
+import type { ExtractResults } from "@/lib/seki/types";
+// const standardizeDate = (date: string) => {
+// 	const dateObj = new Date(date);
+// 	return `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`;
+// };
+// async function oldExtractContentItem(url: string): Promise<NewContentItem> {
+// 	const { results } = await useExtract(url);
+// 	const { content, metadata } = results;
+// 	const findFirst = (results: ExtractResults) => {
+// 		return results.find(({ value }) => !!value || typeof value === "undefined");
+// 	};
+// 	const abstract = findFirst(content.abstract)?.value?.toString();
+// 	if (!abstract) throw new Error(`Could not extract abstract from ${url}`);
+// 	const title = findFirst(metadata.title)?.value?.toString();
+// 	if (!title) throw new Error(`Could not extract title from ${url}`);
+// 	const authors = findFirst(metadata.authors)?.value;
+// 	if (!authors) throw new Error(`Could not extract authors from ${url}`);
+// 	const imageUrl = findFirst(metadata.imageUrl)?.value?.toString();
+// 	if (!imageUrl) throw new Error(`Could not extract image url from ${url}`);
+// 	const rawPublishedAt = findFirst(metadata.publishedAt)?.value?.toString();
+// 	if (!rawPublishedAt) throw new Error(`Could not extract published at from ${url}`);
+// 	const publishedAt = new Date(rawPublishedAt);
+// 	return {
+// 		kind: ContentItemKind.ARTICLE,
+// 		permalink: url,
+// 		title,
+// 		authors,
+// 		imageUrl,
+// 		publishedAt,
+// 		abstract,
+// 		fullText: content.fullText,
+// 		slug: slugify(title),
+// 	};
+// }
+import { useExtract } from "@/lib/seki/use-extract";
 import { slugify } from "@/lib/utils";
 import { head, RpcType } from "@/server/utils";
 
 import { publicProcedure, router } from "../router";
 
-async function extractContentItem(url: string): Promise<NewContentItem> {
+const extractContentItem = async (url: string): Promise<NewContentItem> => {
 	const { content, metadata } = await useExtract(url);
 
-	return {
+	const extractedContentItem: NewContentItem = {
 		kind: ContentItemKind.ARTICLE,
-		permalink: url,
-		title: metadata.title,
-		authors: metadata.authors,
-		imageUrl: metadata.imageUrl,
-		publishedAt: metadata.publishedAt,
-		abstract: content.abstract,
-		fullText: content.fullText,
-		slug: slugify(metadata.title),
+		permalink: metadata.url ?? "",
+		title: metadata.title ?? "",
+		authors: [metadata.authors ?? ""],
+		imageUrl: metadata.image ?? "",
+		publishedAt: metadata.date ? new Date(metadata.date) : new Date(),
+		abstract: metadata.description ?? "",
+		fullText: content,
+		slug: slugify(metadata.title ?? ""),
 	};
-}
+
+	console.log(extractedContentItem);
+
+	return extractedContentItem;
+};
 
 export const contentItemRouter = () => {
 	return router({
@@ -163,9 +201,11 @@ export const contentItemRouter = () => {
 					throw new Error(`Content item with ID ${id} does not exist.`);
 				}
 
+				const extract = await extractContentItem(existing.permalink);
+
 				return await db
 					.update(schema.contentItems)
-					.set(await extractContentItem(existing.permalink))
+					.set(extract)
 					.where(drizzle.eq(schema.contentItems.id, id))
 					.returning();
 			}),
