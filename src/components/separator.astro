@@ -1,0 +1,11 @@
+---
+const { class: className } = Astro.props
+---
+
+<div
+  class:list={[
+    "shrink-0 bg-border data-[orientation=horizontal]:h-[1px] data-[orientation=vertical]:h-full data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-[1px]",
+    className,
+  ]}
+>
+</div>

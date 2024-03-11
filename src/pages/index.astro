@@ -1,11 +1,124 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro"
+
+import Card from "@/components/card/Card.astro"
+import CardTitle from "@/components/card/CardTitle.astro"
+import CardContent from "@/components/card/CardContent.astro"
+import CardFooter from "@/components/card/CardFooter.astro"
+import CardHeader from "@/components/card/CardHeader.astro"
+import CardDescription from "@/components/card/CardDescription.astro"
+
+import Separator from "@/components/separator.astro"
+import { createSummary } from "@summaries"
+
+const articles = [
+  {
+    title: "Article 1",
+    description: "Description 1",
+    source: "Source 1",
+  },
+  {
+    title: "Article 2",
+    description: "Description 2",
+    source: "Source 2",
+  },
+  {
+    title: "Article 3",
+    description: "Description 3",
+    source: "Source 3",
+  },
+]
+
+const url =
+  "https://theconversation.com/mounting-research-shows-that-covid-19-leaves-its-mark-on-the-brain-including-with-significant-drops-in-iq-scores-224216"
+const summary = await createSummary(url)
 ---
 
-<Layout title="Welcome to Astro." description="Test">
-	<main class="flex flex-col justify-evenly items-center mx-auto w-1/2 h-screen content-stretch">
-		<div class="flex flex-col items-center w-full">
-			<h1 class="pb-10 font-bold text-[4rem]">Astro quickstart</h1>
-		</div>
-	</main>
+<Layout title="spicycough" description="Test">
+  <nav
+    class="min-h-16 font-bold text-lg p-4 sticky w-full top-0 z-50 bg-white border border-b-slate-800"
+  >
+    spicycough
+  </nav>
+  <main class="relative flex flex-col items-center h-svh container">
+    <div class="grid grid-cols-1 md:grid-cols-3 h-full w-full pt-10">
+      <div class="col-span-2 divide-x flex flex-col">
+        <div class="p-4 min-h-40 flex flex-col gap-y-4 border border-b-slate-300 shadow">
+          <h1 class="text-2xl font-bold">This is an article title</h1>
+          <img
+            class="w-full h-60 object-cover rounded-lg"
+            src="https://via.placeholder.com/1920x1080"
+            alt="Article image"
+          />
+          <p>
+            {
+              summary
+                ? summary
+                : `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ex tortor, interdum non
+            magna sit amet, ultrices elementum dolor. Donec pellentesque libero molestie tincidunt
+            tempus. Sed a justo justo. Etiam et ullamcorper odio. Quisque ante orci, ultrices vitae
+            ultricies et, tincidunt eget magna. Class aptent taciti sociosqu ad litora torquent per
+            conubia nostra, per inceptos himenaeos. Aenean sagittis semper diam, in faucibus mi
+            mollis vitae. Nunc in pharetra sapien. Phasellus ultrices laoreet urna, id imperdiet
+            ligula vehicula sagittis. Sed libero erat, convallis ac quam ullamcorper, laoreet ornare
+            arcu. Nam suscipit ligula vitae lorem consectetur scelerisque. Cras sodales cursus eros,
+            in lacinia magna dapibus et. Nullam in fringilla leo, viverra eleifend leo. Praesent ut
+            laoreet lectus. Aliquam fringilla blandit euismod. Donec eget euismod lorem. Cras non
+            eros ipsum. Curabitur sed sem ac sapien commodo consequat. Phasellus ornare faucibus
+            nisi, quis mollis magna pharetra sit amet. Ut sagittis sodales nisl, a commodo mi
+            aliquam a. Morbi ornare mi et leo maximus, a hendrerit nulla ullamcorper. Fusce in
+            fringilla ex, quis mollis diam. Sed at euismod diam, vitae consectetur odio. Ut congue,
+            nisl nec tempor dapibus, ex libero auctor mauris, vitae feugiat magna urna nec tellus.
+            Vestibulum viverra luctus elit, in posuere eros porta id. Maecenas non ullamcorper quam.
+            Suspendisse purus velit, luctus quis semper et, lobortis quis orci. Nulla vestibulum in
+            lectus nec bibendum. Quisque vel libero et sem volutpat accumsan in vel nulla. Donec
+            volutpat tellus cursus ante feugiat, eu tristique elit ultricies. In ut tristique justo,
+            id semper mi. Nunc tellus tellus, scelerisque nec commodo eget, pharetra id felis. Duis
+            vulputate dapibus ipsum et gravida. Donec luctus dictum placerat. Etiam in lorem nec
+            nisi malesuada sagittis non non diam.`
+            }
+          </p>
+        </div>
+      </div>
+      <div class="col-span-1">
+        <div class="min-h-40 px-2 overflow-y-scroll flex flex-col gap-y-4">
+          {
+            articles.map((article) => (
+              <>
+                <Card class="p-4 rounded">
+                  <CardHeader>
+                    <CardTitle>{article.title}</CardTitle>
+                    <CardDescription>{article.source}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p>{article.description}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <p>Next</p>
+                  </CardFooter>
+                </Card>
+                <Separator class="bg-black" />
+              </>
+            ))
+          }
+        </div>
+      </div>
+      <!-- { -->
+      <!--   articles.map((article) => ( -->
+      <!--     <Card class=""> -->
+      <!--       <CardHeader> -->
+      <!--         <CardTitle>{article.title}</CardTitle> -->
+      <!--         <CardDescription>{article.source}</CardDescription> -->
+      <!--       </CardHeader> -->
+      <!--       <CardContent> -->
+      <!--         <p>{article.description}</p> -->
+      <!--       </CardContent> -->
+      <!--       <CardFooter> -->
+      <!--         <p>Next</p> -->
+      <!--       </CardFooter> -->
+      <!--     </Card> -->
+      <!--   )) -->
+      <!-- } -->
+    </div>
+  </main>
 </Layout>
