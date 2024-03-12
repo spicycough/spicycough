@@ -18,7 +18,8 @@
       "trailingComma": "all"
     },
     "globals": [
-      "__DEV__"
+      "__DEV__",
+      "Astro"
     ]
   },
   "json": {
@@ -45,9 +46,6 @@
       "a11y": {
         "useAnchorContent": "off",
         "useValidAnchor": "off"
-      },
-      "nursery": {
-        "useGroupedTypeImport": "error"
       }
     }
   }

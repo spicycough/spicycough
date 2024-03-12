@@ -1,14 +1,16 @@
-import cloudflare from "@astrojs/cloudflare"
-import tailwind from "@astrojs/tailwind"
-import { defineConfig } from "astro/config"
+import cloudflare from '@astrojs/cloudflare';
+import tailwind from '@astrojs/tailwind';
+import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
 export default defineConfig({
+  site: process.env.SITE_URL || 'https://spicycough.com',
+  output: 'server',
   integrations: [tailwind({ applyBaseStyles: false })],
-  adapter: cloudflare(),
-  site: process.env.SITE_URL || "https://spicycough.com",
+  adapter: cloudflare({
+    mode: 'directory',
+    imageService: 'passthrough',
+    runtime: { mode: 'local', type: 'pages' },
+  }),
   compressHTML: true,
-  output: "server",
   prefetch: true,
-  experimental: { contentCollectionCache: true },
-})
+});
