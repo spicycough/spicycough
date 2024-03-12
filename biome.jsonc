@@ -40,13 +40,7 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noExplicitAny": "off",
-        "noArrayIndexKey": "off",
-        "noConfusingLabels": "off",
-        "noShadowRestrictedNames": "off"
-      },
-      "security": {
-        "noDangerouslySetInnerHtml": "off"
+        "noExplicitAny": "off"
       },
       "a11y": {
         "useAnchorContent": "off",
