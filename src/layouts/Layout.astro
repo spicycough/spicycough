@@ -1,29 +1,54 @@
 ---
-import "@/styles/globals.css";
-import { ViewTransitions } from "astro:transitions";
+import "@/styles/globals.css"
+import { ViewTransitions } from "astro:transitions"
+import { env } from '../variables'
+import { config } from '../config'
 
 interface Props {
-	title: string;
-	description: string;
+  title: string
+  description?: string
+  ogImage?: string
 }
 
-const { title, description } = Astro.props;
+const { title, description } = Astro.props
+
+const canonicalURL = new URL(Astro.url.pathname, env.SITE_URL)
+const socialImageURL = new URL('placeholder.png'?? "opengraph.png", Astro.url.origin)
+const metaTitle = `${title} – ${config.title}`
+const metaDescription = description || config.description
 ---
 
 <!doctype html>
 <html lang="en" class="dark">
-	<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="robots" content="index, follow" />
-    <meta name="googlebot" content="index, follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="googlebot" content="index, follow" />
     <meta name="generator" content={Astro.generator} />
+
     <meta name="title" content={title} />
-    <meta name="description" content={description} />
     <title>{title}</title>
-		<ViewTransitions fallback="swap" />
-	</head>
+    <meta name="description" content={description} />
+
+    <!-- Facebook -->
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={metaTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:image" content={socialImageURL} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- <meta property="twitter:domain" content={removeHttp(Astro.site?.toString())} /> -->
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={metaTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={socialImageURL} />
+
+    <ViewTransitions fallback="swap" />
+  </head>
   <body class="min-h-screen font-sans antialiased bg-zinc-950 dark:bg-white">
-		<slot />
-	</body>
+    <slot />
+  </body>
 </html>
