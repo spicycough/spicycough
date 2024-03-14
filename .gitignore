@@ -3,6 +3,8 @@ dist/
 dist
 dist.new
 
+testdata/
+
 # generated types
 .astro/
 
