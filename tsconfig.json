@@ -3,11 +3,13 @@
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "allowJs": true,
-    "baseUrl": "/Users/tim/Dropbox/projects/astro/spicycough-react",
+    "baseUrl": ".",
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext"
+    ],
     "module": "ESNext",
     "moduleDetection": "force",
     "moduleResolution": "bundler",
@@ -18,10 +20,16 @@
     "strictNullChecks": false,
     "target": "ESNext",
     "verbatimModuleSyntax": true,
-    "types": ["astro/client"],
+    "types": [
+      "astro/client"
+    ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@*": ["./packages/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@*": [
+        "./packages/*"
+      ]
     },
     "plugins": [
       {
@@ -29,6 +37,13 @@
       }
     ]
   },
-  "include": ["./astro.config.ts", "./src/**/*", "./*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "./astro.config.ts",
+    "./src/**/*",
+    "./*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

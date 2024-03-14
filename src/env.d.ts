@@ -1,10 +1,10 @@
+/// <reference path="../.astro/types.d.ts" />
+/// <reference path="../.astro/db-types.d.ts" />
 /// <reference types="astro/client" />
 
-import { z } from 'astro:content';
-import type { env } from './variables';
-
-type Runtime = import('@astrojs/cloudflare').DirectoryRuntime<ENV>;
+import { z } from "astro:content"
+import { env } from "./variables"
 
 interface ImportMeta {
-  readonly env: z.infer<typeof env>;
+  readonly env: z.infer<typeof env>
 }

@@ -31,30 +31,28 @@ const articles = [
 
 const url =
   "https://theconversation.com/mounting-research-shows-that-covid-19-leaves-its-mark-on-the-brain-including-with-significant-drops-in-iq-scores-224216"
-const summary = await createSummary(url)
+const summary = "SUMMARY"
 ---
 
 <Layout title="spicycough" description="Test">
   <nav
-    class="min-h-16 font-bold text-lg p-4 sticky w-full top-0 z-50 bg-white border border-b-slate-800"
+    class="min-h-16 font-bold text-lg p-4 sticky w-full top-0 z-50 border-b drop-shadow-md"
   >
     spicycough
   </nav>
-  <main class="relative flex flex-col items-center h-svh container">
-    <div class="grid grid-cols-1 md:grid-cols-3 h-full w-full pt-10">
+  <main class="flex flex-col items-center h-svh container">
+    <div class="grid grid-cols-1 md:grid-cols-3 h-full w-full pt-10 gap-x-4">
       <div class="col-span-2 divide-x flex flex-col">
-        <div class="p-4 min-h-40 flex flex-col gap-y-4 border border-b-slate-300 shadow">
-          <h1 class="text-2xl font-bold">This is an article title</h1>
+        <div class="p-4 min-h-40 flex flex-col gap-y-4 border rounded-md border-b-slate-300">
+          <h1 class="text-xl font-bold">This is an article title</h1>
           <img
-            class="w-full h-60 object-cover rounded-lg"
-            src="https://via.placeholder.com/1920x1080"
+            class="h-60 object-cover rounded-lg"
+            src="https://via.placeholder.com/640x360"
             alt="Article image"
           />
           <p>
             {
-              summary
-                ? summary
-                : `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ex tortor, interdum non
+              `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ex tortor, interdum non
             magna sit amet, ultrices elementum dolor. Donec pellentesque libero molestie tincidunt
             tempus. Sed a justo justo. Etiam et ullamcorper odio. Quisque ante orci, ultrices vitae
             ultricies et, tincidunt eget magna. Class aptent taciti sociosqu ad litora torquent per
@@ -80,45 +78,27 @@ const summary = await createSummary(url)
           </p>
         </div>
       </div>
-      <div class="col-span-1">
-        <div class="min-h-40 px-2 overflow-y-scroll flex flex-col gap-y-4">
-          {
-            articles.map((article) => (
-              <>
-                <Card class="p-4 rounded">
-                  <CardHeader>
-                    <CardTitle>{article.title}</CardTitle>
-                    <CardDescription>{article.source}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{article.description}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <p>Next</p>
-                  </CardFooter>
-                </Card>
-                <Separator class="bg-black" />
-              </>
-            ))
-          }
-        </div>
+      <div class="col-span-1 min-h-40 px-2 overflow-y-scroll flex flex-col gap-y-4">
+        {
+          articles.map((article) => (
+            <>
+              <Card class="p-4 rounded border border-white">
+                <CardHeader>
+                  <CardTitle>{article.title}</CardTitle>
+                  <CardDescription>{article.source}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>{article.description}</p>
+                </CardContent>
+                <CardFooter>
+                  <p>Next</p>
+                </CardFooter>
+              </Card>
+              <Separator class="bg-black" />
+            </>
+          ))
+        }
       </div>
-      <!-- { -->
-      <!--   articles.map((article) => ( -->
-      <!--     <Card class=""> -->
-      <!--       <CardHeader> -->
-      <!--         <CardTitle>{article.title}</CardTitle> -->
-      <!--         <CardDescription>{article.source}</CardDescription> -->
-      <!--       </CardHeader> -->
-      <!--       <CardContent> -->
-      <!--         <p>{article.description}</p> -->
-      <!--       </CardContent> -->
-      <!--       <CardFooter> -->
-      <!--         <p>Next</p> -->
-      <!--       </CardFooter> -->
-      <!--     </Card> -->
-      <!--   )) -->
-      <!-- } -->
     </div>
   </main>
 </Layout>

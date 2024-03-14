@@ -9,7 +9,7 @@ export default {
   tailwindFunctions: ['clsx', 'class', 'class:list'],
   overrides: [
     {
-      files: '*.astro',
+      files: ['**/*.astro'],
       options: {
         parser: 'astro',
       },
