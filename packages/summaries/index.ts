@@ -1,9 +1,19 @@
 import { summarize } from "./src/summaries"
 import { getPageContent, nhm } from "./src/utils"
 
-export const createSummary = async (url: string) => {
-  const sections = await getPageContent(url)
-  const pageContent = nhm.translate(sections.join("\n\n"))
+type CreateSummaryParams =
+  | {
+      url: string
+      html?: never
+    }
+  | {
+      url?: never
+      html: string
+    }
+
+export const createSummary = async (params: CreateSummaryParams) => {
+  const html = params.url ? (await getPageContent(params.url)).join("\n\n") : params.html
+  const pageContent = nhm.translate(html)
   return await summarize({ text: pageContent })
 }
 
