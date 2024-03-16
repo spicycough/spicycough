@@ -40,7 +40,8 @@
   "include": [
     "./astro.config.ts",
     "./src/**/*",
-    "./*.ts"
+    "./*.ts",
+    "./db/**/*"
   ],
   "exclude": [
     "node_modules",
