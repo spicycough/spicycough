@@ -1,5 +1,20 @@
 import * as cheerio from "cheerio"
-import { db, ContentItem } from "astro:db"
+import { NodeHtmlMarkdown } from "node-html-markdown"
+import { IGNORE_TAGS } from "./constants"
+
+const nhm = new NodeHtmlMarkdown(
+  {
+    ignore: ["a", "sub", "sup", ...IGNORE_TAGS],
+    keepDataImages: false,
+    useLinkReferenceDefinitions: false,
+    textReplace: [
+      [/\[.*?\]\(.*?\),+?/gm, ""],
+      [/,+/g, ""],
+      [/\(ref\..*?\)/g, ""],
+    ],
+  },
+  { a: { ignore: true } }
+)
 
 export type FetchPageContent = {
   url: string
@@ -26,10 +41,29 @@ export const fetchPageContent = async ({ url, selectors }: FetchPageContent) => 
     return []
   }
 
-  return sections
+  return nhm.translate(sections.join("\n\n"))
 }
 
-export const getMeta = async ({ url, selectors }: FetchPageContent) => {
+export const getMetadata = async ({ url }: { url: string }) => {
+  const resp = await fetch(url)
+  const body = await resp.text()
+
+  return (await import("metascraper")).default([
+    (await import("metascraper-author")).default(),
+    (await import("metascraper-date")).default(),
+    (await import("metascraper-description")).default(),
+    (await import("metascraper-image")).default(),
+    (await import("metascraper-lang")).default(),
+    (await import("metascraper-logo")).default(),
+    (await import("metascraper-logo-favicon")).default(),
+    (await import("metascraper-publisher")).default(),
+    (await import("metascraper-readability")).default(),
+    (await import("metascraper-title")).default(),
+    (await import("metascraper-url")).default(),
+  ])({ url, html: body })
+}
+
+export const getMetaFallback = async ({ url }: FetchPageContent) => {
   const resp = await fetch(url)
   const body = await resp.text()
 
@@ -41,11 +75,4 @@ export const getMeta = async ({ url, selectors }: FetchPageContent) => {
       value: $(elem).attr("value") || $(elem).attr("content")?.trim(),
     }))
     .get()
-}
-
-const saveMetadata = () => {
-  db.insert(contentItem).values({
-    kind: "article",
-    permalink: url,
-  })
 }

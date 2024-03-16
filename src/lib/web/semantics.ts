@@ -1,5 +1,5 @@
-import type { TiktokenModel } from "tiktoken"
-import { encoding_for_model } from "tiktoken"
+// import type { TiktokenModel } from "tiktoken"
+// import { encoding_for_model } from "tiktoken"
 
 const REGEX_MARKDOWN_HEADERS = /^(#{1,4})\s+(.*)/gm // 'g' for global, 'm' for multiline
 
@@ -60,40 +60,40 @@ export const chunkByHeading = ({ pageContent }: { pageContent: string }) => {
   return { chunks: sections }
 }
 
-export const chunkByTokens = async (
-  document: string,
-  maxChunkSize: number,
-  model: TiktokenModel
-) => {
-  const tokenizer = encoding_for_model(model)
-  const documentTokens = tokenizer.encode(document)
-  const documentSize = documentTokens.length
+// export const chunkByTokens = async (
+//   document: string,
+//   maxChunkSize: number,
+//   model: any, // TiktokenModel
+// ) => {
+//   const tokenizer = encoding_for_model(model)
+//   const documentTokens = tokenizer.encode(document)
+//   const documentSize = documentTokens.length
 
-  const K = Math.ceil(documentSize / maxChunkSize)
-  const averageChunkSize = Math.ceil(documentSize / K)
-  const shorterChunkNumber = K * averageChunkSize - documentSize
-  const standardChunkNumber = K - shorterChunkNumber
+//   const K = Math.ceil(documentSize / maxChunkSize)
+//   const averageChunkSize = Math.ceil(documentSize / K)
+//   const shorterChunkNumber = K * averageChunkSize - documentSize
+//   const standardChunkNumber = K - shorterChunkNumber
 
-  let chunkStart = 0
-  const chunks: string[] = []
-  for (let i = 0; i < K; i++) {
-    let chunkEnd: number
-    if (i < standardChunkNumber) {
-      chunkEnd = chunkStart + averageChunkSize
-    } else {
-      chunkEnd = chunkStart + averageChunkSize - 1
-    }
+//   let chunkStart = 0
+//   const chunks: string[] = []
+//   for (let i = 0; i < K; i++) {
+//     let chunkEnd: number
+//     if (i < standardChunkNumber) {
+//       chunkEnd = chunkStart + averageChunkSize
+//     } else {
+//       chunkEnd = chunkStart + averageChunkSize - 1
+//     }
 
-    const chunk = documentTokens.slice(chunkStart, chunkEnd)
-    const decodedChunk = tokenizer.decode(chunk).toString()
-    chunks.push(decodedChunk)
-    chunkStart = chunkEnd
-  }
+//     const chunk = documentTokens.slice(chunkStart, chunkEnd)
+//     const decodedChunk = tokenizer.decode(chunk).toString()
+//     chunks.push(decodedChunk)
+//     chunkStart = chunkEnd
+//   }
 
-  if (chunkStart !== documentSize) {
-    console.error("Chunking did not cover the entire document.")
-    return { chunks: [] }
-  }
+//   if (chunkStart !== documentSize) {
+//     console.error("Chunking did not cover the entire document.")
+//     return { chunks: [] }
+//   }
 
-  return { chunks: chunks }
-}
+//   return { chunks: chunks }
+// }
