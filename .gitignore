@@ -1,5 +1,6 @@
 # Cloudflare
 .dev.vars
+.wrangler/*
 
 # build output
 dist/
