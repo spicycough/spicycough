@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro"
 // import * as semantics from "@/lib/web/semantics"
 import * as utils from "@/lib/web/html"
+import { POST as scrape } from "./scrape"
 import { createSummary } from "@summaries"
 import { ContentItem, ContentItemSummary, db } from "astro:db"
 
@@ -11,7 +12,7 @@ const newContentItemSchema = z.object({
   url: z.string().url(),
 })
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, ...props }) => {
   const data = await request.json()
 
   const parsedData = newContentItemSchema.safeParse(data)
@@ -24,7 +25,7 @@ export const POST: APIRoute = async ({ request }) => {
   const resp = await fetch(url)
   const body = await resp.text()
 
-  const metadata = await utils.getMetadata({ url })
+  const metadata = await scrape({ request: request.clone(), ...props })
   if (!metadata) {
     return new Response(
       JSON.stringify({ error: "No metadata could be extracted from the content." }),
