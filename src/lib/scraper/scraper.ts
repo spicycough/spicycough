@@ -6,8 +6,8 @@ type GetValueOption = { selector: string; attribute?: string }
 
 type ScrapeResponse = string | string[] | JSON
 
-export type GetMetadataOptions = {
-  name: string
+export type GetMetadataOptions<TName extends string = string> = {
+  name: TName
   selectors: GetValueOption[]
   multiple: boolean
 }
@@ -16,7 +16,7 @@ export type GetMetadataOptions = {
  * Scraper rules
  * For each rule, the first selector that matches will be used
  */
-export const scraperRules: GetMetadataOptions[] = [
+export const scraperRules = [
   {
     name: "title",
     multiple: false,
@@ -184,7 +184,9 @@ export const scraperRules: GetMetadataOptions[] = [
       },
     ],
   },
-]
+] as const satisfies GetMetadataOptions[]
+
+type Matches = Record<Partial<(typeof scraperRules)[number]["name"] | string>, string | string[]>
 
 const cleanText = (string: string) => decode(string.trim(), { level: "html5" })
 
@@ -234,8 +236,8 @@ export class Scraper {
     return this.response
   }
 
-  async getMetadata(options: GetMetadataOptions[]): Promise<Record<string, string | string[]>> {
-    const matches: Record<string, string | string[]> = {}
+  async getMetadata(options: GetMetadataOptions[]): Promise<Matches> {
+    const matches: Matches = {}
     const selectedSelectors: Record<string, boolean> = {}
 
     for (const optionsItem of options) {
