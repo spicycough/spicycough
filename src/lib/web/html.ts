@@ -43,36 +43,3 @@ export const fetchPageContent = async ({ url, selectors }: FetchPageContent) => 
 
   return nhm.translate(sections.join("\n\n"))
 }
-
-export const getMetadata = async ({ url }: { url: string }) => {
-  const resp = await fetch(url)
-  const body = await resp.text()
-
-  return (await import("metascraper")).default([
-    (await import("metascraper-author")).default(),
-    (await import("metascraper-date")).default(),
-    (await import("metascraper-description")).default(),
-    (await import("metascraper-image")).default(),
-    (await import("metascraper-lang")).default(),
-    (await import("metascraper-logo")).default(),
-    (await import("metascraper-logo-favicon")).default(),
-    (await import("metascraper-publisher")).default(),
-    (await import("metascraper-readability")).default(),
-    (await import("metascraper-title")).default(),
-    (await import("metascraper-url")).default(),
-  ])({ url, html: body })
-}
-
-export const getMetaFallback = async ({ url }: FetchPageContent) => {
-  const resp = await fetch(url)
-  const body = await resp.text()
-
-  const $ = cheerio.load(body, { recognizeSelfClosing: true }, false)
-
-  return $("meta")
-    .map((_, elem) => ({
-      name: $(elem).attr("name") || $(elem).attr("property")?.trim(),
-      value: $(elem).attr("value") || $(elem).attr("content")?.trim(),
-    }))
-    .get()
-}
