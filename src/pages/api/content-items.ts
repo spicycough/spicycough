@@ -1,18 +1,19 @@
 import type { APIRoute } from "astro"
-// import * as semantics from "@/lib/web/semantics"
-import * as utils from "@/lib/web/html"
-import { POST as scrape } from "./scrape"
 import { createSummary } from "@summaries"
 import { ContentItem, ContentItemSummary, db } from "astro:db"
 
+import { scrape } from "@/lib/scraper"
+
 import { z } from "astro:content"
 import { nanoid } from "nanoid"
+import { P, match } from "ts-pattern"
 
 const newContentItemSchema = z.object({
   url: z.string().url(),
+  shouldCleanUrl: z.boolean().optional(),
 })
 
-export const POST: APIRoute = async ({ request, ...props }) => {
+export const POST: APIRoute = async ({ request }) => {
   const data = await request.json()
 
   const parsedData = newContentItemSchema.safeParse(data)
@@ -20,18 +21,27 @@ export const POST: APIRoute = async ({ request, ...props }) => {
     return new Response(JSON.stringify({ errors: parsedData.error }), { status: 400 })
   }
 
-  const { url } = parsedData.data
+  const { url, shouldCleanUrl } = parsedData.data
 
-  const resp = await fetch(url)
-  const body = await resp.text()
-
-  const metadata = await scrape({ request: request.clone(), ...props })
+  const metadata = await scrape({ url, shouldCleanUrl })
   if (!metadata) {
     return new Response(
       JSON.stringify({ error: "No metadata could be extracted from the content." }),
       { status: 400 }
     )
   }
+
+  const cleanedData: Record<string, string> = {}
+  for (const key in metadata) {
+    cleanedData[key] = match(metadata[key])
+      .with(P.string, (val) => val.trim())
+      .with(P.array(P.string), (val) => val.join(", "))
+      .with(P.any, (val) => JSON.stringify(val))
+      .exhaustive()
+  }
+
+  const resp = await fetch(url)
+  const body = await resp.text()
 
   const summary = await createSummary({ html: body })
   if (!summary) {
@@ -41,21 +51,37 @@ export const POST: APIRoute = async ({ request, ...props }) => {
     )
   }
 
+  await db.insert(ContentItem).values({
+    id: nanoid(),
+    kind: "article",
+    url: "https://www.nature.com/articles/s41591-022-02001-z",
+    title: "Long-term neurologic outcomes of COVID-19",
+    author: "Ziyad Al-Aly",
+    slug: "long-term-neurologic-outcomes-of-covid-19",
+    publishedDate: new Date("2022-03-01"),
+  })
+
   const { id, ...contentItem } = await db
     .insert(ContentItem)
     .values({
       id: nanoid(),
       kind: "article",
-      author: metadata.author,
-      publishedDate: new Date(metadata.date),
-      description: metadata.description,
-      imageUrl: metadata.image,
-      lang: metadata.lang,
-      logo: metadata.logo,
-      publisher: metadata.publisher,
-      title: metadata.title,
-      url: metadata.url,
-      slug: metadata.title.toLowerCase().replace(/\s/g, "-"),
+      url: cleanedData.url ?? "",
+      author: cleanedData.author ?? "",
+      publishedDate:
+        cleanedData.date && typeof metadata.date === "string"
+          ? new Date(metadata?.date)
+          : new Date(),
+      description: cleanedData.description ?? "",
+      imageUrl: cleanedData.image ?? "",
+      lang: cleanedData.lang ?? "",
+      logo: cleanedData.logo ?? "",
+      publisher: cleanedData.publisher ?? "",
+      title: cleanedData.title ?? "",
+      slug:
+        (typeof cleanedData.title === "string" &&
+          cleanedData.title.toLowerCase()?.replace(/\s/g, "-")) ||
+        "",
     })
     .returning()
     .get()
