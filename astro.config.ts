@@ -6,7 +6,7 @@ import db from "@astrojs/db"
 // https://astro.build/config
 export default defineConfig({
   site: process.env.SITE_URL || "https://spicycough.com",
-  output: "server",
+  output: "hybrid",
   compressHTML: true,
   prefetch: true,
   integrations: [db(), tailwind({ applyBaseStyles: false })],
@@ -16,4 +16,3 @@ export default defineConfig({
     runtime: { mode: "local", type: "pages" },
   }),
 })
-

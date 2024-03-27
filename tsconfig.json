@@ -17,7 +17,7 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": false,
     "strict": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "target": "ESNext",
     "verbatimModuleSyntax": true,
     "types": [
@@ -44,7 +44,7 @@
     "./db/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "dist"
+    "node_modules/**/*",
+    "dist/**/*"
   ]
 }
