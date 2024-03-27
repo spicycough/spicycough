@@ -21,7 +21,8 @@
     "target": "ESNext",
     "verbatimModuleSyntax": true,
     "types": [
-      "astro/client"
+      "astro/client",
+      "@cloudflare/workers-types"
     ],
     "paths": {
       "@/*": [
