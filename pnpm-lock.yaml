@@ -16,7 +16,7 @@ importers:
         version: 9.2.0(astro@4.5.10)
       '@astrojs/db':
         specifier: ^0.9.7
-        version: 0.9.7(@cloudflare/workers-types@4.20240222.0)
+        version: 0.9.7(@cloudflare/workers-types@4.20240320.1)
       '@astrojs/tailwind':
         specifier: ^5.1.0
         version: 5.1.0(astro@4.5.10)(tailwindcss@3.4.1)
@@ -30,8 +30,8 @@ importers:
         specifier: ^1.6.1
         version: 1.6.1
       '@cloudflare/workers-types':
-        specifier: ^4.20240222.0
-        version: 4.20240222.0
+        specifier: ^4.20240320.1
+        version: 4.20240320.1
       '@playwright/test':
         specifier: ^1.42.1
         version: 1.42.1
@@ -153,8 +153,8 @@ importers:
         specifier: ^1.3.1
         version: 1.3.1(@types/node@20.11.27)
       wrangler:
-        specifier: ^3.34.2
-        version: 3.34.2(@cloudflare/workers-types@4.20240222.0)
+        specifier: ^3.39.0
+        version: 3.39.0(@cloudflare/workers-types@4.20240320.1)
 
   packages/summaries:
     dependencies:
@@ -217,7 +217,7 @@ packages:
       astro: ^4.2.0
     dependencies:
       '@astrojs/underscore-redirects': 0.3.3
-      '@cloudflare/workers-types': 4.20240222.0
+      '@cloudflare/workers-types': 4.20240320.1
       '@iarna/toml': 2.2.5
       astro: 4.5.10(@types/node@20.11.27)(typescript@5.4.2)
       dotenv: 16.4.5
@@ -239,13 +239,13 @@ packages:
     resolution: {integrity: sha512-XpC8MAaWjD1ff6/IfkRq/5k1EFj6zhCNqXRd5J43SVJEBj/Bsmizkm8N0xOYscGcDFQkRgEw6/eKnI5x/1l6aA==, tarball: https://registry.npmjs.org/@astrojs/compiler/-/compiler-2.7.0.tgz}
     dev: false
 
-  /@astrojs/db@0.9.7(@cloudflare/workers-types@4.20240222.0):
+  /@astrojs/db@0.9.7(@cloudflare/workers-types@4.20240320.1):
     resolution: {integrity: sha512-JfdbArFg49CIb11Q7W0RYe4nlOc/yC8grAsSzHoLNtKoD9XEtHyxmeKqtsg/JeCZ0HzeQGEE4gOwN2WIDsr3qw==, tarball: https://registry.npmjs.org/@astrojs/db/-/db-0.9.7.tgz}
     dependencies:
       '@libsql/client': 0.5.5
       async-listen: 3.0.1
       deep-diff: 1.0.2
-      drizzle-orm: 0.30.4(@cloudflare/workers-types@4.20240222.0)(@libsql/client@0.5.5)
+      drizzle-orm: 0.30.4(@cloudflare/workers-types@4.20240320.1)(@libsql/client@0.5.5)
       github-slugger: 2.0.0
       kleur: 4.1.5
       nanoid: 5.0.6
@@ -798,8 +798,8 @@ packages:
     dev: false
     optional: true
 
-  /@cloudflare/workerd-darwin-64@1.20240304.0:
-    resolution: {integrity: sha512-rfHlvsWzkqEEQNvm14AOE/BYHYzB9wxQHCaZZEgwOuTl5KpDcs9La0N0LaDTR78ESumIWOcifVmko2VTrZb7TQ==, tarball: https://registry.npmjs.org/@cloudflare/workerd-darwin-64/-/workerd-darwin-64-1.20240304.0.tgz}
+  /@cloudflare/workerd-darwin-64@1.20240320.1:
+    resolution: {integrity: sha512-ioG5k2M17xyiAlK/k3L21NZLMVeSHMjwlmGtZyCyzSLL5/zGINcgZ5yPLV0UuWiysw07/6Jjzm5Sx94hzMVybg==, tarball: https://registry.npmjs.org/@cloudflare/workerd-darwin-64/-/workerd-darwin-64-1.20240320.1.tgz}
     engines: {node: '>=16'}
     cpu: [x64]
     os: [darwin]
@@ -816,8 +816,8 @@ packages:
     dev: false
     optional: true
 
-  /@cloudflare/workerd-darwin-arm64@1.20240304.0:
-    resolution: {integrity: sha512-IXGOxHsPdRYfAzcY6IroI1PDvx3hhXf18qFCloHp8Iw5bzLgq/PTjcp10Z/2xedZ2hVlfpHy1eEptsTmi9YeNw==, tarball: https://registry.npmjs.org/@cloudflare/workerd-darwin-arm64/-/workerd-darwin-arm64-1.20240304.0.tgz}
+  /@cloudflare/workerd-darwin-arm64@1.20240320.1:
+    resolution: {integrity: sha512-Ga6RDdnFEIsN4WuWsaP9bLGvK9K7pEIVoSIgmw6vweVlD8UK/a2MPGrsF1ogwdeCTCOMY8wUh9poL/Yu48IPpg==, tarball: https://registry.npmjs.org/@cloudflare/workerd-darwin-arm64/-/workerd-darwin-arm64-1.20240320.1.tgz}
     engines: {node: '>=16'}
     cpu: [arm64]
     os: [darwin]
@@ -834,8 +834,8 @@ packages:
     dev: false
     optional: true
 
-  /@cloudflare/workerd-linux-64@1.20240304.0:
-    resolution: {integrity: sha512-G1BEzbw9TFIeMvc425F145IetC7fuH4KOkGhseLq9y/mt5PfDWkghwmXSK+q0BiMwm0XAobtzVlHcEr2u4WlRQ==, tarball: https://registry.npmjs.org/@cloudflare/workerd-linux-64/-/workerd-linux-64-1.20240304.0.tgz}
+  /@cloudflare/workerd-linux-64@1.20240320.1:
+    resolution: {integrity: sha512-KFof5H8eU0NXv+pUAU7Lk/OLtOmfsioTJqu0v6kPL7QsTGsgzj5sEQNcQ8DONSze549Yflu5W00qpA2cPz9eWQ==, tarball: https://registry.npmjs.org/@cloudflare/workerd-linux-64/-/workerd-linux-64-1.20240320.1.tgz}
     engines: {node: '>=16'}
     cpu: [x64]
     os: [linux]
@@ -852,8 +852,8 @@ packages:
     dev: false
     optional: true
 
-  /@cloudflare/workerd-linux-arm64@1.20240304.0:
-    resolution: {integrity: sha512-LLk/d/y77TRu6QOG3CJUI2cD3Ff2lSg0ts6G83bsm9ZK+WKObWFFSPBy9l81m3EnlKFh7RZCzxN4J10kuDaO8w==, tarball: https://registry.npmjs.org/@cloudflare/workerd-linux-arm64/-/workerd-linux-arm64-1.20240304.0.tgz}
+  /@cloudflare/workerd-linux-arm64@1.20240320.1:
+    resolution: {integrity: sha512-t+kGc6dGdkKvVMGcHCPhlCsUZF5dj8xbAFvLB7DAJ8T79ys30rmY2Lu/C8vKlhjH9TJhbzgKmPaJ0wC/K4euvw==, tarball: https://registry.npmjs.org/@cloudflare/workerd-linux-arm64/-/workerd-linux-arm64-1.20240320.1.tgz}
     engines: {node: '>=16'}
     cpu: [arm64]
     os: [linux]
@@ -870,8 +870,8 @@ packages:
     dev: false
     optional: true
 
-  /@cloudflare/workerd-windows-64@1.20240304.0:
-    resolution: {integrity: sha512-I/j6nVpM+WDPg+bYUAiKLkwQsjrXFjpOGHvwYmcM44hnDjgODzk7AbVssEIXnhEO3oupBeuKvffr0lvX0Ngmpw==, tarball: https://registry.npmjs.org/@cloudflare/workerd-windows-64/-/workerd-windows-64-1.20240304.0.tgz}
+  /@cloudflare/workerd-windows-64@1.20240320.1:
+    resolution: {integrity: sha512-9xDylCOsuzWqGuANkuUByiJ5RHeMqgw37FiI7rn8I6zdGAc/alOB9B4Bh7B73WC2uEpFL+XCEjcHZ6NmsO4NaQ==, tarball: https://registry.npmjs.org/@cloudflare/workerd-windows-64/-/workerd-windows-64-1.20240320.1.tgz}
     engines: {node: '>=16'}
     cpu: [x64]
     os: [win32]
@@ -879,8 +879,8 @@ packages:
     dev: false
     optional: true
 
-  /@cloudflare/workers-types@4.20240222.0:
-    resolution: {integrity: sha512-luO0BdK3rLlCv3B240+cTrfqm+XSbHtpk+88aJtGwzyVK9QF/Xz8lBgE/oZZLN8nCTmOvxAZnszyxUuZ8GP8Cg==, tarball: https://registry.npmjs.org/@cloudflare/workers-types/-/workers-types-4.20240222.0.tgz}
+  /@cloudflare/workers-types@4.20240320.1:
+    resolution: {integrity: sha512-CiYtVpQURPgQqtBKkmOAnfPElVZuD7Xyf1IxKtKp2B4aB9gnooapwJhzeY8c4Ls4u17SgMS0MprOkrgYwzZ6xg==, tarball: https://registry.npmjs.org/@cloudflare/workers-types/-/workers-types-4.20240320.1.tgz}
     dev: false
 
   /@cspotcode/source-map-support@0.8.1:
@@ -3229,7 +3229,7 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /drizzle-orm@0.30.4(@cloudflare/workers-types@4.20240222.0)(@libsql/client@0.5.5):
+  /drizzle-orm@0.30.4(@cloudflare/workers-types@4.20240320.1)(@libsql/client@0.5.5):
     resolution: {integrity: sha512-kWoSMGbrOFkmkAweLTFtHJMpN+nwhx89q0mLELqT2aEU+1szNV8jrnBmJwZ0WGNp7J7yQn/ezEtxBI/qzTSElQ==, tarball: https://registry.npmjs.org/drizzle-orm/-/drizzle-orm-0.30.4.tgz}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -3306,7 +3306,7 @@ packages:
       sqlite3:
         optional: true
     dependencies:
-      '@cloudflare/workers-types': 4.20240222.0
+      '@cloudflare/workers-types': 4.20240320.1
       '@libsql/client': 0.5.5
     dev: false
 
@@ -5552,8 +5552,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /miniflare@3.20240304.2:
-    resolution: {integrity: sha512-yQ5TBKv7TlvF8khFvvH+1WWk8cBnaLgNzcbJ5DLQOdecxdDxUCVlN38HThd6Nhcz6EY+ckDkww8FkugUbSSpIQ==, tarball: https://registry.npmjs.org/miniflare/-/miniflare-3.20240304.2.tgz}
+  /miniflare@3.20240320.0:
+    resolution: {integrity: sha512-4M2QRxs+J5sUsybBzKT++tlbrjjjGZdtWxKmj2sqLsT26dGaKDz7DxjAeF5XIhKa5cADcffygjxx4EvfWocMmw==, tarball: https://registry.npmjs.org/miniflare/-/miniflare-3.20240320.0.tgz}
     engines: {node: '>=16.13'}
     hasBin: true
     dependencies:
@@ -5565,7 +5565,7 @@ packages:
       glob-to-regexp: 0.4.1
       stoppable: 1.1.0
       undici: 5.28.3
-      workerd: 1.20240304.0
+      workerd: 1.20240320.1
       ws: 8.16.0
       youch: 3.3.3
       zod: 3.22.4
@@ -8098,37 +8098,37 @@ packages:
       '@cloudflare/workerd-windows-64': 1.20231030.0
     dev: false
 
-  /workerd@1.20240304.0:
-    resolution: {integrity: sha512-/tYxdypPh9NKQje9r7bgBB73vAQfCQZbEPjNlxE/ml7jNKMHnRZv/D+By4xO0IPAifa37D0sJFokvYOahz1Lqw==, tarball: https://registry.npmjs.org/workerd/-/workerd-1.20240304.0.tgz}
+  /workerd@1.20240320.1:
+    resolution: {integrity: sha512-nuavAGGjh0qqM6RF5zxTHyUwEqdLCHchodbrpbh/xlJpFGnJVY5C1YgSi2S9aLkJJoa0/25Ta/+EzXEbApA/3w==, tarball: https://registry.npmjs.org/workerd/-/workerd-1.20240320.1.tgz}
     engines: {node: '>=16'}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      '@cloudflare/workerd-darwin-64': 1.20240304.0
-      '@cloudflare/workerd-darwin-arm64': 1.20240304.0
-      '@cloudflare/workerd-linux-64': 1.20240304.0
-      '@cloudflare/workerd-linux-arm64': 1.20240304.0
-      '@cloudflare/workerd-windows-64': 1.20240304.0
+      '@cloudflare/workerd-darwin-64': 1.20240320.1
+      '@cloudflare/workerd-darwin-arm64': 1.20240320.1
+      '@cloudflare/workerd-linux-64': 1.20240320.1
+      '@cloudflare/workerd-linux-arm64': 1.20240320.1
+      '@cloudflare/workerd-windows-64': 1.20240320.1
     dev: false
 
-  /wrangler@3.34.2(@cloudflare/workers-types@4.20240222.0):
-    resolution: {integrity: sha512-j580WXlOe0GtYdcREym7FLcaaZq9+RZEBuzOtKXx74KKUlEC8cglgf5WWa2C2OpEtJCcrAieEHsNXe7mhy9knA==, tarball: https://registry.npmjs.org/wrangler/-/wrangler-3.34.2.tgz}
+  /wrangler@3.39.0(@cloudflare/workers-types@4.20240320.1):
+    resolution: {integrity: sha512-bcSuZSsC2FCLrdtpFqAu1vV993wG+z3zASbZlPP1iq1VhJyuWeRS3GlObtCrbgRTJIva1T+ZOLCno8kaMSc8Pg==, tarball: https://registry.npmjs.org/wrangler/-/wrangler-3.39.0.tgz}
     engines: {node: '>=16.17.0'}
     hasBin: true
     peerDependencies:
-      '@cloudflare/workers-types': ^4.20230914.0
+      '@cloudflare/workers-types': ^4.20240320.1
     peerDependenciesMeta:
       '@cloudflare/workers-types':
         optional: true
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.1
-      '@cloudflare/workers-types': 4.20240222.0
+      '@cloudflare/workers-types': 4.20240320.1
       '@esbuild-plugins/node-globals-polyfill': 0.2.3(esbuild@0.17.19)
       '@esbuild-plugins/node-modules-polyfill': 0.2.2(esbuild@0.17.19)
       blake3-wasm: 2.1.5
       chokidar: 3.6.0
       esbuild: 0.17.19
-      miniflare: 3.20240304.2
+      miniflare: 3.20240320.0
       nanoid: 3.3.7
       path-to-regexp: 6.2.1
       resolve: 1.22.8
