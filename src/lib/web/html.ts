@@ -38,7 +38,7 @@ export const fetchPageContent = async ({ url, selectors }: FetchPageContent) => 
 
   if (!sections.length) {
     console.error("No content found.")
-    return []
+    return ""
   }
 
   return nhm.translate(sections.join("\n\n"))

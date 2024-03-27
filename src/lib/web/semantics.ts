@@ -6,6 +6,11 @@ const REGEX_MARKDOWN_HEADERS = /^(#{1,4})\s+(.*)/gm // 'g' for global, 'm' for m
 export const chunkByHeading = ({ pageContent }: { pageContent: string }) => {
   const headings = pageContent.match(REGEX_MARKDOWN_HEADERS)
 
+  if (!headings) {
+    console.error("No headings found.")
+    return { chunks: [] }
+  }
+
   const headingLevels = headings.map((heading) => {
     const match = heading.match(/^#{1,4}/)
     return match ? match[0].length : 0
@@ -19,17 +24,18 @@ export const chunkByHeading = ({ pageContent }: { pageContent: string }) => {
     {} as Record<string, number>
   )
 
-  const mostCommonHeading = Object.entries(headingCounts).reduce(
-    (acc: string | null, [level, count]) => {
-      return acc === null ||
-        count > headingCounts[Number.parseInt(acc)] ||
-        (count === headingCounts[Number.parseInt(acc)] &&
-          Number.parseInt(level) < Number.parseInt(acc))
-        ? level
-        : acc
-    },
-    null
-  )
+  let mostCommonHeading = null
+  let highestCount = 0
+  for (const [level, count] of Object.entries(headingCounts)) {
+    if (
+      mostCommonHeading === null ||
+      count > highestCount ||
+      (count === highestCount && Number.parseInt(level) < Number.parseInt(mostCommonHeading))
+    ) {
+      mostCommonHeading = level
+      highestCount = count
+    }
+  }
 
   if (mostCommonHeading === null) {
     console.error("No headings found.")
@@ -38,7 +44,7 @@ export const chunkByHeading = ({ pageContent }: { pageContent: string }) => {
 
   const matches = [...pageContent.matchAll(REGEX_MARKDOWN_HEADERS)]
   const filteredMatches = matches.filter(
-    (match) => match[1].length === Number.parseInt(mostCommonHeading)
+    (match) => match[1]?.length === Number.parseInt(mostCommonHeading)
   )
 
   let lastIndex = 0
@@ -49,7 +55,10 @@ export const chunkByHeading = ({ pageContent }: { pageContent: string }) => {
     let endPos = pageContent.length
     if (index + 1 < filteredMatches.length) {
       // Find the start of the next match to define the end of the current section
-      endPos = pageContent.indexOf(filteredMatches[index + 1][0], startPos)
+      const filteredMatch = filteredMatches[index + 1]
+      if (filteredMatch !== undefined) {
+        endPos = pageContent.indexOf(filteredMatch[0], startPos)
+      }
     }
     // Extract the section from startPos to endPos
     const section = pageContent.substring(startPos, endPos).trim()

@@ -25,7 +25,20 @@ export const POST: APIRoute = async ({ request }) => {
   const body = await resp.text()
 
   const metadata = await utils.getMetadata({ url })
+  if (!metadata) {
+    return new Response(
+      JSON.stringify({ error: "No metadata could be extracted from the content." }),
+      { status: 400 }
+    )
+  }
+
   const summary = await createSummary({ html: body })
+  if (!summary) {
+    return new Response(
+      JSON.stringify({ error: "No summary could be generated from the content." }),
+      { status: 400 }
+    )
+  }
 
   const { id, ...contentItem } = await db
     .insert(ContentItem)
@@ -35,7 +48,7 @@ export const POST: APIRoute = async ({ request }) => {
       author: metadata.author,
       publishedDate: new Date(metadata.date),
       description: metadata.description,
-      image: metadata.image,
+      imageUrl: metadata.image,
       lang: metadata.lang,
       logo: metadata.logo,
       publisher: metadata.publisher,
@@ -46,52 +59,21 @@ export const POST: APIRoute = async ({ request }) => {
     .returning()
     .get()
 
-  console.log({ id, ...contentItem })
-
   const { contentItemId: _, ...contentItemSummary } = await db
     .insert(ContentItemSummary)
     .values({
       contentItemId: id,
       type: "article",
-      summary,
+      summary: summary,
     })
     .returning()
     .get()
 
-  console.log({ contentItemId: id, ...contentItemSummary })
+  const payload = JSON.stringify({
+    ...{ contentItemId: id },
+    ...contentItem,
+    ...contentItemSummary,
+  })
 
-  return new Response(
-    JSON.stringify({
-      ...{ contentItemId: id },
-      ...contentItem,
-      ...contentItemSummary,
-    }),
-    { status: 200 }
-  )
+  return new Response(payload, { status: 200 })
 }
-
-// const queries = Object.fromEntries(
-//   metadata
-//     .map((meta) =>
-//       match(meta)
-//         // opengraph
-//         .with({ name: "og:description" }, ({ value }) => ["ogDescription", value])
-//         .with({ name: "og:image" }, ({ value }) => ["ogImage", value])
-//         .with({ name: "og:site_name" }, ({ value }) => ["ogSiteName", value])
-//         .with({ name: "og:title" }, ({ value }) => ["ogTitle", value])
-//         .with({ name: "og:type" }, ({ value }) => ["ogType", value])
-//         .with({ name: "og:updated_time" }, ({ value }) => ["ogUpdatedTime", new Date(value)])
-//         .with({ name: "og:url" }, ({ value }) => ["ogUrl", value])
-//         // twt
-//         .with({ name: "twitter:card" }, ({ value }) => ["twtCard", value])
-//         .with({ name: "twitter:creator" }, ({ value }) => ["twtCreator", value])
-//         .with({ name: "twitter:site" }, ({ value }) => ["twtSite", value])
-//         // facebook
-//         .with({ name: "fb:app_id" }, ({ value }) => ["fbAppId", value])
-//         .with({ name: "fb:pages" }, ({ value }) => ["fbPages", value])
-//         .otherwise(() => undefined)
-//     )
-//     .filter(Boolean)
-// )
-
-// await db.insert(ContentItem).values(
