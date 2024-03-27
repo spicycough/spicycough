@@ -1,6 +1,6 @@
 import { NOW, column, defineDb, defineTable } from "astro:db"
 
-import { nanoid } from "nanoid"
+// import { nanoid } from "nanoid"
 
 export const ContentItemKind = {
   ARTICLE: "article",
@@ -34,7 +34,10 @@ export const ContentItem = defineTable({
 
 const ContentItemMetadata = defineTable({
   columns: {
-    contentId: column.text({ name: "content_id", references: () => ContentItem.columns.id }),
+    contentItemId: column.text({
+      name: "content_item_id",
+      references: () => ContentItem.columns.id,
+    }),
     // author: column.text({ name: "author" }),
     // description: column.text({ name: "description" }),
     // institution: column.text({ name: "institutions" }),
@@ -68,7 +71,10 @@ const ContentItemMetadata = defineTable({
 
 export const ContentItemSummary = defineTable({
   columns: {
-    contentItemId: column.text({ name: "content_id", references: () => ContentItem.columns.id }),
+    contentItemId: column.text({
+      name: "content_item_id",
+      references: () => ContentItem.columns.id,
+    }),
     type: column.text({ name: "type", optional: true }),
     summary: column.text({ name: "summary" }),
     createdAt: column.date({ name: "created_at", default: NOW }),
