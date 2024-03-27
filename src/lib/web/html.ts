@@ -2,7 +2,7 @@ import * as cheerio from "cheerio"
 import { NodeHtmlMarkdown } from "node-html-markdown"
 import { IGNORE_TAGS } from "./constants"
 
-const nhm = new NodeHtmlMarkdown(
+export const nhm = new NodeHtmlMarkdown(
   {
     ignore: ["a", "sub", "sup", ...IGNORE_TAGS],
     keepDataImages: false,

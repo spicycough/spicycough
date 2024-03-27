@@ -59,4 +59,4 @@ export const IGNORE_TAGS = [
   "var",
   "video",
   "wbr",
-]
+] as const

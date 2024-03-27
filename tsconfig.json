@@ -15,7 +15,7 @@
     "moduleResolution": "bundler",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
     "target": "ESNext",

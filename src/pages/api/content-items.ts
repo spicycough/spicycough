@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro"
-import { createSummary } from "@summaries"
+import { createSummary } from "@/lib/web/"
 import { ContentItem, ContentItemSummary, db } from "astro:db"
 
 import { scrape } from "@/lib/scraper"
