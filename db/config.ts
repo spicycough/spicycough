@@ -82,10 +82,19 @@ export const ContentItemSummary = defineTable({
   },
 })
 
+export const InterestedUser = defineTable({
+  columns: {
+    email: column.text({ name: "email", primaryKey: true }),
+    createdAt: column.date({ name: "created_at", default: NOW }),
+    updatedAt: column.date({ name: "updated_at", default: NOW }),
+  },
+})
+
 export default defineDb({
   tables: {
     ContentItem,
     ContentItemMetadata,
     ContentItemSummary,
+    InterestedUser,
   },
 })
