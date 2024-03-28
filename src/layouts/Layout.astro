@@ -1,7 +1,6 @@
 ---
 import "@/styles/globals.css"
 import { ViewTransitions } from "astro:transitions"
-import { env } from '../variables'
 import { config } from '../config'
 
 interface Props {
@@ -12,7 +11,7 @@ interface Props {
 
 const { title, description } = Astro.props
 
-const canonicalURL = new URL(Astro.url.pathname, env.SITE_URL)
+const canonicalURL = new URL(Astro.url.pathname, import.meta.env.SITE_URL)
 const socialImageURL = new URL('placeholder.png'?? "opengraph.png", Astro.url.origin)
 const metaTitle = `${title} – ${config.title}`
 const metaDescription = description || config.description
