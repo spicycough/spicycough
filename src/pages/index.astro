@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro"
+import { db } from "astro:db"
 
 import Card from "@/components/card/Card.astro"
 import CardTitle from "@/components/card/CardTitle.astro"
@@ -8,10 +9,9 @@ import CardFooter from "@/components/card/CardFooter.astro"
 import CardHeader from "@/components/card/CardHeader.astro"
 import CardDescription from "@/components/card/CardDescription.astro"
 
-import Separator from "@/components/separator.astro"
-// import { createSummary } from "@summaries"
+import { ContentItem } from "astro:db"
 
-globalThis.global = globalThis
+globalThis.global = globalThis // Required for Astro to work with Cloudflare
 
 const articles = [
   {
@@ -31,25 +31,29 @@ const articles = [
   },
 ]
 
-// const url =
-  "https://theconversation.com/mounting-research-shows-that-covid-19-leaves-its-mark-on-the-brain-including-with-significant-drops-in-iq-scores-224216"
-// const summary = "SUMMARY"
+// const url = "https://theconversation.com/mounting-research-shows-that-covid-19-leaves-its-mark-on-the-brain-including-with-significant-drops-in-iq-scores-224216"
+const contentItem = await db
+  .select()
+  .from(ContentItem)
+  .orderBy(ContentItem.publishedDate)
+  .limit(1)
+  .get()
 ---
 
 <Layout title="spicycough" description="Test">
-  <nav
-    class="min-h-16 font-bold text-lg p-4 sticky w-full top-0 z-50 border-b drop-shadow-md"
-  >
+  <nav class="min-h-16 font-bold text-lg p-4 sticky w-full top-0 z-50 border-b drop-shadow-md">
     spicycough
   </nav>
   <main class="flex flex-col items-center h-svh container">
     <div class="grid grid-cols-1 md:grid-cols-3 h-full w-full pt-10 gap-x-4">
       <div class="col-span-2 divide-x flex flex-col">
         <div class="p-4 min-h-40 flex flex-col gap-y-4 border rounded-md border-b-slate-300">
-          <h1 class="text-xl font-bold">This is an article title</h1>
+          <h1 class="text-xl font-bold">{contentItem?.title}</h1>
           <img
             class="h-60 object-cover rounded-lg"
-            src="https://via.placeholder.com/640x360"
+            src={contentItem?.imageUrl ??
+              contentItem?.logo ??
+              "https://via.placeholder.com/400x320.png"}
             alt="Article image"
           />
           <p>
@@ -96,7 +100,6 @@ const articles = [
                   <p>Next</p>
                 </CardFooter>
               </Card>
-              <Separator class="bg-black" />
             </>
           ))
         }
