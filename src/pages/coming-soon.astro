@@ -1,0 +1,39 @@
+---
+import Button from "@/components/button/Button.astro"
+import Layout from "@/layouts/Layout.astro"
+import { Icon } from "astro-icon/components"
+import { EnvelopeOpen } from "@astropub/icons"
+---
+
+<Layout>
+  <main class="flex flex-col grow items-center container gap-y-4 py-10">
+    <div class="flex flex-col justify-center grow">
+      <div
+        class="flex flex-col gap-y-2 text-left outline-dashed outline-muted-foreground p-12 rounded-xl"
+      >
+        <h2 class="items-baseline text-4xl font-semibold">
+          spicy cough <span class="font-light text-3xl">(n)</span>
+        </h2>
+        <h3 class="text-2xl">a colloquial label for COVID-19</h3>
+      </div>
+    </div>
+    <div class="flex flex-col grow gap-y-10">
+      <h4 class="font-semibold text-lg text-center">Want to get notified when we launch?</h4>
+      <div class="flex gap-x-4">
+        <div class="flex flex-col origin-right relative gap-y-2 justify-between w-full">
+          <input
+            type="email"
+            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            placeholder="Enter your email"
+          />
+          <EnvelopeOpen class="size-4 absolute right-0 mt-3 mr-3 text-muted-foreground" />
+          <p class="text-muted-foreground text-xs px-1.5">
+            We'll never share your email with anyone else
+          </p>
+        </div>
+        <Button variant="secondary" class="mt-0.5 text-nowrap">Notify me</Button>
+      </div>
+    </div>
+    <Icon class="size-80 absolute right-0 bottom-0 -scale-x-100" name="sleeping-man" />
+  </main>
+</Layout>
