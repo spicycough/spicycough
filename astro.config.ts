@@ -1,9 +1,9 @@
-import cloudflare from "@astrojs/cloudflare";
-import db from "@astrojs/db";
-import tailwind from "@astrojs/tailwind";
-import { defineConfig } from "astro/config";
+import cloudflare from "@astrojs/cloudflare"
+import db from "@astrojs/db"
+import tailwind from "@astrojs/tailwind"
+import { defineConfig } from "astro/config"
 
-import icon from "astro-icon";
+import icon from "astro-icon"
 
 // https://astro.build/config
 export default defineConfig({
@@ -11,15 +11,23 @@ export default defineConfig({
   output: "server",
   compressHTML: true,
   prefetch: true,
-  integrations: [db(), tailwind({
-    applyBaseStyles: false
-  }), icon()],
+  redirects: {
+    "/": "/coming-soon",
+  },
+  integrations: [
+    db(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    icon(),
+  ],
   adapter: cloudflare({
     mode: "directory",
     imageService: "passthrough",
     runtime: {
       mode: "local",
-      type: "pages"
-    }
-  })
-});
+      type: "pages",
+    },
+  }),
+})
+
