@@ -24,6 +24,7 @@ export default defineConfig({
   adapter: cloudflare({
     mode: "directory",
     imageService: "passthrough",
+    functionPerRoute: true,
     runtime: {
       mode: "local",
       type: "pages",
