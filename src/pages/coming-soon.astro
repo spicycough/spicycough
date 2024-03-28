@@ -23,18 +23,16 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="Coming Soon">
-  <main class="flex flex-col grow items-center container gap-y-4 py-10">
-    <div class="flex flex-col justify-center grow">
-      <div
-        class="flex flex-col gap-y-2 text-left outline-dashed outline-muted-foreground p-12 rounded-xl"
-      >
+  <main class="flex flex-col grow items-center container gap-y-6 py-10 pb-24 justify-evenly">
+    <div class="flex flex-col justify-center">
+      <div class="flex flex-col gap-y-2 text-left p-12">
         <h2 class="items-baseline text-4xl font-semibold">
           spicy cough <span class="font-light text-3xl">(n)</span>
         </h2>
         <h3 class="text-2xl">a colloquial label for COVID-19</h3>
       </div>
     </div>
-    <div class="flex flex-col grow gap-y-10">
+    <div class="flex flex-col gap-y-10 outline-dashed outline-muted-foreground p-12 rounded-xl">
       <h4 class="font-semibold text-lg text-center">Want to get notified when we launch?</h4>
       <form method="POST" class="flex gap-x-4">
         <div class="flex flex-col origin-right relative gap-y-2 justify-between w-full">
@@ -50,7 +48,14 @@ if (Astro.request.method === "POST") {
             We'll never share your email with anyone else
           </p>
         </div>
-        <Button type="submit" class="h-10 mt-0.5 text-nowrap bg-emerald-700 text-slate-100 hover:bg-emerald-800 hover:shadow-inner">Notify me</Button>
+        <Button
+          type="submit"
+          class:list={[
+            "text-nowrap h-10 mt-0.5 text-slate-100",
+            "bg-emerald-700 dark:hover:bg-emerald-800 dark:hover:shadow-inner",
+            "dark:bg-emerald-700 dark:hover:bg-emerald-800 dark:hover:shadow-inner",
+          ]}>Notify me</Button
+        >
       </form>
     </div>
     <Icon class="size-80 absolute right-0 bottom-0 -scale-x-100" name="sleeping-man" />
