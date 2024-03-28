@@ -3,9 +3,26 @@ import Button from "@/components/button/Button.astro"
 import Layout from "@/layouts/Layout.astro"
 import { Icon } from "astro-icon/components"
 import { EnvelopeOpen } from "@astropub/icons"
+import { z } from "astro:content"
+import { db, InterestedUser } from "astro:db"
+
+if (Astro.request.method === "POST") {
+  const newInterestedUserSchema = z.object({
+    email: z.string().email(),
+  })
+
+  const formData = await Astro.request.formData()
+  const email = formData.get("email")
+  const parsedData = await newInterestedUserSchema.safeParseAsync({ email })
+  if (parsedData.success === false) {
+    return new Response(JSON.stringify({ errors: parsedData.error }), { status: 400 })
+  }
+
+  await db.insert(InterestedUser).values({ email: parsedData.data.email }).onConflictDoNothing()
+}
 ---
 
-<Layout>
+<Layout title="Coming Soon">
   <main class="flex flex-col grow items-center container gap-y-4 py-10">
     <div class="flex flex-col justify-center grow">
       <div
@@ -19,10 +36,12 @@ import { EnvelopeOpen } from "@astropub/icons"
     </div>
     <div class="flex flex-col grow gap-y-10">
       <h4 class="font-semibold text-lg text-center">Want to get notified when we launch?</h4>
-      <div class="flex gap-x-4">
+      <form method="POST" class="flex gap-x-4">
         <div class="flex flex-col origin-right relative gap-y-2 justify-between w-full">
           <input
             type="email"
+            name="email"
+            autocomplete="email"
             class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             placeholder="Enter your email"
           />
@@ -31,8 +50,8 @@ import { EnvelopeOpen } from "@astropub/icons"
             We'll never share your email with anyone else
           </p>
         </div>
-        <Button variant="secondary" class="mt-0.5 text-nowrap">Notify me</Button>
-      </div>
+        <Button type="submit" class="h-10 mt-0.5 text-nowrap bg-emerald-700 text-slate-100 hover:bg-emerald-800 hover:shadow-inner">Notify me</Button>
+      </form>
     </div>
     <Icon class="size-80 absolute right-0 bottom-0 -scale-x-100" name="sleeping-man" />
   </main>
