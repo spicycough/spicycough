@@ -43,6 +43,7 @@
     "@astrojs/db": "^0.9.7",
     "@astropub/icons": "^0.2.0",
     "@cloudflare/workers-types": "^4.20240320.1",
+    "astro-icon": "^1.1.0",
     "ts-pattern": "^5.0.8"
   },
   "devDependencies": {
