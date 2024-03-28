@@ -15,7 +15,6 @@
     "lint:css": "stylelint \"**/*.{css,scss}\"",
     "lint:types": "tsc -b",
     "lint:astro": "astro check",
-    "preinstall": "npx only-allow pnpm",
     "prepare": "husky",
     "preview": "preview:cf",
     "preview:astro": "astro preview",
