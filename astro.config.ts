@@ -8,7 +8,7 @@ import icon from "astro-icon"
 // https://astro.build/config
 export default defineConfig({
   site: process.env.SITE_URL || "https://spicycough.com",
-  output: "hybrid",
+  output: "server",
   compressHTML: true,
   prefetch: true,
   redirects: {

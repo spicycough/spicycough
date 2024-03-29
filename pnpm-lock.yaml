@@ -10,13 +10,13 @@ importers:
     dependencies:
       '@astrojs/cloudflare':
         specifier: ^10.0.0
-        version: 10.0.0(astro@4.5.10)
+        version: 10.0.0(astro@4.5.12)
       '@astrojs/db':
         specifier: ^0.9.8
         version: 0.9.8(@cloudflare/workers-types@4.20240320.1)
       '@astropub/icons':
         specifier: ^0.2.0
-        version: 0.2.0(astro@4.5.10)
+        version: 0.2.0(astro@4.5.12)
       '@cloudflare/workers-types':
         specifier: ^4.20240320.1
         version: 4.20240320.1
@@ -32,7 +32,7 @@ importers:
         version: 0.5.10(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.2)
       '@astrojs/tailwind':
         specifier: ^5.1.0
-        version: 5.1.0(astro@4.5.10)(tailwindcss@3.4.3)
+        version: 5.1.0(astro@4.5.12)(tailwindcss@3.4.3)
       '@astrojs/ts-plugin':
         specifier: ^1.6.1
         version: 1.6.1
@@ -55,8 +55,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0(eslint@8.57.0)(typescript@5.4.2)
       astro:
-        specifier: ^4.5.10
-        version: 4.5.10(@types/node@20.11.27)(typescript@5.4.2)
+        specifier: ^4.5.12
+        version: 4.5.12(@types/node@20.11.27)(typescript@5.4.2)
       astro-eslint-parser:
         specifier: ^0.16.2
         version: 0.16.3
@@ -219,7 +219,7 @@ packages:
       - prettier-plugin-astro
     dev: true
 
-  /@astrojs/cloudflare@10.0.0(astro@4.5.10):
+  /@astrojs/cloudflare@10.0.0(astro@4.5.12):
     resolution: {integrity: sha512-EnkD9pLBjX2OEUFFTi1dBRsekk0cYdt+Q5SGbmrvr987WajsKHJ1yFt5BuTJ3IrO6zunyQnlmdMdzXM/5CzWeA==, tarball: https://registry.npmjs.org/@astrojs/cloudflare/-/cloudflare-10.0.0.tgz}
     peerDependencies:
       astro: ^4.2.0
@@ -227,7 +227,7 @@ packages:
       '@astrojs/internal-helpers': 0.3.0
       '@astrojs/underscore-redirects': 0.3.3
       '@cloudflare/workers-types': 4.20240320.1
-      astro: 4.5.10(@types/node@20.11.27)(typescript@5.4.2)
+      astro: 4.5.12(@types/node@20.11.27)(typescript@5.4.2)
       esbuild: 0.19.12
       miniflare: 3.20240320.0
       tiny-glob: 0.2.9
@@ -292,6 +292,10 @@ packages:
 
   /@astrojs/internal-helpers@0.3.0:
     resolution: {integrity: sha512-tGmHvrhpzuz0JBHaJX8GywN9g4rldVNHtkoVDC3m/DdzBO70jGoVuc0uuNVglRYnsdwkbG0K02Iw3nOOR3/Y4g==, tarball: https://registry.npmjs.org/@astrojs/internal-helpers/-/internal-helpers-0.3.0.tgz}
+    dev: false
+
+  /@astrojs/internal-helpers@0.4.0:
+    resolution: {integrity: sha512-6B13lz5n6BrbTqCTwhXjJXuR1sqiX/H6rTxzlXx+lN1NnV4jgnq/KJldCQaUWJzPL5SiWahQyinxAbxQtwgPHA==, tarball: https://registry.npmjs.org/@astrojs/internal-helpers/-/internal-helpers-0.4.0.tgz}
 
   /@astrojs/language-server@2.8.4(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.2):
     resolution: {integrity: sha512-sJH5vGTBkhgA8+hdhzX78UUp4cFz4Mt7xkEkevD188OS5bDMkaue6hK+dtXWM47mnrXFveXA2u38K7S+5+IRjA==, tarball: https://registry.npmjs.org/@astrojs/language-server/-/language-server-2.8.4.tgz}
@@ -357,13 +361,13 @@ packages:
     dependencies:
       prismjs: 1.29.0
 
-  /@astrojs/tailwind@5.1.0(astro@4.5.10)(tailwindcss@3.4.3):
+  /@astrojs/tailwind@5.1.0(astro@4.5.12)(tailwindcss@3.4.3):
     resolution: {integrity: sha512-BJoCDKuWhU9FT2qYg+fr6Nfb3qP4ShtyjXGHKA/4mHN94z7BGcmauQK23iy+YH5qWvTnhqkd6mQPQ1yTZTe9Ig==, tarball: https://registry.npmjs.org/@astrojs/tailwind/-/tailwind-5.1.0.tgz}
     peerDependencies:
       astro: ^3.0.0 || ^4.0.0
       tailwindcss: ^3.0.24
     dependencies:
-      astro: 4.5.10(@types/node@20.11.27)(typescript@5.4.2)
+      astro: 4.5.12(@types/node@20.11.27)(typescript@5.4.2)
       autoprefixer: 10.4.18(postcss@8.4.35)
       postcss: 8.4.35
       postcss-load-config: 4.0.2(postcss@8.4.35)
@@ -401,20 +405,13 @@ packages:
     resolution: {integrity: sha512-qDAKhFO4M1KzP7mxoJfiehf8oyf3EB158MxAa6z10NeD2pR3o4K3LlOQI8CfJgXE+BDBQcnaLvVCg/Mz/Gkg4Q==, tarball: https://registry.npmjs.org/@astrojs/underscore-redirects/-/underscore-redirects-0.3.3.tgz}
     dev: false
 
-  /@astropub/icons@0.2.0(astro@4.5.10):
+  /@astropub/icons@0.2.0(astro@4.5.12):
     resolution: {integrity: sha512-qM/ldW/9rVHULNOZgz/23Yzgm2r3Iy2JJ1FuvJB6sFU67n61o1ImuXdHiaWSNoEHubD+IUkD9WG0hbhINgszqA==, tarball: https://registry.npmjs.org/@astropub/icons/-/icons-0.2.0.tgz}
     peerDependencies:
       astro: '*'
     dependencies:
-      astro: 4.5.10(@types/node@20.11.27)(typescript@5.4.2)
+      astro: 4.5.12(@types/node@20.11.27)(typescript@5.4.2)
     dev: false
-
-  /@babel/code-frame@7.23.5:
-    resolution: {integrity: sha512-CgH3s1a96LipHCmSUmYFPwY7MNx8C3avkq7i4Wl3cfa662ldtUe4VM1TPXX70pfmrlWTb6jLqTYrZyT2ZTJBgA==, tarball: https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.23.5.tgz}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/highlight': 7.23.4
-      chalk: 2.4.2
 
   /@babel/code-frame@7.24.2:
     resolution: {integrity: sha512-y5+tLQyV8pg3fsiln67BVLD1P13Eg4lh5RW9mF0zUuvLrv9uIQ4MCL+CRT+FTsBlBjcIan6PGsLcBN0m3ClUyQ==, tarball: https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.24.2.tgz}
@@ -448,15 +445,6 @@ packages:
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
-
-  /@babel/generator@7.23.6:
-    resolution: {integrity: sha512-qrSfCYxYQB5owCmGLbl8XRpX1ytXlpueOb0N0UmQwA073KZxejgQTzAmJezxvpwQD9uGtK2shHdi55QT+MbjIw==, tarball: https://registry.npmjs.org/@babel/generator/-/generator-7.23.6.tgz}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/types': 7.24.0
-      '@jridgewell/gen-mapping': 0.3.5
-      '@jridgewell/trace-mapping': 0.3.25
-      jsesc: 2.5.2
 
   /@babel/generator@7.24.1:
     resolution: {integrity: sha512-DfCRfZsBcrPEHUfuBMgbJ1Ut01Y/itOs+hY2nFLgqsqXd52/iSiVq5TITtUasIUgm+IIKdY2/1I7auiQOEeC9A==, tarball: https://registry.npmjs.org/@babel/generator/-/generator-7.24.1.tgz}
@@ -557,14 +545,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@babel/highlight@7.23.4:
-    resolution: {integrity: sha512-acGdbYSfp2WheJoJm/EBBBLh/ID8KDc64ISZ9DYtBmC8/Q204PZJLHyzeB5qMzJ5trcOkybd78M4x2KWsUq++A==, tarball: https://registry.npmjs.org/@babel/highlight/-/highlight-7.23.4.tgz}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/helper-validator-identifier': 7.22.20
-      chalk: 2.4.2
-      js-tokens: 4.0.0
-
   /@babel/highlight@7.24.2:
     resolution: {integrity: sha512-Yac1ao4flkTxTteCDZLEvdxg2fZfz1v8M4QpaGypq/WPDqg3ijHYbDfs+LG5hvzSoqaSZ9/Z9lKSP3CjZjv+pA==, tarball: https://registry.npmjs.org/@babel/highlight/-/highlight-7.24.2.tgz}
     engines: {node: '>=6.9.0'}
@@ -573,13 +553,6 @@ packages:
       chalk: 2.4.2
       js-tokens: 4.0.0
       picocolors: 1.0.0
-
-  /@babel/parser@7.24.0:
-    resolution: {integrity: sha512-QuP/FxEAzMSjXygs8v4N9dvdXzEHN4W1oF3PxuWAtPo08UdM17u89RDMgjLn/mlc56iM0HlLmVkO/wgR+rDgHg==, tarball: https://registry.npmjs.org/@babel/parser/-/parser-7.24.0.tgz}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-    dependencies:
-      '@babel/types': 7.24.0
 
   /@babel/parser@7.24.1:
     resolution: {integrity: sha512-Zo9c7N3xdOIQrNip7Lc9wvRPzlRtovHVE4lkz8WEDr7uYh/GMQhSiIgFxGIArRHYdJE5kxtZjAf8rT0xhdLCzg==, tarball: https://registry.npmjs.org/@babel/parser/-/parser-7.24.1.tgz}
@@ -624,23 +597,6 @@ packages:
       '@babel/code-frame': 7.24.2
       '@babel/parser': 7.24.1
       '@babel/types': 7.24.0
-
-  /@babel/traverse@7.24.0:
-    resolution: {integrity: sha512-HfuJlI8qq3dEDmNU5ChzzpZRWq+oxCZQyMzIMEqLho+AQnhMnKQUzH6ydo3RBl/YjPCuk68Y6s0Gx0AeyULiWw==, tarball: https://registry.npmjs.org/@babel/traverse/-/traverse-7.24.0.tgz}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/code-frame': 7.23.5
-      '@babel/generator': 7.23.6
-      '@babel/helper-environment-visitor': 7.22.20
-      '@babel/helper-function-name': 7.23.0
-      '@babel/helper-hoist-variables': 7.22.5
-      '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.24.0
-      '@babel/types': 7.24.0
-      debug: 4.3.4
-      globals: 11.12.0
-    transitivePeerDependencies:
-      - supports-color
 
   /@babel/traverse@7.24.1:
     resolution: {integrity: sha512-xuU6o9m68KeqZbQuDt2TcKSxUw/mrsvavlEqQ1leZ/B+C9tk6E4sRWy97WaXgvq5E+nU3cXMxv3WKOCanVMCmQ==, tarball: https://registry.npmjs.org/@babel/traverse/-/traverse-7.24.1.tgz}
@@ -1812,7 +1768,7 @@ packages:
   /@types/babel__core@7.20.5:
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==, tarball: https://registry.npmjs.org/@types/babel__core/-/babel__core-7.20.5.tgz}
     dependencies:
-      '@babel/parser': 7.24.0
+      '@babel/parser': 7.24.1
       '@babel/types': 7.24.0
       '@types/babel__generator': 7.6.8
       '@types/babel__template': 7.4.4
@@ -1826,7 +1782,7 @@ packages:
   /@types/babel__template@7.4.4:
     resolution: {integrity: sha512-h/NUaSyG5EyxBIp8YRxo4RMe2/qQgvyowRwVMzhYhBCONbW8PUsg4lkFMrhgZhUe5z3L3MiLDuvyJ/CaPa2A8A==, tarball: https://registry.npmjs.org/@types/babel__template/-/babel__template-7.4.4.tgz}
     dependencies:
-      '@babel/parser': 7.24.0
+      '@babel/parser': 7.24.1
       '@babel/types': 7.24.0
 
   /@types/babel__traverse@7.20.5:
@@ -2434,20 +2390,20 @@ packages:
       zod: 3.22.4
     dev: true
 
-  /astro@4.5.10(@types/node@20.11.27)(typescript@5.4.2):
-    resolution: {integrity: sha512-xW/ZTSqSHEQyzWzXHJa9gEQXC+MUD3mhzEBJyrMp/JWT+geLgUK2m0Rrc/AnBl8EfdS/6uFadiJV1fWao4lc7w==, tarball: https://registry.npmjs.org/astro/-/astro-4.5.10.tgz}
+  /astro@4.5.12(@types/node@20.11.27)(typescript@5.4.2):
+    resolution: {integrity: sha512-xIJcFI2hbyV8+h5pWjL7SKD1jIP0K01fYVAH+gdAt0mJaXy+u8Mj+goD0cPlK6sEaykR+7zxQLYGKJ44U4qarg==, tarball: https://registry.npmjs.org/astro/-/astro-4.5.12.tgz}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
       '@astrojs/compiler': 2.7.0
-      '@astrojs/internal-helpers': 0.3.0
+      '@astrojs/internal-helpers': 0.4.0
       '@astrojs/markdown-remark': 4.3.2
       '@astrojs/telemetry': 3.0.4
       '@babel/core': 7.24.3
-      '@babel/generator': 7.23.6
-      '@babel/parser': 7.24.0
+      '@babel/generator': 7.24.1
+      '@babel/parser': 7.24.1
       '@babel/plugin-transform-react-jsx': 7.23.4(@babel/core@7.24.3)
-      '@babel/traverse': 7.24.0
+      '@babel/traverse': 7.24.1
       '@babel/types': 7.24.0
       '@types/babel__core': 7.20.5
       acorn: 8.11.3

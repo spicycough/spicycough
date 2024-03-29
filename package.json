@@ -55,7 +55,7 @@
     "@types/node": "^20.11.27",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
-    "astro": "^4.5.10",
+    "astro": "^4.5.12",
     "astro-eslint-parser": "^0.16.2",
     "astro-robots-txt": "^1.0.0",
     "class-variance-authority": "^0.7.0",
