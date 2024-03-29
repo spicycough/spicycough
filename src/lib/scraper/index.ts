@@ -1,9 +1,6 @@
 import { TidyURL } from "tidy-url"
-import { Scraper, scraperRules } from "./scraper"
+import { Scraper, scraperRules, textRules } from "./scraper"
 import { linkType } from "./utils"
-
-export { Scraper, scraperRules } from "./scraper"
-export { linkType } from "./utils"
 
 type ScrapeRequest = {
   url: string
@@ -67,20 +64,31 @@ const prepareUrl = (url: string): URL => {
 
 export const scrape = async ({ url, shouldCleanUrl = true }: ScrapeRequest) => {
   const scraper = new Scraper()
-  let response = null
+  // @ts-ignore
+  let response: {
+    cleanedUrl?: string
+    url?: string
+    urlType?: string
+    jsonld?: string
+    metadata: Record<string, unknown>
+    text: string
+  } = null
 
   const preparedUrl = prepareUrl(url)
 
   await scraper.fetch(preparedUrl.toString())
 
   try {
-    response = await scraper.getMetadata(scraperRules)
+    response = {
+      metadata: await scraper.getMetadata(scraperRules),
+      text: await scraper.getTextContent(textRules),
+    }
 
     const unshortenedUrl = scraper.response.url
 
     if (shouldCleanUrl) {
-      const cleanedUrl = TidyURL.clean(unshortenedUrl || url)
-      response.cleaned_url = cleanedUrl.url
+      const { url: cleanedUrl } = TidyURL.clean(unshortenedUrl || url)
+      response.cleanedUrl = cleanedUrl
     }
 
     response.url = unshortenedUrl
@@ -96,3 +104,6 @@ export const scrape = async ({ url, shouldCleanUrl = true }: ScrapeRequest) => {
     throw generateErrorJSONResponse(error, url)
   }
 }
+
+export { Scraper, scraperRules, textRules } from "./scraper"
+export { linkType } from "./utils"

@@ -1,16 +1,55 @@
-import { decode } from "html-entities"
+import { NodeHtmlMarkdown } from "node-html-markdown"
 import type { FollowShortUrlResponse } from "./utils"
-import { followShortUrl, randomUserAgent } from "./utils"
+import { cleanText, followShortUrl, randomUserAgent } from "./utils"
 
 type GetValueOption = { selector: string; attribute?: string }
 
-type ScrapeResponse = string | string[] | JSON
+type ScrapeMetadataResponse = string | string[] | JSON
+
+type ScrapeTextResponse = string | string[] | JSON
+
+export type GetTextContentOptions<TName extends string = string> = {
+  name: TName
+  selectors: GetValueOption[]
+  multiple: boolean
+}
+
+const nhm = new NodeHtmlMarkdown(
+  {
+    ignore: ["a", "sub", "sup"],
+    keepDataImages: false,
+    useLinkReferenceDefinitions: false,
+    textReplace: [
+      [/\[.*?\]\(.*?\),+?/gm, ""],
+      [/,+/g, ""],
+      [/\(ref\..*?\)/g, ""],
+    ],
+  },
+  { a: { ignore: true } }
+)
+
+export const textRules = [
+  {
+    name: "body",
+    multiple: false,
+    selectors: [
+      { selector: "div.main-content" },
+      { selector: "article" },
+      { selector: "main" },
+      { selector: "body" },
+    ],
+  },
+] as const satisfies GetTextContentOptions[]
 
 export type GetMetadataOptions<TName extends string = string> = {
   name: TName
   selectors: GetValueOption[]
   multiple: boolean
 }
+
+type Matches = Record<Partial<(typeof scraperRules)[number]["name"] | string>, string | string[]>
+
+type Sections = Record<Partial<(typeof textRules)[number]["name"] | string>, string | string[]>
 
 /**
  * Scraper rules
@@ -68,27 +107,15 @@ export const scraperRules = [
     name: "image",
     multiple: false,
     selectors: [
-      {
-        selector: 'link[rel="image_src"]',
-        attribute: "href",
-      },
+      { selector: 'link[rel="image_src"]', attribute: "href" },
       { selector: 'meta[name="og:image"]', attribute: "content" },
       { selector: 'meta[property="og:image"]', attribute: "content" },
       { selector: 'meta[name="og:image:url"]', attribute: "content" },
       { selector: 'meta[property="og:image:url"]', attribute: "content" },
-      {
-        selector: 'meta[name="og:image:secure_url"]',
-        attribute: "content",
-      },
-      {
-        selector: 'meta[property="og:image:secure_url"]',
-        attribute: "content",
-      },
+      { selector: 'meta[name="og:image:secure_url"]', attribute: "content" },
+      { selector: 'meta[property="og:image:secure_url"]', attribute: "content" },
       { selector: 'meta[name="twitter:image:src"]', attribute: "content" },
-      {
-        selector: 'meta[property="twitter:image:src"]',
-        attribute: "content",
-      },
+      { selector: 'meta[property="twitter:image:src"]', attribute: "content" },
       { selector: 'meta[name="twitter:image"]', attribute: "content" },
       { selector: 'meta[property="twitter:image"]', attribute: "content" },
       { selector: 'meta[itemprop="image"]', attribute: "content" },
@@ -98,10 +125,7 @@ export const scraperRules = [
     name: "feeds",
     multiple: true,
     selectors: [
-      {
-        selector: 'link[type="application/rss+xml"]',
-        attribute: "href",
-      },
+      { selector: 'link[type="application/rss+xml"]', attribute: "href" },
       { selector: 'link[type="application/feed+json"]', attribute: "href" },
       { selector: 'link[type="application/atom+xml"]', attribute: "href" },
     ],
@@ -135,24 +159,15 @@ export const scraperRules = [
       { selector: 'meta[property="og:logo"]', attribute: "content" },
       { selector: 'meta[itemprop="logo"]', attribute: "content" },
       { selector: 'img[itemprop="logo"]', attribute: "src" },
-      {
-        selector: 'link[rel="apple-touch-icon-precomposed"]',
-        attribute: "href",
-      },
+      { selector: 'link[rel="apple-touch-icon-precomposed"]', attribute: "href" },
     ],
   },
   {
     name: "video",
     multiple: false,
     selectors: [
-      {
-        selector: 'meta[name="og:video:secure_url"]',
-        attribute: "content",
-      },
-      {
-        selector: 'meta[property="og:video:secure_url"]',
-        attribute: "content",
-      },
+      { selector: 'meta[name="og:video:secure_url"]', attribute: "content" },
+      { selector: 'meta[property="og:video:secure_url"]', attribute: "content" },
       { selector: 'meta[name="og:video:url"]', attribute: "content" },
       { selector: 'meta[property="og:video:url"]', attribute: "content" },
       { selector: 'meta[name="og:video"]', attribute: "content" },
@@ -162,46 +177,33 @@ export const scraperRules = [
   {
     name: "keywords",
     multiple: false,
-    selectors: [
-      {
-        selector: 'meta[name="keywords"]',
-        attribute: "content",
-      },
-    ],
+    selectors: [{ selector: 'meta[name="keywords"]', attribute: "content" }],
   },
   {
     name: "jsonld",
     multiple: false,
     selectors: [
-      {
-        selector: '#content #microformat script[type="application/ld+json"]',
-      },
-      {
-        selector: 'ytd-player-microformat-renderer script[type="application/ld+json"]',
-      },
-      {
-        selector: 'script[type="application/ld+json"]',
-      },
+      { selector: '#content #microformat script[type="application/ld+json"]' },
+      { selector: 'ytd-player-microformat-renderer script[type="application/ld+json"]' },
+      { selector: 'script[type="application/ld+json"]' },
     ],
   },
 ] as const satisfies GetMetadataOptions[]
-
-type Matches = Record<Partial<(typeof scraperRules)[number]["name"] | string>, string | string[]>
-
-const cleanText = (string: string) => decode(string.trim(), { level: "html5" })
 
 export class Scraper {
   rewriter: HTMLRewriter
   url: string
   response: Response
-  metadata: ScrapeResponse
+  metadata: ScrapeMetadataResponse
+  text: ScrapeTextResponse
   unshortenedInfo: FollowShortUrlResponse
 
   constructor() {
     this.url = ""
     this.response = new Response()
     this.rewriter = new HTMLRewriter()
-    this.metadata = {} as ScrapeResponse
+    this.metadata = {} as ScrapeMetadataResponse
+    this.text = {} as ScrapeTextResponse
     this.unshortenedInfo = {} as FollowShortUrlResponse
   }
 
@@ -234,6 +236,55 @@ export class Scraper {
     }
 
     return this.response
+  }
+
+  async getTextContent(options: GetTextContentOptions[]): Promise<string> {
+    const sections: Sections = {}
+    const selectedSelectors: Record<string, boolean> = {}
+
+    for (const optionsItem of options) {
+      const name = optionsItem.name
+      const isMultiple = optionsItem.multiple
+
+      if (!sections[name]) {
+        if (isMultiple) {
+          sections[name] = []
+        } else {
+          sections[name] = ""
+        }
+      }
+
+      for await (const item of optionsItem.selectors) {
+        const selector = item.selector
+        let nextText = ""
+        if (selectedSelectors[optionsItem.name]) {
+          break
+        }
+        this.rewriter.on(selector, {
+          element(element: Element) {
+            if (item.attribute) {
+              const attrText = element.textContent
+              if (attrText) {
+                nextText = attrText
+              }
+            } else {
+              nextText = ""
+            }
+          },
+          text(text) {
+            if (!item.attribute) {
+              nextText += text.text
+            }
+          },
+        })
+      }
+    }
+
+    const transformed = this.rewriter.transform(this.response)
+    await transformed.arrayBuffer()
+
+    const json = JSON.stringify(sections)
+    return nhm.translate(json)
   }
 
   async getMetadata(options: GetMetadataOptions[]): Promise<Matches> {

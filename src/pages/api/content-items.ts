@@ -1,12 +1,30 @@
 import type { APIRoute } from "astro"
-import { createSummary } from "@/lib/web/"
-import { ContentItem, ContentItemSummary, db } from "astro:db"
+import { summarize as createSummary } from "@/lib/web/"
+import { ContentItem, ContentItemSummary, db, eq } from "astro:db"
 
 import { scrape } from "@/lib/scraper"
 
 import { z } from "astro:content"
 import { nanoid } from "nanoid"
 import { P, match } from "ts-pattern"
+
+const fetchContentItemSchema = z.object({
+  id: z.coerce.number().pipe(z.string()),
+})
+
+export const GET: APIRoute = async ({ params }) => {
+  const parsedData = fetchContentItemSchema.safeParse({ id: params.id })
+  if (parsedData.success === false) {
+    return new Response(JSON.stringify({ errors: parsedData.error }), { status: 400 })
+  }
+
+  const contentItem = await db
+    .select()
+    .from(ContentItem)
+    .where(eq(ContentItem.id, parsedData.data.id))
+
+  return new Response(JSON.stringify(contentItem), { status: 200 })
+}
 
 const newContentItemSchema = z.object({
   url: z.string().url(),
@@ -23,7 +41,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const { url, shouldCleanUrl } = parsedData.data
 
-  const metadata = await scrape({ url, shouldCleanUrl })
+  const { metadata, text } = await scrape({ url, shouldCleanUrl })
   if (!metadata) {
     return new Response(
       JSON.stringify({ error: "No metadata could be extracted from the content." }),
@@ -40,10 +58,7 @@ export const POST: APIRoute = async ({ request }) => {
       .exhaustive()
   }
 
-  const resp = await fetch(url)
-  const body = await resp.text()
-
-  const summary = await createSummary({ html: body })
+  const summary = await createSummary({ text })
   if (!summary) {
     return new Response(
       JSON.stringify({ error: "No summary could be generated from the content." }),

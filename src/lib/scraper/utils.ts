@@ -1,3 +1,4 @@
+import { decode } from "html-entities"
 import fileExtension from "file-extension"
 import { types } from "./types"
 import uniqueRandomArray from "unique-random-array"
@@ -9,6 +10,9 @@ export interface FollowShortUrlResponse {
   urls: string[]
   unshortened_url: string
 }
+
+export const cleanText = (string: string) => decode(string.trim(), { level: "html5" })
+
 // This function follows a short URL and returns the final URL, use https://t.co/wy9S5P0Cd2 as an example.
 export const followShortUrl = async (
   urls: string[],

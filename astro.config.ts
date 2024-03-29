@@ -16,18 +16,15 @@ export default defineConfig({
   },
   integrations: [
     db(),
+    icon(),
     tailwind({
       applyBaseStyles: false,
     }),
-    icon(),
   ],
   adapter: cloudflare({
-    mode: "directory",
     imageService: "passthrough",
-    functionPerRoute: true,
-    runtime: {
-      mode: "local",
-      type: "pages",
+    platformProxy: {
+      enabled: true,
     },
   }),
 })
