@@ -1,30 +1,12 @@
-import type { APIRoute } from "astro"
 import { summarize as createSummary } from "@/lib/web/"
-import { ContentItem, ContentItemSummary, db, eq } from "astro:db"
+import type { APIRoute } from "astro"
+import { ContentItem, ContentItemSummary, db } from "astro:db"
 
 import { scrape } from "@/lib/scraper"
 
 import { z } from "astro:content"
 import { nanoid } from "nanoid"
 import { P, match } from "ts-pattern"
-
-const fetchContentItemSchema = z.object({
-  id: z.coerce.number().pipe(z.string()),
-})
-
-export const GET: APIRoute = async ({ params }) => {
-  const parsedData = fetchContentItemSchema.safeParse({ id: params.id })
-  if (parsedData.success === false) {
-    return new Response(JSON.stringify({ errors: parsedData.error }), { status: 400 })
-  }
-
-  const contentItem = await db
-    .select()
-    .from(ContentItem)
-    .where(eq(ContentItem.id, parsedData.data.id))
-
-  return new Response(JSON.stringify(contentItem), { status: 200 })
-}
 
 const newContentItemSchema = z.object({
   url: z.string().url(),
