@@ -82,7 +82,7 @@ export const useOpenAiQuery = async <T extends z.ZodTypeAny>(params: UseOpenAiQu
     messages: [{ role: params.role ?? "system", content: params.prompt }],
     response_format: {
       type: match(params.type)
-        .returnType<ChatCompletionCreateParams.ResponseFormat["type"]>()
+        .returnType<"json_object" | "text">()
         .with("json", () => "json_object")
         .otherwise(() => "text"),
     },

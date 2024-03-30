@@ -1,9 +1,100 @@
-type GetValueOption = { selector: string; attribute?: string }
+import type { GetMetadataOptions, GetTextContentOptions, TypeDictionary } from "./types"
 
-export type GetTextContentOptions<TName extends string = string> = {
-  name: TName
-  selectors: GetValueOption[]
-  multiple: boolean
+export const fileTypes: TypeDictionary = {
+  jpg: "image",
+  jpeg: "image",
+  png: "image",
+  apng: "image",
+  gif: "image",
+  webp: "image",
+  tiff: "image",
+  bmp: "image",
+  heif: "image",
+  svg: "image",
+  psd: "image",
+  dng: "image",
+  icns: "image",
+  avif: "image",
+  ico: "image",
+  aac: "audio",
+  aiff: "audio",
+  flac: "audio",
+  m4a: "audio",
+  m4p: "audio",
+  mogg: "audio",
+  mp2: "audio",
+  mp3: "audio",
+  oga: "audio",
+  wav: "audio",
+  wma: "audio",
+  asf: "video",
+  avi: "video",
+  flv: "video",
+  gifv: "video",
+  m2v: "video",
+  m4v: "video",
+  mid: "video",
+  mkv: "video",
+  mov: "video",
+  mp4: "video",
+  mpeg: "video",
+  mpg: "video",
+  ogg: "video",
+  ogv: "video",
+  qt: "video",
+  vob: "video",
+  webm: "video",
+  doc: "document",
+  docx: "document",
+  md: "document",
+  mdx: "document",
+  odt: "document",
+  pdf: "document",
+  rtf: "document",
+  txt: "document",
+  xml: "document",
+  epub: "document",
+  pptx: "document",
+  woff: "file",
+  woff2: "file",
+  eot: "file",
+  zip: "file",
+  dmg: "file",
+  rar: "file",
+  ttf: "file",
+  otf: "file",
+}
+
+export const siteTypes: TypeDictionary = {
+  "youtube.com": "video",
+  "youtu.be": "video",
+  "vimeo.com": "video",
+  "microsoftstream.com": "video",
+  "tiktok.com": "video",
+  "dailymotion.com": "video",
+  "dai.ly": "video",
+  "imgur.com": "image",
+  "unsplash.com": "image",
+  "medium.com": "article",
+  "dev.to": "article",
+  "spotify.com": "audio",
+  "soundcloud.com": "audio",
+  "bandcamp.com": "audio",
+  "deezer.com": "audio",
+  "tidal.com": "audio",
+  "pandora.com": "audio",
+  "mixcloud.com": "audio",
+  "bbcgoodfood.com": "recipe",
+  "liquor.com": "recipe",
+  "meetup.com": "event",
+  "hopin.com": "event",
+  "amazon.com": "product",
+  "amazon.co.uk": "product",
+}
+
+export const types = {
+  ...fileTypes,
+  ...siteTypes,
 }
 
 export const textRules = [
@@ -18,17 +109,6 @@ export const textRules = [
     ],
   },
 ] as const satisfies GetTextContentOptions[]
-
-export type Sections = Record<
-  Partial<(typeof textRules)[number]["name"] | string>,
-  string | string[]
->
-
-export type GetMetadataOptions<TName extends string = string> = {
-  name: TName
-  selectors: GetValueOption[]
-  multiple: boolean
-}
 
 export const scraperRules = [
   {
@@ -164,8 +244,3 @@ export const scraperRules = [
     ],
   },
 ] as const satisfies GetMetadataOptions[]
-
-export type Matches = Record<
-  Partial<(typeof scraperRules)[number]["name"] | string>,
-  string | string[]
->

@@ -1,4 +1,4 @@
-import type { SummaryParams } from "./types"
+import type { SummaryParams } from "@/hooks/types"
 
 const clusterSummary = (_: SummaryParams) => {
   throw new Error("Not implemented")

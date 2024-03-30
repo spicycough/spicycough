@@ -1,7 +1,6 @@
 import { z } from "astro:content"
-
-import type { SummaryParams } from "./types"
 import { useOpenAiQuery } from "./useOpenAiQuery"
+import type { SummaryParams } from "./types"
 
 const buildKeywordPrompt = (text: string) => {
   return `Text: \n${text}

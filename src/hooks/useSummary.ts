@@ -1,8 +1,8 @@
 import { encodingForModel, type TiktokenModel } from "js-tiktoken"
 import { match } from "ts-pattern"
-import type { SummaryParams } from "./types"
-import { useChainOfDensitySummary } from "./useChainOfDensitySummary"
 import { useExtractiveSummary } from "./useExtractiveSummary"
+import { useChainOfDensitySummary } from "./useChainOfDensitySummary"
+import type { SummaryParams } from "./types"
 
 export const useSummary = async (params?: SummaryParams & { shouldCompact: boolean }) => {
   if (!params?.text) {

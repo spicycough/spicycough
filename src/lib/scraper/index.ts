@@ -1,7 +1,7 @@
 import { TidyURL } from "tidy-url"
+import { generateErrorJSONResponse } from "./errors"
 import { Scraper, scraperRules, textRules } from "./scraper"
 import { linkType } from "./utils"
-import { generateErrorJSONResponse } from "./errors"
 
 type ScrapeRequest = {
   url: string
@@ -50,6 +50,3 @@ export const scrape = async ({ url, shouldCleanUrl = true }: ScrapeRequest) => {
     throw generateErrorJSONResponse(error, url)
   }
 }
-
-export { Scraper, scraperRules, textRules } from "./scraper"
-export { linkType } from "./utils"

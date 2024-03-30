@@ -1,7 +1,7 @@
 import { z } from "astro:content"
 
-import type { SummaryParams } from "./types"
-import { useOpenAiQuery } from "./useOpenAiQuery"
+import type { SummaryParams } from "@/hooks/types"
+import { useOpenAiQuery } from "@/hooks/useOpenAiQuery"
 
 const buildPrompt = (text: string) => {
   return `Text: \n${text}
