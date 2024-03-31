@@ -23,7 +23,7 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="Coming Soon">
-  <main class="flex flex-col grow items-center container gap-y-6 py-10 pb-24 justify-evenly">
+  <main class="flex flex-col grow items-center container gap-y-6 pt-6 pb-24 justify-evenly">
     <div class="flex flex-col justify-center">
       <div class="flex flex-col gap-y-2 text-left p-12">
         <h2 class="items-baseline text-4xl font-semibold">
@@ -32,7 +32,7 @@ if (Astro.request.method === "POST") {
         <h3 class="text-2xl">a colloquial label for COVID-19</h3>
       </div>
     </div>
-    <div class="flex flex-col gap-y-10 outline-dashed outline-muted-foreground p-12 rounded-xl">
+    <div class="flex flex-col gap-y-10 outline-dashed outline-muted-foreground py-12 rounded-2xl px-24 w-1/2">
       <h4 class="font-semibold text-lg text-center">Want to get notified when we launch?</h4>
       <form method="POST" class="flex gap-x-4">
         <div class="flex flex-col origin-right relative gap-y-2 justify-between w-full">
@@ -51,7 +51,7 @@ if (Astro.request.method === "POST") {
         <Button
           type="submit"
           class:list={[
-            "text-nowrap h-10 mt-0.5 text-slate-100",
+            "text-nowrap text-xs h-10 mt-0.5 text-slate-100",
             "bg-emerald-700 dark:hover:bg-emerald-800 dark:hover:shadow-inner",
             "dark:bg-emerald-700 dark:hover:bg-emerald-800 dark:hover:shadow-inner",
           ]}>Notify me</Button

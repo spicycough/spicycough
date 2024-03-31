@@ -11,6 +11,10 @@ import CardDescription from "@/components/card/CardDescription.astro"
 
 import { ContentItem } from "astro:db"
 
+if (true) {
+  return Astro.redirect('/login');
+}
+
 const articles = [
   {
     title: "Article 1",
@@ -29,6 +33,7 @@ const articles = [
   },
 ]
 
+
 // const url = "https://theconversation.com/mounting-research-shows-that-covid-19-leaves-its-mark-on-the-brain-including-with-significant-drops-in-iq-scores-224216"
 const contentItem = await db
   .select()
@@ -36,6 +41,7 @@ const contentItem = await db
   .orderBy(ContentItem.publishedDate)
   .limit(1)
   .get()
+
 ---
 
 <Layout title="spicycough" description="Test">
