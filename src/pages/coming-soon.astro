@@ -32,7 +32,7 @@ if (Astro.request.method === "POST") {
         <h3 class="text-2xl">a colloquial label for COVID-19</h3>
       </div>
     </div>
-    <div class="flex flex-col gap-y-10 outline-dashed outline-muted-foreground py-12 rounded-2xl px-24 w-1/2">
+    <div class="flex flex-col gap-y-10 outline-dashed outline-muted-foreground py-12 rounded-2xl px-24 w-2/3">
       <h4 class="font-semibold text-lg text-center">Want to get notified when we launch?</h4>
       <form method="POST" class="flex gap-x-4">
         <div class="flex flex-col origin-right relative gap-y-2 justify-between w-full">
@@ -58,6 +58,6 @@ if (Astro.request.method === "POST") {
         >
       </form>
     </div>
-    <Icon class="size-80 absolute right-0 bottom-0 -scale-x-100" name="sleeping-man" />
+    <Icon height={0} width={0} class="size-96 fixed -right-10 bottom-0 -scale-x-100" name="sleeping-man" />
   </main>
 </Layout>
