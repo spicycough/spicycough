@@ -23,13 +23,14 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="Coming Soon">
-  <main class="flex flex-col grow items-center container gap-y-6 pt-6 pb-24 justify-evenly">
+  <main slot="main" class="flex flex-col flex-grow items-center container justify-center">
     <div class="flex flex-col justify-center">
       <div class="flex flex-col gap-y-2 text-left p-12">
         <h2 class="items-baseline text-4xl font-semibold">
-          spicy cough <span class="font-light text-3xl">(n)</span>
+          spicy cough <span class="font-light text-4xl">(n)</span>
         </h2>
-        <h3 class="text-2xl">a colloquial label for COVID-19</h3>
+        <h3 class="text-2xl text-muted-foreground"><span class="text-muted-foreground font-semibold">1. </span>a colloquial label for COVID-19</h3>
+        <h3 class="text-2xl"><span class="font-semibold">2. </span>the non-expert's hub for COVID-19 research</h3>
       </div>
     </div>
     <div class="flex flex-col gap-y-10 outline-dashed outline-muted-foreground py-12 rounded-2xl px-24 w-2/3">
