@@ -1,7 +1,6 @@
 ---
 import "@/styles/globals.css"
 import { ViewTransitions } from "astro:transitions"
-import { config } from '../config'
 
 interface Props {
   title: string
@@ -9,12 +8,7 @@ interface Props {
   ogImage?: string
 }
 
-const { title, description } = Astro.props
 
-const canonicalURL = new URL(Astro.url.pathname, import.meta.env.SITE_URL)
-const socialImageURL = new URL('placeholder.png'?? "opengraph.png", Astro.url.origin)
-const metaTitle = `${title} – ${config.title}`
-const metaDescription = description || config.description
 ---
 
 <!doctype html>
@@ -24,33 +18,15 @@ const metaDescription = description || config.description
     <meta name="robots" content="index, follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="googlebot" content="index, follow" />
-    <meta name="generator" content={Astro.generator} />
 
-    <meta name="title" content={title} />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-
-    <!-- Facebook -->
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={metaTitle} />
-    <meta property="og:description" content={metaDescription} />
-    <meta property="og:image" content={socialImageURL} />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <!-- <meta property="twitter:domain" content={removeHttp(Astro.site?.toString())} /> -->
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={metaTitle} />
-    <meta name="twitter:description" content={metaDescription} />
-    <meta name="twitter:image" content={socialImageURL} />
+    <meta name="title" content="spicycough" />
+    <title>spicycough</title>
+    <meta name="description" content="the non-expert's hub for COVID-19 research" />
 
     <ViewTransitions fallback="swap" />
   </head>
   <body class="min-h-full font-sans antialiased flex flex-col">
-    <nav class="min-h-16 font-bold text-lg p-4 sticky z-50 border-b drop-shadow-md">
-      spicycough
-    </nav>
-    <slot name="main" class="grow"/>
+    <nav class="min-h-16 font-bold text-lg p-4 sticky z-50 border-b drop-shadow-md">spicycough</nav>
+    <slot name="main" class="grow" />
   </body>
 </html>

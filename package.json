@@ -21,7 +21,7 @@
     "prepare": "husky",
     "preview": "preview:cf",
     "preview:astro": "astro preview",
-    "preview:cf": "wrangler types wrangler pages dev ./dist",
+    "preview:cf": "wrangler types && wrangler pages dev ./dist",
     "start": "astro dev",
     "test": "vitest",
     "types": "types:check",
