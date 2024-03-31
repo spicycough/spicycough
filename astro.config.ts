@@ -12,7 +12,7 @@ export default defineConfig({
   compressHTML: true,
   prefetch: true,
   redirects: {
-    "*": {
+    "/": {
       status: 307,
       destination: "/coming-soon",
     },
