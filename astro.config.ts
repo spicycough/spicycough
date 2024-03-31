@@ -11,6 +11,9 @@ export default defineConfig({
   output: "server",
   compressHTML: true,
   prefetch: true,
+  redirects: {
+    "/": "/coming-soon",
+  },
   integrations: [
     db(),
     icon(),
