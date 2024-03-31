@@ -16,6 +16,7 @@ export const useTokenizer = () => {
   const detokenize = async (tokens: Uint32Array) => {
     const text = encoder.decode(tokens)
     encoder.free()
+
     return text
   }
 
