@@ -1,14 +1,13 @@
 ---
 import "@/styles/globals.css"
 import { ViewTransitions } from "astro:transitions"
+import { Shadow as ShadowIcon } from "@astropub/icons"
 
 interface Props {
   title: string
   description?: string
   ogImage?: string
 }
-
-
 ---
 
 <!doctype html>
@@ -22,11 +21,17 @@ interface Props {
     <meta name="title" content="spicycough" />
     <title>spicycough</title>
     <meta name="description" content="the non-expert's hub for COVID-19 research" />
-
+    <link rel="icon" href="/favicon.svg" />
     <ViewTransitions fallback="swap" />
   </head>
   <body class="min-h-full font-sans antialiased flex flex-col">
-    <nav class="min-h-16 font-bold text-lg p-4 sticky z-50 border-b drop-shadow-md">spicycough</nav>
+    <nav class="min-h-16 text-lg p-4 sticky z-50 border-b drop-shadow-md">
+      <a href="/" class="flex gap-x-2 items-center font-semibold">
+        <ShadowIcon
+          class="h-6 w-6 stroke-transparent fill-[#E55D87]"
+        />spicycough
+      </a>
+    </nav>
     <slot name="main" class="grow" />
   </body>
 </html>
