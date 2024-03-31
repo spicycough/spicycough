@@ -23,25 +23,27 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="Coming Soon">
-  <main slot="main" class="flex flex-col flex-grow items-center container justify-center">
-    <div class="flex flex-col justify-center">
-      <div class="flex flex-col gap-y-4 text-left p-12">
-        <h2 class="items-baseline text-4xl font-bold">
-          spicy cough <span class="font-light text-4xl">(n)</span>
-        </h2>
-        <h3 class="text-2xl text-muted-foreground"><span class="text-muted-foreground font-semibold">1. </span>a colloquial label for COVID-19</h3>
-        <h3 class="text-2xl font-semibold"><span class="font-bold">2. </span>the non-expert's hub for COVID-19 research</h3>
-      </div>
+  <main slot="main" class="flex flex-col flex-grow items-center justify-evenly">
+    <div class="flex flex-col justify-center basis-2/3 gap-y-2 px-3">
+      <h2 class="text-4xl font-bold pb-4">
+        spicy cough <span class="font-normal text-4xl">(n)</span>
+      </h2>
+      <h3 class="text-2xl text-muted-foreground font-normal">
+        <span class="text-muted-foreground font-semibold">1. </span>a colloquial label for COVID-19
+      </h3>
+      <h3 class="text-2xl font-semibold">
+        <span class="font-bold">2. </span>the non-expert's hub for SARS-CoV-2 research
+      </h3>
     </div>
-    <div class="flex flex-col gap-y-10 outline-dashed outline-muted-foreground py-12 rounded-2xl px-24 min-w-2/3">
-      <h4 class="font-semibold text-lg text-center">Want to get notified when we launch?</h4>
+    <div class="flex flex-col basis-1/3 outline-dashed outline-muted-foreground rounded-2xl min-w-2/3 lg:px-24 py-12 sm:px-6 px-3 md:px-12 gap-y-8">
+      <h4 class="font-semibold text-xl text-center">Want to get notified when we launch?</h4>
       <form method="POST" class="flex gap-x-4">
-        <div class="flex flex-col origin-right relative gap-y-2 justify-between w-full">
+        <div class="flex flex-col origin-right relative justify-between w-full gap-y-1.5">
           <input
             type="email"
             name="email"
             autocomplete="email"
-            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            class="flex h-10 md:w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             placeholder="Enter your email"
           />
           <EnvelopeOpen class="size-4 absolute right-0 mt-3 mr-3 text-muted-foreground" />
@@ -55,10 +57,15 @@ if (Astro.request.method === "POST") {
             "text-nowrap text-xs h-10 mt-0.5 text-slate-100",
             "bg-emerald-700 dark:hover:bg-emerald-800 dark:hover:shadow-inner",
             "dark:bg-emerald-700 dark:hover:bg-emerald-800 dark:hover:shadow-inner",
-          ]}>Notify me</Button
+          ]}>Notify me!</Button
         >
       </form>
     </div>
-    <Icon height={0} width={0} class="size-96 fixed -right-10 bottom-0 -scale-x-100" name="sleeping-man" />
+    <Icon
+      height={0}
+      width={0}
+      class="size-96 absolute -right-10 bottom-0 -scale-x-100"
+      name="sleeping-man"
+    />
   </main>
 </Layout>
