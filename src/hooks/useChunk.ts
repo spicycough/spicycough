@@ -1,5 +1,6 @@
-import { encodingForModel, type TiktokenModel } from "js-tiktoken"
+import type { TiktokenModel } from "tiktoken"
 import { match, P } from "ts-pattern"
+import { useTokenizer } from "./useTokenizer"
 
 type HeaderLevel = 1 | 2 | 3 | 4 | 5 | 6
 
@@ -110,8 +111,8 @@ type ByTokensParams = {
 }
 
 export const chunkByTokens = async ({ text, options }: ByTokensParams) => {
-  const tokenizer = encodingForModel(options.model)
-  const documentTokens = tokenizer.encode(text)
+  const { tokenize, detokenize } = useTokenizer()
+  const documentTokens = await tokenize(text)
   const documentSize = documentTokens.length
 
   const K = Math.ceil(documentSize / options.maxChunkSize)
@@ -130,7 +131,7 @@ export const chunkByTokens = async ({ text, options }: ByTokensParams) => {
     }
 
     const chunk = documentTokens.slice(chunkStart, chunkEnd)
-    const decodedChunk = tokenizer.decode(chunk).toString()
+    const decodedChunk = detokenize(chunk).toString()
     chunks.push(decodedChunk)
     chunkStart = chunkEnd
   }

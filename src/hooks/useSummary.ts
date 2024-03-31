@@ -1,22 +1,22 @@
-import { encodingForModel, type TiktokenModel } from "js-tiktoken"
 import { match } from "ts-pattern"
-import { useExtractiveSummary } from "./useExtractiveSummary"
-import { useChainOfDensitySummary } from "./useChainOfDensitySummary"
 import type { SummaryParams } from "./types"
+import { useChainOfDensitySummary } from "./useChainOfDensitySummary"
+import { useExtractiveSummary } from "./useExtractiveSummary"
+import { useTokenizer } from "./useTokenizer"
 
-export const useSummary = async (params?: SummaryParams & { shouldCompact?: boolean }) => {
+type UseSummaryParams = Omit<SummaryParams, "text"> & { text: string | string[] }
+
+export const useSummary = async (params?: UseSummaryParams & { shouldCompact?: boolean }) => {
   if (!params?.text) {
     return null
   }
-
   const text = Array.isArray(params?.text) ? params?.text : [params?.text]
 
-  const tokenizer = encodingForModel(params?.modelOptions?.model as TiktokenModel)
-  const tokens = tokenizer.encode(text.join("\n"))
-
+  const { tokenize } = useTokenizer()
   const { summarize: chainOfDensitySummary } = useChainOfDensitySummary()
   const { summarize: extractiveSummary } = useExtractiveSummary()
 
+  const tokens = await tokenize(text.join("\n"))
   const summary = await match(tokens.length)
     // Short length, use chain of density
     .when(

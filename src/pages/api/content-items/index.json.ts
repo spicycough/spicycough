@@ -6,7 +6,6 @@ import { useScrape } from "@/hooks/useScrape"
 
 import { z } from "astro:content"
 import { nanoid } from "nanoid"
-import { P, match } from "ts-pattern"
 
 const newContentItemSchema = z.object({
   url: z.string().url(),
@@ -23,23 +22,19 @@ export const POST: APIRoute = async ({ request }) => {
 
   const { url, shouldCleanUrl } = parsedData.data
 
-  const { content, text } = await useScrape({ url, actions: "both", shouldCleanUrl })
+  const { text, metadata } = await useScrape({ url, actions: "both", shouldCleanUrl })
 
-  const { metadata } = content
+  if (!text) {
+    return new Response(JSON.stringify({ error: "No text could be extracted from the content." }), {
+      status: 400,
+    })
+  }
+
   if (!metadata) {
     return new Response(
       JSON.stringify({ error: "No metadata could be extracted from the content." }),
       { status: 400 }
     )
-  }
-
-  const cleanedData: Record<string, string> = {}
-  for (const key in metadata) {
-    cleanedData[key] = match(metadata[key])
-      .with(P.string, (val) => val.trim())
-      .with(P.array(P.string), (val) => val.join(", "))
-      .with(P.any, (val) => JSON.stringify(val))
-      .exhaustive()
   }
 
   const summary = await useSummary({ text })
@@ -55,21 +50,18 @@ export const POST: APIRoute = async ({ request }) => {
     .values({
       id: nanoid(),
       kind: "article",
-      url: cleanedData.url ?? "",
-      author: cleanedData.author ?? "",
+      url: metadata.url ?? "",
+      author: metadata.author ?? "",
       publishedDate:
-        cleanedData.date && typeof metadata.date === "string"
-          ? new Date(metadata?.date)
-          : new Date(),
-      description: cleanedData.description ?? "",
-      imageUrl: cleanedData.image ?? "",
-      lang: cleanedData.lang ?? "",
-      logo: cleanedData.logo ?? "",
-      publisher: cleanedData.publisher ?? "",
-      title: cleanedData.title ?? "",
+        metadata.date && typeof metadata.date === "string" ? new Date(metadata?.date) : new Date(),
+      description: metadata.description ?? "",
+      imageUrl: metadata.image ?? "",
+      lang: metadata.lang ?? "",
+      logo: metadata.logo ?? "",
+      publisher: metadata.publisher ?? "",
+      title: metadata.title ?? "",
       slug:
-        (typeof cleanedData.title === "string" &&
-          cleanedData.title.toLowerCase()?.replace(/\s/g, "-")) ||
+        (typeof metadata.title === "string" && metadata.title.toLowerCase()?.replace(/\s/g, "-")) ||
         "",
     })
     .returning()
