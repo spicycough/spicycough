@@ -22,9 +22,10 @@ export default defineConfig({
     }),
   ],
   adapter: cloudflare({
-    imageService: "passthrough",
     platformProxy: {
       enabled: true,
     },
+    imageService: "passthrough",
+    wasmModuleImports: true,
   }),
 })

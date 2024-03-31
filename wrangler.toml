@@ -2,4 +2,8 @@ name = "astro-quickstart"
 compatibility_date = "2024-03-04"
 send_metrics = false
 
+[[rules]]
+globs = ["**/*.wasm"]
+type = "CompiledWasm"
+
 [env.production]
