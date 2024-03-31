@@ -4,14 +4,14 @@ import { useExtractiveSummary } from "./useExtractiveSummary"
 import { useChainOfDensitySummary } from "./useChainOfDensitySummary"
 import type { SummaryParams } from "./types"
 
-export const useSummary = async (params?: SummaryParams & { shouldCompact: boolean }) => {
+export const useSummary = async (params?: SummaryParams & { shouldCompact?: boolean }) => {
   if (!params?.text) {
     return null
   }
 
   const text = Array.isArray(params?.text) ? params?.text : [params?.text]
 
-  const tokenizer = encodingForModel(params?.modelOptions.model as TiktokenModel)
+  const tokenizer = encodingForModel(params?.modelOptions?.model as TiktokenModel)
   const tokens = tokenizer.encode(text.join("\n"))
 
   const { summarize: chainOfDensitySummary } = useChainOfDensitySummary()

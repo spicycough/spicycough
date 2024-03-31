@@ -163,7 +163,7 @@ export const useScrape = async ({
   const preparedUrl = prepareUrl(params.url)
   const response = await safeFetch(preparedUrl.toString())
 
-  const content = match(params.actions)
+  const content = await match(params.actions)
     .with("text", async () => {
       const text = await getText(textRules)
       return { text }
@@ -183,6 +183,7 @@ export const useScrape = async ({
       const text = await getText(textRules)
       return { text, metadata }
     })
+    .exhaustive()
 
   let url: string
   if (shouldCleanUrl) {
@@ -194,7 +195,7 @@ export const useScrape = async ({
   const urlType = getLinkType(url, false)
 
   return {
-    content,
+    ...content,
     response,
     urlType,
   }
